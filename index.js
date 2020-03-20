@@ -17,4 +17,3 @@ app.get('/', function(req, res) { // '/' = ruta raiz al metodo get
     res.render('profile');
 })
 app.listen(port, () => console.log('Ejecutando en puerto ' + port));
-
