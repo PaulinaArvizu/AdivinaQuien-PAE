@@ -1,0 +1,90 @@
+<!-- aqui va navbar -->
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+
+<div class="container">
+    <div class="row">
+
+        <aside class="col-sm-6">
+            <div class="card">
+                <article class="card-body">
+                    <h4 class="card-title text-center mb-4 mt-1">Sign in</h4>
+                    <hr>
+                    <form action="/login" method="POST">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-at"></i> </span>
+                                </div>
+                                <input name="email" id="email" class="form-control" placeholder="Email or login"
+                                    type="email">
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                </div>
+                                <input name="password" id="pwd" class="form-control" placeholder="******"
+                                    type="password">
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block"> Login </button>
+                        </div>
+                    </form>
+                </article>
+            </div> <!-- card.// -->
+
+        </aside> <!-- col.// -->
+        <aside class="col-sm-6">
+            <div class="card">
+                <article class="card-body">
+                    <h4 class="card-title text-center mb-4 mt-1">Sign in</h4>
+                    <hr>
+
+                    <form action="/register" method="POST">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                </div>
+                                <input name="username" class="form-control" placeholder="Nombre de usuario" type="text">
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-at"></i> </span>
+                                </div>
+                                <input name="email" class="form-control" placeholder="Email" type="email">
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                </div>
+                                <input name="password" class="form-control" placeholder="Contraseña" type="password">
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                </div>
+                                <input name="password" class="form-control" placeholder="Confirmar Contraseña" type="password">
+                            </div> <!-- input-group.// -->
+                        </div> <!-- form-group// -->
+                        <div class="form-group">
+                            <input type="submit" value="Register" class="btn btn-primary btn-block">
+                        </div>
+                    </form>
+
+                </article>
+            </div> <!-- card.// -->
+        </aside> <!-- col.// -->
+    </div> <!-- row.// -->
+
+</div>
