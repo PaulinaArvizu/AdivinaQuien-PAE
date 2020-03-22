@@ -303,12 +303,309 @@
     </tbody>
 </table>
 
-{{>newGame}}
+{{!-- Modal nuevo juego --}}
+<!-- Modal -->
+<div class="modal fade" id="newGameModal" tabindex="-1" role="dialog" aria-labelledby="newGameModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newGameModalLabel"><i class="fas fa-gamepad"></i> Nuevo Juego</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="selectAlbum">
+                    <h5>¿Qué álbum quieres usar?</h5>
+                <table class="table table-hover table-borderless">
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: middle" width="40%">Album1</td>
+                            <td style="vertical-align: middle" width="30%" class="text-center">2 fotos</td>
+                            <td style="vertical-align: middle" align="center">
+                                <input type="radio" name="album">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle" width="40%">Album2</td>
+                            <td style="vertical-align: middle" width="30%" class="text-center">20 fotos</td>
+                            <td style="vertical-align: middle" align="center">
+                                <input type="radio" name="album">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="selectPlayer">
+                    <h5>¿Con quién quieres jugar?</h5>
+                    <table class="table table-hover table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+                                            style="height: 50px;">
 
-{{>editAlbum}}
+                                    </td>
+                                    <td style="vertical-align: middle; padding-left: 2px">Jugador2</td>
 
-{{>editUser}}
+                                    <td align="right" style="vertical-align: middle; width: 10%">
+                                        <input type="radio" name="player">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                                        <img src="https://image.shutterstock.com/image-photo/picture-confused-young-man-dressed-260nw-553535785.jpg"
+                                            style="height: 50px;">
 
-{{>newAlbum}}
+                                    </td>
+                                    <td style="vertical-align: middle; padding-left: 2px">Jugador3</td>
 
-{{>newImg}}
+                                    <td align="right" style="vertical-align: middle; width: 10%">
+                                        <input type="radio" name="player">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Enviar invitación</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Modal nueva foto --}}
+<div class="modal fade" id="newImgModal" tabindex="-1" role="dialog" aria-labelledby="newImgModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newImgModalLabel"><i class="far fa-image"></i> Añadir foto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="" enctype="multipart/form-data">
+                    <div class="col-auto">
+                        <div class="input-group">
+                            <label for="inlineFormInputGroup">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Nombre</div>
+                                </div>
+                            </label>
+                            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Ej. Imagen1">
+                        </div>
+                    </div>
+                    <div class="custom-file col-auto">
+                        <input type="file" class="custom-file-input" name="image">
+                        <label class="custom-file-label">Seleccionar archivo...</label>
+                    </div>
+                    <button class="btn btn-outline-info">Añadir imagen</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Modal nuevo album --}}
+<div class="modal fade" id="newAlbumModal" tabindex="-1" role="dialog" aria-labelledby="newAlbumModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newAlbumModalLabel"><i class="far fa-images"></i> Nuevo álbum</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-auto">
+                    <div class="input-group">
+                        <label for="inlineFormInputGroup">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Nombre</div>
+                            </div>
+                        </label>
+                        <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Ej. Album1">
+                    </div>
+                </div>
+                <table class="table table-hover table-borderless">
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                                <label for="img2"><img
+                                        src="https://live.staticflickr.com/4561/38054606355_26429c884f_b.jpg"
+                                        style="height: 50px;">
+                                </label>
+                            </td>
+                            <td style="vertical-align: middle; padding-left: 2px">
+                                <label for="img2">Imagen1</label>
+                            </td>
+                            <td align="right" style="vertical-align: middle; width: 10%">
+                                <input type="checkbox" id="img2" style="display: block;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                                <label for="img2"><img
+                                        src="https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg"
+                                        style="height: 50px;">
+                                </label>
+                            </td>
+                            <td style="vertical-align: middle; padding-left: 2px">
+                                <label for="img2">Imagen2</label>
+                            </td>
+                            <td align="right" style="vertical-align: middle; width: 10%">
+                                <input type="checkbox" id="img2" style="display: block;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                                <label for="img2"><img
+                                        src="https://qph.fs.quoracdn.net/main-qimg-0bf5ade627068fc659d57f9c38803151.webp"
+                                        style="height: 50px;">
+                                </label>
+                            </td>
+                            <td style="vertical-align: middle; padding-left: 2px">
+                                <label for="img2">Imagen3</label>
+                            </td>
+                            <td align="right" style="vertical-align: middle; width: 10%">
+                                <input type="checkbox" id="img2" style="display: block;">
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{{!-- Modal editar album --}}
+<div class="modal fade" id="editAlbumModal" tabindex="-1" role="dialog" aria-labelledby="editAlbumModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAlbumModalLabel"><i class="fas fa-edit"></i> Editar Album1</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover table-borderless">
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                                <img src="https://live.staticflickr.com/4561/38054606355_26429c884f_b.jpg"
+                                    style="height: 50px;">
+
+                            </td>
+                            <td style="vertical-align: middle; padding-left: 2px">Imagen1</td>
+
+                            <td align="right" style="vertical-align: middle; width: 10%">
+                                <button class="btn btn-danger tooltip-test" title="Eliminar">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                                <img src="https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg"
+                                    style="height: 50px;">
+
+                            </td>
+                            <td style="vertical-align: middle; padding-left: 2px">Imagen2</td>
+
+                            <td align="right" style="vertical-align: middle; width: 10%">
+                                <button class="btn btn-danger tooltip-test" title="Eliminar">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <label for="agregarFotoInput" class="btn btn-info">Añadir foto</label>
+                <input type="checkbox" id="agregarFotoInput">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                                        <img src="https://qph.fs.quoracdn.net/main-qimg-0bf5ade627068fc659d57f9c38803151.webp"
+                                            style="height: 50px;">
+
+                                    </td>
+                                    <td style="vertical-align: middle; padding-left: 2px">Imagen2</td>
+
+                                    <td align="right" style="vertical-align: middle; width: 10%">
+                                        <button class="btn btn-success tooltip-test" title="Agregar">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Modal editar usuario --}}
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel"><i class="far fa-image"></i> Añadir foto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="" enctype="multipart/form-data">
+                    <div class="col-auto">
+                        <div class="input-group">
+                            <label for="inlineFormInputGroup">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Nombre</div>
+                                </div>
+                            </label>
+                            <input type="text" class="form-control" id="inlineFormInputGroup">
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-info">Cambiar nombre de usuario</button>
+                </form>
+                <form action="" method="" enctype="multipart/form-data">
+                    <div class="custom-file col-auto">
+                        <input type="file" class="custom-file-input" name="image">
+                        <label class="custom-file-label">Seleccionar archivo...</label>
+                    </div>
+                    <button class="btn btn-outline-info">Cambiar imagen</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
