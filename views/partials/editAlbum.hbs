@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-borderless">
                     <tbody>
                         <tr>
                             <td style="vertical-align: middle; width: 10%; padding-right: 3px">
@@ -41,13 +41,31 @@
                         </tr>
                     </tbody>
                 </table>
-                <form action="" method="" enctype="multipart/form-data">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="image">
-                        <label class="custom-file-label">Seleccionar Archivo...</label>
+                <label for="agregarFotoInput" class="btn btn-info">Añadir foto</label>
+                <input type="checkbox" id="agregarFotoInput">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                                        <img src="https://qph.fs.quoracdn.net/main-qimg-0bf5ade627068fc659d57f9c38803151.webp"
+                                            style="height: 50px;">
+
+                                    </td>
+                                    <td style="vertical-align: middle; padding-left: 2px">Imagen2</td>
+
+                                    <td align="right" style="vertical-align: middle; width: 10%">
+                                        <button class="btn btn-success tooltip-test" title="Agregar">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
                     </div>
-                    <button class="btn btn-outline-info">Añadir imagen</button>
-                </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
