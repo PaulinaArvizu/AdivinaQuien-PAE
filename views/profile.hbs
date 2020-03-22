@@ -24,19 +24,22 @@
     }
 </style>
 <h1 class="display-2">Adivina Quien — Jugador1</h1>
-<button id="newGameBtn" class="btn btn-primary" href="#" role="button">Nuevo Juego</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newGameModal">
+    Nuevo Juego
+</button>
 <table width="100%">
     <tbody>
         <tr>
             <td style="padding-right: 1%; vertical-align: top;">
-                <div class="card border-info" id="fotos">
+                <div class="card border-success" id="fotos">
                     <h5 class="card-header text-white" style="background-color: rgb(40, 167, 69);">
                         <table width="100%">
                             <td>
                                 <h3>Mis fotos</h3>
                             </td>
                             <td class="justify-content-end" style="text-align: right;">
-                                <button class="btn btn-outline-light">Añadir foto</button>
+                                <button class="btn btn-outline-light" data-toggle="modal"
+                                    data-target="#newImgModal">Añadir foto</button>
                             </td>
                         </table>
                     </h5>
@@ -46,17 +49,23 @@
                                 <div class="carousel-item active">
                                     <img class="d-block rounded"
                                         src="https://live.staticflickr.com/4561/38054606355_26429c884f_b.jpg">
-                                    <button class="btn btn-danger deleteImg"><i class="fas fa-trash-alt"></i></button>
+                                    <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                 </div>
                                 <div class="carousel-item">
                                     <img class="d-block rounded"
                                         src="https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg">
-                                    <button class="btn btn-danger deleteImg"><i class="fas fa-trash-alt"></i></button>
+                                    <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                 </div>
                                 <div class="carousel-item">
                                     <img class="d-block rounded"
                                         src="https://qph.fs.quoracdn.net/main-qimg-0bf5ade627068fc659d57f9c38803151.webp">
-                                    <button class="btn btn-danger deleteImg"><i class="fas fa-trash-alt"></i></button>
+                                    <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                 </div>
                             </div>
                             <a class="carousel-control-prev bg-dark" href="#carouselImagenes" role="button"
@@ -73,14 +82,15 @@
                     </div>
                 </div>
 
-                <div class="card border-info" id="albums">
+                <div class="card border-success" id="albums">
                     <h5 class="card-header text-white" style="background-color: rgb(40, 167, 69);">
                         <table width="100%">
                             <td>
                                 <h3>Mis álbums</h3>
                             </td>
                             <td class="justify-content-end" style="text-align: right;">
-                                <button class="btn btn-outline-light">Nuevo álbum</button>
+                                <button class="btn btn-outline-light" data-toggle="modal"
+                                    data-target="#newAlbumModal">Nuevo álbum</button>
                             </td>
                         </table>
                     </h5>
@@ -98,18 +108,25 @@
                             <tbody>
                                 <tr>
                                     <td style="vertical-align: middle" width="40%">Album1</td>
-                                    <td style="vertical-align: middle" width="30%" class="text-center">3</td>
+                                    <td style="vertical-align: middle" width="30%" class="text-center">2</td>
                                     <td style="vertical-align: middle" align="center">
-                                        <button class="btn btn-success"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                        <button class="btn btn-success tooltip-test" title="Editar" data-toggle="modal"
+                                            data-target="#editAlbumModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger tooltip-test" title="Eliminar">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="vertical-align: middle" width="40%">Album2</td>
                                     <td style="vertical-align: middle" width="30%" class="text-center">20</td>
                                     <td style="vertical-align: middle" align="center">
-                                        <button class="btn btn-success"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                        <button class="btn btn-success tooltip-test" title="Editar"><i
+                                                class="fas fa-edit"></i></button>
+                                        <button class="btn btn-danger tooltip-test" title="Eliminar"><i
+                                                class="fas fa-trash-alt"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -122,8 +139,10 @@
                 <div class="card bg-light text-center">
                     <div class="card-body">
                         <h4 class="card-title">Jugador1</h4>
-                        <p><img src="https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"></p>
-                        <a href="#"><small>Editar</small></a>
+                        <p><img
+                                src="https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
+                        </p>
+                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editUserModal"><small>Editar</small></button>
                     </div>
                 </div>
 
@@ -201,7 +220,9 @@
                                     <td style="vertical-align: middle; padding-left: 2px">Jugador2</td>
 
                                     <td align="right" style="vertical-align: middle; width: 10%">
-                                        <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                        <button class="btn btn-danger tooltip-test" title="Eliminar">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -213,7 +234,7 @@
                                     <td style="vertical-align: middle; padding-left: 2px">Jugador3</td>
 
                                     <td align="right" style="vertical-align: middle; width: 10%">
-                                        <button class="btn btn-danger">
+                                        <button class="btn btn-danger tooltip-test" title="Eliminar">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </td>
@@ -248,10 +269,10 @@
                                     <td style="vertical-align: middle; padding-left: 2px">Jugador2</td>
 
                                     <td align="right" style="vertical-align: middle; width: 30%">
-                                        <button class="btn btn-success">
+                                        <button class="btn btn-success tooltip-test" title="Aceptar">
                                             <i class="fas fa-check"></i>
                                         </button>
-                                        <button class="btn btn-danger">
+                                        <button class="btn btn-danger tooltip-test" title="Rechazar">
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </td>
@@ -266,9 +287,9 @@
 
                                     <td align="right" style="vertical-align: middle; width: 30%">
                                         <button class="btn btn-success">
-                                            <i class="fas fa-check"></i>
+                                            <i class="fas fa-check tooltip-test" title="Aceptar"></i>
                                         </button>
-                                        <button class="btn btn-danger">
+                                        <button class="btn btn-danger tooltip-test" title="Rechazar">
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </td>
@@ -281,3 +302,13 @@
         </tr>
     </tbody>
 </table>
+
+{{>newGame}}
+
+{{>editAlbum}}
+
+{{>editUser}}
+
+{{>newAlbum}}
+
+{{>newImg}}
