@@ -39,9 +39,7 @@ class Usuario extends DB {
         });
         this._model = mongoose.model('Usuario', this.schema);
     }
-    async getProducts(query, projection = "", options = {}) {
-        return await super.query(query,projection,options);
-    }
+    
     async getProductById(uid, projection = "", options = {}) {
         return await super.queryOne({'uid':uid},projection,options);
     }
