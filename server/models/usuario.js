@@ -51,5 +51,5 @@ class Usuario extends DB {
         return doc;
     }
 }
-let product = new Product();
-module.exports = product;
+let usuario= new Usuario();
+module.exports = usuario;
