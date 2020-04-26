@@ -21,7 +21,7 @@ class Foto extends DB {
                 required: true
             }
         });
-        this._model = mongoose.model('Usuario', this.schema);
+        this._model = mongoose.model('Foto', this.schema);
     }
     
     async getPhotoById(uid, projection = "", options = {}) {
