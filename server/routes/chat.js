@@ -1,21 +1,19 @@
 let socket = io();
 
 const onEvents = {
-    // errores: "errores", //si ocurre algun error, 
+    recibeDatosJuego: "recibeDatosJuego",
     recibePregunta: "pregunta", //obtener mensajes del chat
-    recibeRespuesta: "respuesta"
+    recibeRespuesta: "respuesta",
+    recibeGuess: "guess",
+    juegoTerminado: "juegoTerminado"
 }
 
-const emitEvents = { //envia mensajes del chat
+const emitEvents = { //envia mensajes al chat
+    entrarAlJuego: "entarAlJuego",
     hacerPregunta: "pregunta",
-    enviarRespuesta: "respuesta"
-}
-
-const chatStatus = {
-    myQuestion: 0,
-    awaitResponse: 1,
-    awaitQuestion: 2,
-    myResponse: 3
+    enviarRespuesta: "respuesta",
+    enviarGuess: "guess",
+    juegoTerminado: "juegoTerminado"
 }
 
 const gameStatus = {
@@ -23,7 +21,6 @@ const gameStatus = {
     pendiente: false
 }
 
-let userEmail = "asdfg";
 let jugador = {
     correo: "",
     password: "",
@@ -57,107 +54,165 @@ let game = {
     ganador: null,
     status: gameStatus.pendiente
 };
-let myChatStatus;
 
-//botones de respuesta (pendiente por inicializar)
-let btnYes;
-let btnNo;
+//variables temporales para conocer el id del juego y el id del jugador
+let gameId = localStorage.gameId;
+let userEmail = "asdfg";
+let myImg = '';
+let selectedImg = getElementById("selectedImg");
+let guessVeredict = false;
 
-let btnSendChat; //boton de envio de pregunta
+let myTurn;
+let listaMensajes = getElementById("chat"); //ventana del chat donde aparecen las preguntas
 
-document.onload = () => { //pendiente: rutas
-    userEmail = window.location.pathname;
-    gameId = window.location.pathname;
+//botones de respuesta
+let btnYes = document.querySelectorAll(`[name="yes"]`);
+btnYes = btnYes[btnYes.length-1]; //toma el ultimo boton
 
-    //get a la base de datos para acceder al juego
-    //aqui se pone el get
-    //determinar cual jugador esta jugando en esta ventana (el jugador 2 siempre empieza)
-    if (userEmail == gameId.jugador1.id) {
-        myChatStatus = chatStatus.awaitQuestion;
-    } else {
-        myChatStatus = chatStatus.myQuestion;
-    }
+let btnNo = document.querySelectorAll(`[name="no"]`);
+btnNo = btnNo[btnNo.length-1]; //toma el ultimo boton
 
-}
+let sendChat = document.getElementById('message'); //textarea de envio de pregunta
+
+//botones para adivinar imagen
+let guess = getElementById("guess");
 
 btnYes.onclick = enviarRespuesta;
 btnNo.onclick = enviarRespuesta;
+sendChat.onkeypress = enviarPregunta;
+guess.onclick = enviarGuess;
+
+document.onload = () => { //pendiente: rutas
+    socket.emit(emitEvents.entrarAlJuego, gameId);
+}
+
+socket.on(onEvents.recibeDatosJuego, gameData => {
+    //guardar los datos del juego en variable local
+    game = gameData;
+
+    //determinar cual jugador esta jugando en esta ventana (el jugador 2 siempre empieza)
+    if (userEmail == gameId.jugador1.correo) {
+        myTurn = false;
+    } else {
+        myTurn = true;
+    }
+});
+
+function enviarPregunta(event) {
+    //solo se envia cuando se presiona "Enter" y es mi turno de preguntar
+    if (event.keyCode != 13 || !myTurn) return;
+
+    let mensaje = sendChat.value;
+
+    let mensajeDiv = `
+    <div class="direct-chat-msg">
+        <div class="direct-chat-info clearfix">
+            <span class="direct-chat-name pull-left">${jugador.nombre}</span>
+        </div>
+    <!-- /.direct-chat-info -->
+    <img alt="message user image"
+        src="https://pngimage.net/wp-content/uploads/2018/05/default-user-profile-image-png-6.png"
+        class="direct-chat-img"><!-- /.direct-chat-img -->
+        <div class="direct-chat-text">
+            ${mensaje} <br>
+            <button type="button" class="btn btn-outline-primary">Si</button>
+            <button type="button" class="btn btn-outline-danger">No</button>
+        </div>
+        <div class="direct-chat-info clearfix">
+            <span class="direct-chat-img-reply-small pull-left"></span>
+        </div>
+        <!-- /.direct-chat-text -->
+    </div>`;
+
+    //agregar pregunta al chat
+    listaMensajes.innerHTML = mensajeDiv.join('');
+
+    //actualizar botones de respuesta
+    btnYes = document.querySelectorAll(`[name="yes"]`);
+    btnYes = btnYes[btnYes.length-1];
+    
+    btnNo = document.querySelectorAll(`[name="no"]`);
+    btnNo = btnNo[btnNo.length-1];
+
+    //actualiza el estatus del jugador (cuando envio una pregunta, tengo que esperar
+    //la respuesta y no puedo hacer mas preguntas hasta contestar la que me envíe el
+    //otro jugador)
+    myTurn = false;
+
+    //envia la pregunta
+    socket.emit(emitEvents.hacerPregunta, {gameId: game.id, mensajeDiv});
+}
+
+socket.on(onEvents.recibePregunta, msg => {
+    //agregar pregunta al chat
+    listaMensajes.innerHTML = mensajeDiv.join('');
+
+    //actualizar botones de respuesta
+    btnYes = document.querySelectorAll(`[name="yes"]`);
+    btnYes = btnYes[btnYes.length-1];
+    
+    btnNo = document.querySelectorAll(`[name="no"]`);
+    btnNo = btnNo[btnNo.length-1];
+
+});
 
 function enviarRespuesta(event) {
     let seleccionado = event.target;
     let respuesta = seleccionado.attributes.name.nodeValue;
-    seleccionado.classList.remove("btn-outline-primary");
-    seleccionado.classList.add("btn-primary");
+    
+    if(respuesta == "yes") { //se seleccionó "si"
+        seleccionado.classList.remove("btn-outline-primary");
+        seleccionado.classList.add("btn-primary");
+    } else { //se seleccionó "no"
+        seleccionado.classList.remove("btn-outline-danger");
+        seleccionado.classList.add("btn-danger");
+    }
 
     //deshabilita los botones
     seleccionado.parentElement.children[1].setAttribute("disabled", true);
     seleccionado.parentElement.children[2].setAttribute("disabled", true);
 
+    //actualiza estatus del jugador (al enviar la respuesta, ya es mi turno de preguntar)
+    myTurn = true;
+
     //envia la respuesta al otro jugador en el juego
-    socket.to('game' + game.id).emit(emitEvents.enviarRespuesta, respuesta);
+    socket.emit(emitEvents.enviarRespuesta, {gameId: game.id, respuesta});
 }
 
+socket.on(onEvents.recibeRespuesta, msg => {
+    //boton de la respuesta seleccionada cambia de color
+    let seleccionado = document.querySelectorAll(`[name="${msg}"]`);
+    seleccionado = seleccionado[btnYes.length-1];
+    
+    if(msg == "yes") { //se seleccionó "si"
+        seleccionado.classList.remove("btn-outline-primary");
+        seleccionado.classList.add("btn-primary");
+    } else { //se seleccionó "no"
+        seleccionado.classList.remove("btn-outline-danger");
+        seleccionado.classList.add("btn-danger");
+    }
 
+    //deshabilita los botones
+    seleccionado.parentElement.children[1].setAttribute("disabled", true);
+    seleccionado.parentElement.children[2].setAttribute("disabled", true);
+});
 
-
-socket.on("errores", (msg) => {
-    console.log("evento error", msg);
-})
-
-socket.on("updateAll", (msg) => {
-    //muestra los usuarios y temas
-    let usersHtml = msg.users.map(user =>
-        `<div class="user row my-2">
-                        <p class="ml-2"> ${user.name}</p>
-                        <a class="mx-2" href="#"> <i class="fas fa-comments    "></i> </a>
-                    </div>`);
-    listaUsuarios.innerHTML = usersHtml.join('');
-
-    let temasHtml = msg.temas.map(tema =>
-        `<div class="temas row my-2">
-                        <p class="ml-2"> ${tema.titulo}</p>
-                        <a class="mx-2" href="#"> <i class="fas fa-sign-in-alt" onclick="entrarATema('${tema.titulo}')"></i> </a>
-                        <a class="mx-2" href="#"> <i class="fas fa-sign-out-alt onclick="salirDeTema('${tema.titulo}')"></i> </a>
-                    </div>`);
-    listaTemas.innerHTML = temasHtml.join('');
-
-})
-
-socket.on('chatear', (msg) => {
-    let clase = msg.usuario != 'servidor' ? 'user' : 'servidor';
-    mensajesChat.innerHTML += `<p class="${clase}"><b>${msg.usuario}: </b>${msg.mensaje}</p>`;
-})
-
-socket.on('salirTema', tema => {
-    salirDeTema(tema);
-})
-
-function entrarATema(tema) {
-    console.log('Entrar a tema ' + tema);
-    //envia mensaje de que entró
-    socket.emit('registrar', {
-        myCode,
-        tema
-    });
+function enviarGuess() {
+    // let respuesta = seleccionado.attributes.name.nodeValue;
+    let img = selectedImg.attributes.src.nodeValue;
+    
+    socket.emit(emitEvents.enviarGuess, {gameId: game.id, img});
 }
 
-function salirDeTema(tema) {
-    console.log('Salir de tema ' + tema);
-    //envia mensaje de que salió
-    socket.emit('salirTema', {
-        myCode,
-        tema
-    });
+socket.on(onEvents.recibeGuess, img => {
+    let veredict = myImg == img;
+    if(veredict) { //si el otro jugador adivinó, entonces esta persona pierde
+        socket.emit(emitEvents.juegoTerminado, {gameId: game.id});
+    } else {
+        
+    }
+})
+
+function finDelJuego(veredicto) {
 
 }
-
-function enviarMensaje() {
-    let mensaje = valMessage.value;
-    let clase = 'user';
-    socket.emit('chatear', {
-        myCode,
-        mensaje
-    });
-}
-
-btnEnviar.onclick = enviarMensaje;
