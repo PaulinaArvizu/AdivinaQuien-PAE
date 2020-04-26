@@ -40,7 +40,7 @@ class Usuario extends DB {
         this._model = mongoose.model('Usuario', this.schema);
     }
     
-    async getProductById(uid, projection = "", options = {}) {
+    async getUserById(uid, projection = "", options = {}) {
         return await super.queryOne({'uid':uid},projection,options);
     }
     async getUserByEmail(email, projection = "", options = {}) {
@@ -49,6 +49,22 @@ class Usuario extends DB {
     async exists(conditions) {
         let doc = await super.exists(conditions);
         return doc;
+    }
+    async createUser(email, password, nombre) {
+        return super.add({  'email':email,
+                            'password':password,
+                            'nombre':nombre,
+                            'fotoPerfil':'',
+                            'historialPartidas':[],
+                            'albumes':[],
+                            'fotos':[]
+                        })
+    }
+
+    async addPhoto(email, photoId) {
+        u  = await this.getUserByEmail(email);
+        u.fotos.push(photoId);
+        return await super.update({'email':email}, u)
     }
 }
 let usuario= new Usuario();
