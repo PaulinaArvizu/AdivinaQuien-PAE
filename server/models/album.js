@@ -44,5 +44,5 @@ class Album extends DB {
         return await super.update({'uid':uid}, u)
     }
 }
-let usuario= new Usuario();
-module.exports = usuario;
+let album= new Album();
+module.exports = album;
