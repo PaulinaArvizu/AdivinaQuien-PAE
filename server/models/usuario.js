@@ -66,6 +66,12 @@ class Usuario extends DB {
         u.fotos.push(photoId);
         return await super.update({'email':email}, u)
     }
+
+    async addAlbum(email, albumId) {
+        u  = await this.getUserByEmail(email);
+        u.albumes.push(photoId);
+        return await super.update({'email':email}, u)
+    }
 }
 let usuario= new Usuario();
 module.exports = usuario;
