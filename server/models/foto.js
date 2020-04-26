@@ -1,6 +1,6 @@
 const mongoose = require('../db/mongodb-connection')
 const DB = require('../db/DB');
-class Usuario extends DB {
+class Foto extends DB {
     constructor() {
         super();
         this.schema = new mongoose.Schema({
@@ -38,5 +38,5 @@ class Usuario extends DB {
         return await super.add({'url':url, 'name':name, 'ownerEmail':ownerEmail})
     }
 }
-let usuario= new Usuario();
-module.exports = usuario;
+let foto= new Foto();
+module.exports = foto;
