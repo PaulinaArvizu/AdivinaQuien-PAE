@@ -3,15 +3,16 @@ const cors = require('cors');
 const users = require('./users.json');
 const fs = require('fs');
 const authRouter = require('./routes/auth')
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
-
-// io.on('connection', (socket) => {
-//     const chat = require('./routes/chat')(socket, io);
-// })
 
 const app = express();
 const port = 3000;
+
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+io.on('connection', (socket) => {
+    const chat = require('./routes/chat')(socket, io);
+})
 
 //middlewares
 app.use(cors());
