@@ -4,10 +4,6 @@ class Usuario extends DB {
     constructor() {
         super();
         this.schema = new mongoose.Schema({
-            uid: {
-                type: Number,
-                unique: true
-            },
             email:{
                 type: String,
                 unique: true
@@ -43,10 +39,7 @@ class Usuario extends DB {
         });
         this._model = mongoose.model('Usuario', this.schema);
     }
-    
-    async getUserById(uid, projection = "", options = {}) {
-        return await super.queryOne({'uid':uid},projection,options);
-    }
+ 
     async getUserByEmail(email, projection = "", options = {}) {
         return await super.queryOne({'email':email},projection,options);
     }
