@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const path = require('path');
 const cloudinary = require('cloudinary');
-const download = require('download');
+// const download = require('download');
 const config = require('../config/config')
 const fotos = require('../models/foto')
-
+const user = require('../models/usuario')
 cloudinary.config({
     cloud_name: config.cloud_name,
     api_key: config.api_key,
@@ -24,18 +24,24 @@ const uploadImage = multer({
     storage,
     fileFilter
 })
-router.get('/photos', async (req, res) => {
+router.get('/fotos', async (req, res) => {
         if (req.user == undefined) {
             res.status(400).send('Sesion no iniciada');
         } else {
             return await fotos.getPhotosByEmail(req.user.email)
         }
     })
-    .post('/photos', uploadImage.single('image'), async (req, res) => {
-        const result = await cloudinary.v2.uploader.upload(req.file.path);
-        fs.unlinkSync(req.file.path);
-        let a = await fotos.addPhoto(result.url, req.body.name, req.user.email)
-        res.status(200).send(a)
+    .post('/fotos', uploadImage.single('image'), async (req, res) => {
+        if (req.user == undefined) {
+            res.status(400).send('Sesion no iniciada');
+        }else {
+            const result = await cloudinary.v2.uploader.upload(req.file.path);
+            fs.unlinkSync(req.file.path);
+            let a = await fotos.addPhoto(result.url, req.body.name, req.user.email)
+            user.addPhoto(req.user.email, a.uid)
+            res.status(200).send(a)
+        }
+        
     })
 
 module.exports = router;
