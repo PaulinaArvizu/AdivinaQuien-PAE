@@ -33,6 +33,10 @@ class Partida extends DB {
         this._model = mongoose.model('Partida', this.schema);
     }
     
+    async getPartidas() {
+        return await super.query({})
+    }
+
     async getPartidaById(uid, projection = "", options = {}) {
         return await super.queryOne({'uid':uid},projection,options);
     }
@@ -45,11 +49,17 @@ class Partida extends DB {
                         })
     }
 
-    async declareWinner(uid, Jugador){
-        let a  = await this.getPartidaById(uid);
-        a.ganador = Jugador;
-        a.status = true;
-        return await super.update({'uid':uid}, u)
+    async putPartida(uid, game){
+        let exists = await super.exists({
+            'uid': uid
+        })
+        if (exists) {
+            return await this.update({'uid': uid}, game);
+        }
+    }
+
+    async deletePartida(conditions) {
+        return await super.delete(conditions);
     }
 }
 let partida= new Partida();
