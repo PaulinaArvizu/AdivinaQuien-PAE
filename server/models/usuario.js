@@ -48,6 +48,9 @@ class Usuario extends DB {
         return doc;
     }
     async createUser(email, password, nombre) {
+        if(!email || !password || !nombre){
+            return undefined;
+        }
         return super.add({  'email':email,
                             'password':password,
                             'nombre':nombre,
@@ -81,6 +84,16 @@ class Usuario extends DB {
         let i = u.amigos.findIndex((e) => e == friendEmail)
         u.amigos.splice(i,1)
         return await super.update({'email':email}, u)
+    }
+
+    async putUser(email, user){
+        if(email != user.email) return;
+        let exists = await super.exists({'email': email})
+        if(exists){
+            let u = await this.update({'email': email}, user)
+            return u;
+        }
+
     }
 }
 let usuario= new Usuario();
