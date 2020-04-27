@@ -91,10 +91,7 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
     socket.on(onEvents.enviarVeredicto, msg => { //msg = {gameId, userEmail, win}
         //get al usuario con "userEmail"
 
-        //update al usuario de su historial de juegos con el veredicto (win)
-
-
-        if (win) { //esta persona ganó
+        if (msg.win) { //esta persona ganó
             //get al juego con "gameId"
 
             //update al juego de quien ganó y cambiar el status a "terminado"
@@ -108,8 +105,6 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
     })
     socket.on(onEvents.juegoGanado, msg => { //msg = {gameId, userEmail}
         //get al usuario con "userEmail"
-
-        //update al usuario de su historial de juegos con el veredicto (win)
 
 
         //get al juego con "gameId"
