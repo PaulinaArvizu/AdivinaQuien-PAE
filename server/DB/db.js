@@ -20,6 +20,9 @@ class DB {
     async add(document) {
         return await this._model.insertMany([document]);
     }
+    async delete(query){
+        return await this._model.deleteMany(query);
+    }
 }
 
 module.exports = DB;

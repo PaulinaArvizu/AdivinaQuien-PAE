@@ -23,9 +23,8 @@ class Album extends DB {
     async getAlbumById(uid, projection = "", options = {}) {
         return await super.queryOne({'uid':uid},projection,options);
     }
-    async createAlbum(ownerEmail, nombre, fotos = []) {
+    async createAlbum( nombre, fotos = []) {
         return super.add({
-            'ownerEmail':ownerEmail,
             'nombre': nombre,
             'fotos': fotos
         })
@@ -35,6 +34,13 @@ class Album extends DB {
         let u  = await this.getAlbumById(uid);
         u.fotos.push(photoId);
         return await super.update({'uid':uid}, u)
+    }
+    async putAlbum(uid, album){
+        let exists = await super.exists({'uid': uid})
+        if(exists){
+            let a = await this.update({'uid': uid}, user)
+            return a;
+        }
     }
 }
 let album= new Album();

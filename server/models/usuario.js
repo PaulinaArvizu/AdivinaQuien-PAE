@@ -39,7 +39,11 @@ class Usuario extends DB {
         });
         this._model = mongoose.model('Usuario', this.schema);
     }
- 
+    
+    async getUsers(){
+        return await super.query({})
+    }
+
     async getUserByEmail(email, projection = "", options = {}) {
         return await super.queryOne({'email':email},projection,options);
     }

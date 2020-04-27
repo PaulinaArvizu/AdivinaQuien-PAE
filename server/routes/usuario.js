@@ -8,10 +8,21 @@ router.post('/users',async (req, res) => {
             res.status(400).send('No se pudo agregar')
         }
     })
-    .get('/users')
-    .get('/users/:email')
+    .get('/users', async(req,res)=>{
+        let u = await user.getUsers();
+        res.status(200).send(u);
+    })
+    .get('/users/:email', async(req,res)=>{
+        let u = await user.getUserByEmail(req.params.email)
+        res.status(200).send(u);
+    })
     .put('/users/:email', async(req,res)=> {
-        user.putUser(req.params.email, req.params.body)
+        let u = await user.putUser(req.params.email, req.params.body)
+        if(u){
+            res.status(200).send(u);
+        }else{
+            res.status(400).send("Usuario no existe");
+        }
     })
 
 module.exports = router;
