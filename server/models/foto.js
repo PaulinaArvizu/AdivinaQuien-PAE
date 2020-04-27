@@ -8,7 +8,7 @@ class Foto extends DB {
                 type: Number,
                 unique: true
             },
-            url:{
+            url: {
                 type: String,
                 unique: true
             },
@@ -19,17 +19,28 @@ class Foto extends DB {
         });
         this._model = mongoose.model('Foto', this.schema);
     }
-    
+
+    async getPhotos() {
+        return await super.query({})
+    }
+
     async getPhotoById(uid, projection = "", options = {}) {
-        return await super.queryOne({'uid':uid},projection,options);
+        return await super.queryOne({
+            'uid': uid
+        }, projection, options);
     }
     async exists(conditions) {
-        let doc = await super.exists(conditions);
-        return doc;
+        return await super.exists(conditions);;
     }
-    async addPhoto(url, name, ownerEmail){
-        return await super.add({'url':url, 'name':name, 'ownerEmail':ownerEmail})
+    async createPhoto(url, name) {
+        return await super.add({
+            'url': url,
+            'name': name
+        })
+    }
+    async deletePhoto(conditions) {
+        return await super.delete(conditions);
     }
 }
-let foto= new Foto();
+let foto = new Foto();
 module.exports = foto;
