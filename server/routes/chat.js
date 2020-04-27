@@ -1,11 +1,13 @@
 let socket = io();
 
-const onEvents = {
+const onEvents = { //recibe mensajes
     recibeDatosJuego: "recibeDatosJuego",
-    recibePregunta: "pregunta", //obtener mensajes del chat
+    recibePregunta: "pregunta",
     recibeRespuesta: "respuesta",
     recibeGuess: "guess",
-    juegoTerminado: "juegoTerminado"
+    recibeVeredicto: "veredicto",
+    juegoPerdidio: "perdeer",
+    juegoGanado: "ganar"
 }
 
 const emitEvents = { //envia mensajes al chat
@@ -13,7 +15,9 @@ const emitEvents = { //envia mensajes al chat
     hacerPregunta: "pregunta",
     enviarRespuesta: "respuesta",
     enviarGuess: "guess",
-    juegoTerminado: "juegoTerminado"
+    enviarVeredicto: "veredicto",
+    juegoPerdidio: "perdeer",
+    juegoGanado: "ganar"
 }
 
 const gameStatus = {
@@ -67,10 +71,10 @@ let listaMensajes = getElementById("chat"); //ventana del chat donde aparecen la
 
 //botones de respuesta
 let btnYes = document.querySelectorAll(`[name="yes"]`);
-btnYes = btnYes[btnYes.length-1]; //toma el ultimo boton
+btnYes = btnYes[btnYes.length - 1]; //toma el ultimo boton
 
 let btnNo = document.querySelectorAll(`[name="no"]`);
-btnNo = btnNo[btnNo.length-1]; //toma el ultimo boton
+btnNo = btnNo[btnNo.length - 1]; //toma el ultimo boton
 
 let sendChat = document.getElementById('message'); //textarea de envio de pregunta
 
@@ -129,10 +133,10 @@ function enviarPregunta(event) {
 
     //actualizar botones de respuesta
     btnYes = document.querySelectorAll(`[name="yes"]`);
-    btnYes = btnYes[btnYes.length-1];
-    
+    btnYes = btnYes[btnYes.length - 1];
+
     btnNo = document.querySelectorAll(`[name="no"]`);
-    btnNo = btnNo[btnNo.length-1];
+    btnNo = btnNo[btnNo.length - 1];
 
     //actualiza el estatus del jugador (cuando envio una pregunta, tengo que esperar
     //la respuesta y no puedo hacer mas preguntas hasta contestar la que me envíe el
@@ -140,7 +144,10 @@ function enviarPregunta(event) {
     myTurn = false;
 
     //envia la pregunta
-    socket.emit(emitEvents.hacerPregunta, {gameId: game.id, mensajeDiv});
+    socket.emit(emitEvents.hacerPregunta, {
+        gameId: game.id,
+        mensajeDiv
+    });
 }
 
 socket.on(onEvents.recibePregunta, msg => {
@@ -149,18 +156,18 @@ socket.on(onEvents.recibePregunta, msg => {
 
     //actualizar botones de respuesta
     btnYes = document.querySelectorAll(`[name="yes"]`);
-    btnYes = btnYes[btnYes.length-1];
-    
+    btnYes = btnYes[btnYes.length - 1];
+
     btnNo = document.querySelectorAll(`[name="no"]`);
-    btnNo = btnNo[btnNo.length-1];
+    btnNo = btnNo[btnNo.length - 1];
 
 });
 
 function enviarRespuesta(event) {
     let seleccionado = event.target;
     let respuesta = seleccionado.attributes.name.nodeValue;
-    
-    if(respuesta == "yes") { //se seleccionó "si"
+
+    if (respuesta == "yes") { //se seleccionó "si"
         seleccionado.classList.remove("btn-outline-primary");
         seleccionado.classList.add("btn-primary");
     } else { //se seleccionó "no"
@@ -176,15 +183,18 @@ function enviarRespuesta(event) {
     myTurn = true;
 
     //envia la respuesta al otro jugador en el juego
-    socket.emit(emitEvents.enviarRespuesta, {gameId: game.id, respuesta});
+    socket.emit(emitEvents.enviarRespuesta, {
+        gameId: game.id,
+        respuesta
+    });
 }
 
 socket.on(onEvents.recibeRespuesta, msg => {
     //boton de la respuesta seleccionada cambia de color
     let seleccionado = document.querySelectorAll(`[name="${msg}"]`);
-    seleccionado = seleccionado[btnYes.length-1];
-    
-    if(msg == "yes") { //se seleccionó "si"
+    seleccionado = seleccionado[btnYes.length - 1];
+
+    if (msg == "yes") { //se seleccionó "si"
         seleccionado.classList.remove("btn-outline-primary");
         seleccionado.classList.add("btn-primary");
     } else { //se seleccionó "no"
@@ -198,21 +208,44 @@ socket.on(onEvents.recibeRespuesta, msg => {
 });
 
 function enviarGuess() {
+    myTurn = false;
     // let respuesta = seleccionado.attributes.name.nodeValue;
     let img = selectedImg.attributes.src.nodeValue;
-    
-    socket.emit(emitEvents.enviarGuess, {gameId: game.id, img});
+
+    socket.emit(emitEvents.enviarGuess, {
+        gameId: game.id,
+        img
+    });
 }
 
 socket.on(onEvents.recibeGuess, img => {
-    let veredict = myImg == img;
-    if(veredict) { //si el otro jugador adivinó, entonces esta persona pierde
-        socket.emit(emitEvents.juegoTerminado, {gameId: game.id});
+    myTurn = false;
+    let win = myImg != img;
+
+    if(win) {
+        //se inserta el sonido de victoria
     } else {
-        
+        //se inserta el sonido de derrota
     }
+
+    socket.emit(emitEvents.enviarVeredicto, {gameId: game.id, userEmail, win});
+
 })
 
-function finDelJuego(veredicto) {
+socket.on(onEvents.juegoGanado, () => {
+    //si el jugador recibe este evento, quiere decir que su guess fue correcto y que ganó la partida
+    //se inserta el sonido de victoria
 
-}
+
+    //envia sus datos al servidor para que actualice su historial y que actualice el ganador del juego
+    socket.emit(emitEvents.juegoGanado, {gameId: game.id, userEmail});
+})
+
+socket.on(onEvents.juegoPerdidio, () => {
+    //si el jugador recibe este evento, quiere decir que su guess fue incorrecto y que perdió la partida
+    //se inserta el sonido de derrota
+
+
+    //envia sus datos al servidor para que actualice su historial y que actualice el ganador del juego
+    socket.emit(emitEvents.juegoPerdidio, {gameId: game.id, userEmail});
+})

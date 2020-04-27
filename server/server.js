@@ -88,7 +88,41 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
     socket.on(onEvents.enviarGuess, msg => { //msg = {gameId, img}
         socket.to('game' + msg.gameId).emit(emitEvents.recibeGuess, msg.img);
     })
+    socket.on(onEvents.enviarVeredicto, msg => { //msg = {gameId, userEmail, win}
+        //get al usuario con "userEmail"
 
+        //update al usuario de su historial de juegos con el veredicto (win)
+
+
+        if (win) { //esta persona ganó
+            //get al juego con "gameId"
+
+            //update al juego de quien ganó y cambiar el status a "terminado"
+
+            //se le notifica al otro usuario que perdió
+            socket.to('game' + msg.gameId).emit(emitEvents.juegoPerdidio);
+        } else { //esta persona perdió
+            //se le notifica al otro usuario que ganó
+            socket.to('game' + msg.gameId).emit(emitEvents.juegoGanado);
+        }
+    })
+    socket.on(onEvents.juegoGanado, msg => { //msg = {gameId, userEmail}
+        //get al usuario con "userEmail"
+
+        //update al usuario de su historial de juegos con el veredicto (win)
+
+
+        //get al juego con "gameId"
+
+        //update al juego de quien ganó y cambiar el status a "terminado"
+        
+    })
+    socket.on(onEvents.juegoPerdidio, msg => { //msg = {gameId, userEmail}
+        //get al usuario con "userEmail"
+
+        //update al usuario de su historial de juegos con el veredicto (win)
+
+    })
 
 });
 
@@ -97,7 +131,9 @@ const emitEvents = { //eventos que el usuario obtiene
     recibePregunta: "pregunta",
     recibeRespuesta: "respuesta",
     recibeGuess: "guess",
-    juegoTerminado: "juegoTerminado"
+    recibeVeredicto: "veredicto",
+    juegoPerdidio: "perdeer",
+    juegoGanado: "ganar"
 }
 
 const onEvents = { //eventos que el usuario envia
@@ -105,7 +141,9 @@ const onEvents = { //eventos que el usuario envia
     hacerPregunta: "pregunta",
     enviarRespuesta: "respuesta",
     enviarGuess: "guess",
-    juegoTerminado: "juegoTerminado"
+    enviarVeredicto: "veredicto",
+    juegoPerdidio: "perdeer",
+    juegoGanado: "ganar"
 }
 
 app.listen(port, () => console.log("running on port " + port));
