@@ -23,9 +23,8 @@ class Album extends DB {
     async getAlbumById(uid, projection = "", options = {}) {
         return await super.queryOne({'uid':uid},projection,options);
     }
-    async createAlbum(ownerEmail, nombre, fotos = []) {
+    async createAlbum( nombre, fotos = []) {
         return super.add({
-            'ownerEmail':ownerEmail,
             'nombre': nombre,
             'fotos': fotos
         })
