@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const path = require('path');
 const cloudinary = require('cloudinary');
+const multer = require('multer');
 // const download = require('download');
 const config = require('../config/config');
 const Foto = require('../models/foto');
@@ -9,6 +10,14 @@ cloudinary.config({
     api_key: config.api_key,
     api_secret: config.api_secret
 });
+
+//crear storage
+const storage = multer.diskStorage({
+    destination: path.join(__dirname, '../public/img/'), //direccion donde se guardan las imagenes
+    filename: (req, file, cb) => {
+        cb(null, new Date().getTime() + path.extname(file.originalname));
+    }
+})
 
 const fileFilter = (req, file, cb) => {
     //if (file.mimetype.match(/.(jpeg|png|gif)$/))
