@@ -69,7 +69,6 @@ class Usuario extends DB {
     }
 
     async putUser(email, user) {
-        if (email != user.email) return;
         let exists = await super.exists({
             'email': email
         })
