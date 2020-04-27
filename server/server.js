@@ -3,6 +3,10 @@ const cors = require('cors');
 const users = require('./users.json');
 const fs = require('fs');
 const authRouter = require('./routes/auth')
+const albumRouter = require('./routes/album')
+const fotoRouter= require('./routes/fotos')
+const userRouter = require('./routes/usuario')
+const partidaRouter = require('./routes/partida')
 
 const app = express();
 const port = 3000;
@@ -23,7 +27,10 @@ app.use(express.static(__dirname + '/public'));
 //rutas
 // app.use(uploadRouter);
 app.use(authRouter);
-
+app.use('/api/', albumRouter);
+app.use('/api/',albumRouter)
+app.use('/api/', fotoRouter)
+app.use('/api/',userRouter)
 // app.get('/', (req, res) => {
 //     res.send("server");
 // })
