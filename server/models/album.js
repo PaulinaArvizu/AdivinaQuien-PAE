@@ -20,28 +20,30 @@ class Album extends DB {
         this._model = mongoose.model('Album', this.schema);
     }
     
-    async getAlbumById(uid, projection = "", options = {}) {
-        return await super.queryOne({'uid':uid},projection,options);
+    async getAlbums() {
+        return await super.query({})
     }
-    async createAlbum( nombre, fotos = []) {
+
+    async getAlbumById(uid, projection = "", options = {}) {
+        return await super.queryOne({'uid':uid}, projection, options);
+    }
+    async createAlbum(nombre, fotos) {
         return super.add({
             'nombre': nombre,
             'fotos': fotos
         })
     }
 
-    async addPhoto(uid, photoId) {
-        let u  = await this.getAlbumById(uid);
-        u.fotos.push(photoId);
-        return await super.update({'uid':uid}, u)
-    }
     async putAlbum(uid, album){
         let exists = await super.exists({'uid': uid})
         if(exists){
-            let a = await this.update({'uid': uid}, user)
-            return a;
+            return await this.update({'uid': uid}, album);
         }
     }
+
+    async deleteAlbum(conditions) {
+        return await super.delete(conditions);
+    }
 }
-let album= new Album();
+let album = new Album();
 module.exports = album;
