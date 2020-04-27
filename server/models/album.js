@@ -35,6 +35,13 @@ class Album extends DB {
         u.fotos.push(photoId);
         return await super.update({'uid':uid}, u)
     }
+    async putAlbum(uid, album){
+        let exists = await super.exists({'uid': uid})
+        if(exists){
+            let a = await this.update({'uid': uid}, user)
+            return a;
+        }
+    }
 }
 let album= new Album();
 module.exports = album;
