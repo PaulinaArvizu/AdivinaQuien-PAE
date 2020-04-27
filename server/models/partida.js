@@ -46,7 +46,7 @@ class Partida extends DB {
     }
 
     async declareWinner(uid, Jugador){
-        a  = await this.getPartidaById(uid);
+        let a  = await this.getPartidaById(uid);
         a.ganador = Jugador;
         a.status = true;
         return await super.update({'uid':uid}, u)

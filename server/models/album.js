@@ -8,10 +8,6 @@ class Album extends DB {
                 type: Number,
                 unique: true 
             },
-            ownerEmail:{
-                type: String,
-                required:true
-            },
             nombre: {
                 type: String,
                 required: true
@@ -27,9 +23,6 @@ class Album extends DB {
     async getAlbumById(uid, projection = "", options = {}) {
         return await super.queryOne({'uid':uid},projection,options);
     }
-    async getAlbumsByEmail(email, projection = "", options = {}) {
-        return await super.query({'email':email},projection,options);
-    }
     async createAlbum(ownerEmail, nombre, fotos = []) {
         return super.add({
             'ownerEmail':ownerEmail,
@@ -39,7 +32,7 @@ class Album extends DB {
     }
 
     async addPhoto(uid, photoId) {
-        u  = await this.getAlbumById(uid);
+        let u  = await this.getAlbumById(uid);
         u.fotos.push(photoId);
         return await super.update({'uid':uid}, u)
     }

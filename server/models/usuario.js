@@ -35,6 +35,10 @@ class Usuario extends DB {
             fotos: {
                 type: Array,
                 required: true
+            },
+            amigos: {
+                type: Array,
+                required: true
             }
         });
         this._model = mongoose.model('Usuario', this.schema);
@@ -57,19 +61,32 @@ class Usuario extends DB {
                             'fotoPerfil':'',
                             'historialPartidas':[],
                             'albumes':[],
-                            'fotos':[]
+                            'fotos':[],
+                            'amigos':[]
                         })
     }
 
     async addPhoto(email, photoId) {
-        u  = await this.getUserByEmail(email);
+        let u  = await this.getUserByEmail(email);
         u.fotos.push(photoId);
         return await super.update({'email':email}, u)
     }
 
     async addAlbum(email, albumId) {
-        u  = await this.getUserByEmail(email);
+        let u  = await this.getUserByEmail(email);
         u.albumes.push(photoId);
+        return await super.update({'email':email}, u)
+    }
+
+    async addFriend(email, friendEmail){
+        let u  = await this.getUserByEmail(email);
+        u.amigos.push(friendEmail)
+        return await super.update({'email':email}, u)
+    }
+    async deleteFriend(email, friendEmail){
+        let u  = await this.getUserByEmail(email);
+        let i = u.amigos.findIndex((e) => e == friendEmail)
+        u.amigos.splice(i,1)
         return await super.update({'email':email}, u)
     }
 }

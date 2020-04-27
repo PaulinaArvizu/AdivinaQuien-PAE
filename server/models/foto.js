@@ -8,10 +8,6 @@ class Foto extends DB {
                 type: Number,
                 unique: true
             },
-            ownerEmail:{
-                type: String,
-                required:true
-            },
             url:{
                 type: String,
                 unique: true
@@ -26,9 +22,6 @@ class Foto extends DB {
     
     async getPhotoById(uid, projection = "", options = {}) {
         return await super.queryOne({'uid':uid},projection,options);
-    }
-    async getPhotosByEmail(email, projection = "", options = {}) {
-        return await super.query({'ownerEmail':email},projection,options);
     }
     async exists(conditions) {
         let doc = await super.exists(conditions);
