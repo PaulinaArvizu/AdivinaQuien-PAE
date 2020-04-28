@@ -80,6 +80,7 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
         let foundGame = games.find(g => g.id == gameId);
 
         //mete al jugador al room
+        console.log('mete al jugador al room game' + gameId);
         socket.join('game' + gameId);
 
         //envia al jugador los datos del juego
@@ -98,11 +99,14 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
     })
     socket.on(onEvents.enviarVeredicto, msg => { //msg = {gameId, userEmail, win}
         //get al usuario con "userEmail"
+        console.log('se hace un get al usuario con su correo');
 
         if (msg.win) { //esta persona ganó
             //get al juego con "gameId"
+            console.log('get al juego con "gameId"');
 
             //update al juego de quien ganó y cambiar el status a "terminado"
+            console.log('update al juego de quien ganó y cambiar el status a "terminado"');
 
             //se le notifica al otro usuario que perdió
             socket.to('game' + msg.gameId).emit(emitEvents.juegoPerdidio);
@@ -113,17 +117,21 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
     })
     socket.on(onEvents.juegoGanado, msg => { //msg = {gameId, userEmail}
         //get al usuario con "userEmail"
-
+        console.log('se hace un get al usuario con su correo');
 
         //get al juego con "gameId"
+        console.log('get al juego con "gameId"');
 
         //update al juego de quien ganó y cambiar el status a "terminado"
+        console.log('update al juego de quien ganó y cambiar el status a "terminado"');
         
     })
     socket.on(onEvents.juegoPerdidio, msg => { //msg = {gameId, userEmail}
         //get al usuario con "userEmail"
+        console.log('se hace un get al usuario con su correo');
 
         //update al usuario de su historial de juegos con el veredicto (win)
+        console.log("update al usuario de su historial de juegos con el veredicto (win)");
 
     })
 

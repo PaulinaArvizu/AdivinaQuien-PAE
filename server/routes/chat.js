@@ -224,8 +224,10 @@ socket.on(onEvents.recibeGuess, img => {
 
     if(win) {
         //se inserta el sonido de victoria
+        console('se alerta al usuario su victoria');
     } else {
         //se inserta el sonido de derrota
+        console('se alerta al usuario su derrota');
     }
 
     socket.emit(emitEvents.enviarVeredicto, {gameId: game.id, userEmail, win});
@@ -235,7 +237,7 @@ socket.on(onEvents.recibeGuess, img => {
 socket.on(onEvents.juegoGanado, () => {
     //si el jugador recibe este evento, quiere decir que su guess fue correcto y que ganó la partida
     //se inserta el sonido de victoria
-
+    console('se alerta al usuario su victoria');
 
     //envia sus datos al servidor para que actualice su historial y que actualice el ganador del juego
     socket.emit(emitEvents.juegoGanado, {gameId: game.id, userEmail});
@@ -244,7 +246,7 @@ socket.on(onEvents.juegoGanado, () => {
 socket.on(onEvents.juegoPerdidio, () => {
     //si el jugador recibe este evento, quiere decir que su guess fue incorrecto y que perdió la partida
     //se inserta el sonido de derrota
-
+    console('se alerta al usuario su derrota');
 
     //envia sus datos al servidor para que actualice su historial y que actualice el ganador del juego
     socket.emit(emitEvents.juegoPerdidio, {gameId: game.id, userEmail});
