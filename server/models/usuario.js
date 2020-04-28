@@ -17,8 +17,7 @@ class Usuario extends DB {
                 required: true
             },
             fotoPerfil: {
-                type: String,
-                required: true
+                type: String
             },
             historialPartidas: {
                 type: Array,
@@ -56,7 +55,7 @@ class Usuario extends DB {
         if (!email || !password || !nombre) {
             return undefined;
         }
-        return super.add({
+        let newUser = {
             'email': email,
             'password': password,
             'nombre': nombre,
@@ -65,7 +64,9 @@ class Usuario extends DB {
             'albumes': [],
             'fotos': [],
             'amigos': []
-        })
+        };
+        console.log(newUser);
+        return super.add(newUser);
     }
 
     async putUser(email, user) {

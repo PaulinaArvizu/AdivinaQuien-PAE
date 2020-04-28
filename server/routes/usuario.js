@@ -5,11 +5,11 @@ router.post('/users', async (req, res) => {
             res.status(400).send('Faltan datos.');
             return;
         }
-        let newUser = await User.createUser(req.body.email, req.body.password, req.body.nombre)
+        let newUser = await User.createUser(req.body.email, req.body.password, req.body.nombre);
         if (newUser != undefined) {
-            res.status(201).send(a)
+            res.status(201).send(newUser);
         } else {
-            res.status(400).send('Faltan datos.');
+            res.status(500).send('Error al crear el usuario.');
         }
     })
     .get('/users', async (req, res) => {
