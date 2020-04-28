@@ -5,6 +5,7 @@ const multer = require('multer');
 // const download = require('download');
 const config = require('../config/config');
 const Foto = require('../models/foto');
+const fs = require('fs');
 cloudinary.config({
     cloud_name: config.cloud_name,
     api_key: config.api_key,
@@ -41,11 +42,13 @@ router.get('/fotos', async (req, res) => {
         fs.unlinkSync(req.file.path);
 
         if(!result.url || !req.body.name) {
+            console.log(result)
+            console.log(req.body)
             res.status(400).send("Faltan datos.");
             return;
         }
 
-        let a = await Foto.addPhoto(result.url, req.body.name);
+        let a = await Foto.createPhoto(result.url, req.body.name);
         res.status(201).send(a);
     })
     .get('/fotos/:id', async (req, res) => {
@@ -53,7 +56,7 @@ router.get('/fotos', async (req, res) => {
         res.status(200).send(a);
     })
     .delete('/fotos/:id', async (req, res) => {
-        let a = Foto.deletePhoto(req.params.id);
+        let a = await Foto.deletePhoto({uid: req.params.id});
         res.status(200).send(a);
     })
 
