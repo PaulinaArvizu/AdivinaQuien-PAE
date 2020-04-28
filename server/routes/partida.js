@@ -20,12 +20,12 @@ router.get('/partidas', async (req, res) => {
     })
     .put('/partidas/:id', async (req, res) => {
         let newGame = req.body;
-        if (!newGame.jugador1 || !newGame.jugador2 || !newGame.album) {
-            res.status(400).send('Faltan atributos de la partida.');
-        } else {
+        // if (!newGame.Jugador1 || !newGame.Jugador2 || !newGame.album) {
+        //     res.status(400).send('Faltan atributos de la partida.');
+        // } else {
             let a = await Partida.putPartida(req.params.id, newGame);
             res.status(200).send(a);
-        }
+        // }
 
     })
     .delete('/partidas/:id', async (req, res) => {

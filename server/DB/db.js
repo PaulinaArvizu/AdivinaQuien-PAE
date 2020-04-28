@@ -1,4 +1,5 @@
 const mongoose = require('./mongodb-connection');
+mongoose.set('useFindAndModify', false);
 
 class DB {
     async query(query, projection = {}, options = {}) {
@@ -20,8 +21,10 @@ class DB {
     async add(document) {
         return await this._model.insertMany([document]);
     }
-    async delete(query){
-        return await this._model.deleteOne(query);
+    async delete(query) {
+        let a = await this.queryOne(query)
+        await this._model.deleteOne(query);
+        return a;
     }
 }
 
