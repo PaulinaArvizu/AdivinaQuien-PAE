@@ -21,7 +21,7 @@ class DB {
         return await this._model.insertMany([document]);
     }
     async delete(query){
-        return await this._model.deleteMany(query);
+        return await this._model.deleteOne(query);
     }
 }
 
