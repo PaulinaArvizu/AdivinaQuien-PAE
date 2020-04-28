@@ -4,10 +4,10 @@ class Foto extends DB {
     constructor() {
         super();
         this.schema = new mongoose.Schema({
-            uid: {
-                type: String,
-                unique: true
-            },
+            // uid: {
+            //     type: String,
+            //     unique: true
+            // },
             url: {
                 type: String,
                 unique: true
@@ -26,7 +26,7 @@ class Foto extends DB {
 
     async getPhotoById(uid, projection = "", options = {}) {
         return await super.queryOne({
-            'uid': uid
+            '_id': uid
         }, projection, options);
     }
     async exists(conditions) {

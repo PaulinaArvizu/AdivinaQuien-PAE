@@ -9,7 +9,8 @@ router.get('/partidas', async (req, res) => {
         if (!newGame.jugador1 || !newGame.jugador2 || !newGame.album) {
             res.status(400).send('Faltan atributos de la partida.');
         } else {
-            let a = Partida.createPartida(newGame.jugador1, newGame.jugador2, newGame.album);
+            let a = await Partida.createPartida(newGame.jugador1, newGame.jugador2, newGame.album);
+            console.log(a)
             res.status(201).send(a);
         }
     })
@@ -22,13 +23,13 @@ router.get('/partidas', async (req, res) => {
         if (!newGame.jugador1 || !newGame.jugador2 || !newGame.album) {
             res.status(400).send('Faltan atributos de la partida.');
         } else {
-            let a = Partida.putPartida(req.params.id, newGame);
+            let a = await Partida.putPartida(req.params.id, newGame);
             res.status(200).send(a);
         }
 
     })
     .delete('/partidas/:id', async (req, res) => {
-        let a = Partida.deletePartida(req.params.id);
+        let a = await Partida.deletePartida({'_id':req.params.id});
         res.status(200).send(a);
     })
 
