@@ -73,6 +73,7 @@ class Usuario extends DB {
             'email': email
         })
         if (exists) {
+            user.email = email;//asegurar que el email no cambie
             return await this.update({'email': email}, user);
         }
     }
