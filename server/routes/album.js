@@ -9,7 +9,7 @@ router.get('/albums', async (req, res) => {
         if (!newAlbum.nombre || !newAlbum.fotos) {
             res.status(400).send('Faltan atributos del album.');
         } else {
-            let a = Album.createAlbum(newAlbum.nombre, newAlbum.fotos);
+            let a = await Album.createAlbum(newAlbum.nombre, newAlbum.fotos);
             res.status(201).send(a);
         }
     })
@@ -22,13 +22,13 @@ router.get('/albums', async (req, res) => {
         if (!newAlbum.nombre || !newAlbum.fotos) {
             res.status(400).send('Faltan atributos del album.');
         } else {
-            let a = Album.putAlbum(req.params.id, newAlbum);
+            let a = await Album.putAlbum(req.params.id, newAlbum);
             res.status(200).send(a);
         }
 
     })
     .delete('/albums/:id', async (req, res) => {
-        let a = Album.deleteAlbum(req.params.id);
+        let a = await Album.deleteAlbum({'_id': req.params.id});
         res.status(200).send(a);
     })
 
