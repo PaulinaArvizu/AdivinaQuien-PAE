@@ -56,7 +56,7 @@ router.get('/fotos', async (req, res) => {
         res.status(200).send(a);
     })
     .delete('/fotos/:id', async (req, res) => {
-        let a = await Foto.deletePhoto({uid: req.params.id});
+        let a = await Foto.deletePhoto({'_id':req.params.id});
         res.status(200).send(a);
     })
 

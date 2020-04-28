@@ -5,13 +5,13 @@ class Partida extends DB {
     constructor() {
         super();
         this.schema = new mongoose.Schema({
-            uid: {
-                type: String,
-                unique: true
-            },
+            // uid: {
+            //     type: String,
+            //     unique: true
+            // },
             Jugador1:{ //correo
                 type: String,
-                unique: true
+                required: true
             },
             Jugador2: {
                 type: String,
@@ -26,7 +26,7 @@ class Partida extends DB {
                 required: true
             },
             album: { //id del album
-                type: Number,
+                type: String,
                 required: true
             }
         });
@@ -38,12 +38,12 @@ class Partida extends DB {
     }
 
     async getPartidaById(uid, projection = "", options = {}) {
-        return await super.queryOne({'uid':uid},projection,options);
+        return await super.queryOne({'_id':uid},projection,options);
     }
     async createPartida(Jugador1, Jugador2, album) {
-        return super.add({  'Jugador1':Jugador1,
+        return await super.add({  'Jugador1':Jugador1,
                             'Jugador2':Jugador2,
-                            'ganador':"",
+                            'ganador': " ",
                             'status':false,
                             'album': album
                         })
@@ -51,10 +51,10 @@ class Partida extends DB {
 
     async putPartida(uid, game){
         let exists = await super.exists({
-            'uid': uid
+            '_id': uid
         })
         if (exists) {
-            return await this.update({'uid': uid}, game);
+            return await this.update({'_id': uid}, game);
         }
     }
 
