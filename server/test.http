@@ -1,1 +1,76 @@
-GET http://localhost:3000/users
+###
+####tests para usuarios
+###
+GET http://localhost:3000/api/users
+###
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "email": "test1@t.t",
+    "password": "1234",
+    "nombre": "test1"
+}
+###
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "email": "test2@t.t",
+    "password": "2345yh",
+    "nombre": "test2"
+}
+###
+GET http://localhost:3000/api/users/test1@t.t
+###
+PUT http://localhost:3000/api/users/test1@t.t
+Content-Type: application/json
+
+{
+   "password": "password",
+   "nombre": "nombre",
+   "fotoPerfil": "",
+   "historialPartidas": [1,2],
+   "albumes": [1],
+   "fotos": [1,2,3,4],
+   "amigos": [2]
+}
+
+
+
+
+
+
+
+###
+###tests para albums
+###
+GET http://localhost:3000/api/albums
+###
+POST http://localhost:3000/api/albums
+Content-Type: application/json
+
+{
+    "nombre": "test album 1",
+    "fotos": [1, 2]
+}
+###
+POST http://localhost:3000/api/albums
+Content-Type: application/json
+
+{
+    "nombre": "test album 2",
+    "fotos": [6]
+}
+###
+GET http://localhost:3000/api/albums/5ea7a20e5e16c8471c24d5b9
+###
+PUT http://localhost:3000/api/albums/5ea7a20e5e16c8471c24d5b9
+Content-Type: application/json
+
+{
+    "nombre": "test album 1",
+    "fotos": [3, 4]
+}
+###
+DELETE http://localhost:3000/api/albums/5ea7a20e5e16c8471c24d5b9
