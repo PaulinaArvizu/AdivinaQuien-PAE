@@ -4,10 +4,6 @@ class Album extends DB {
     constructor() {
         super();
         this.schema = new mongoose.Schema({
-            uid: {
-                type: String,
-                unique: true 
-            },
             nombre: {
                 type: String,
                 required: true
@@ -25,7 +21,7 @@ class Album extends DB {
     }
 
     async getAlbumById(uid, projection = "", options = {}) {
-        return await super.queryOne({'uid':uid}, projection, options);
+        return await super.queryOne({'_id':uid}, projection, options);
     }
     async createAlbum(nombre, fotos) {
         return super.add({
@@ -35,9 +31,9 @@ class Album extends DB {
     }
 
     async putAlbum(uid, album){
-        let exists = await super.exists({'uid': uid})
+        let exists = await super.exists({'_id': uid})
         if(exists){
-            return await this.update({'uid': uid}, album);
+            return await this.update({'_id': uid}, album);
         }
     }
 
