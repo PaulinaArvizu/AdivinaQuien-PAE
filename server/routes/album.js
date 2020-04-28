@@ -10,7 +10,11 @@ router.get('/albums', async (req, res) => {
             res.status(400).send('Faltan atributos del album.');
         } else {
             let a = await Album.createAlbum(newAlbum.nombre, newAlbum.fotos);
-            res.status(201).send(a);
+            if(a) {
+                res.status(201).send(a);
+            } else {
+                res.status(500).send("Error al crear.");
+            }
         }
     })
     .get('/albums/:id', async (req, res) => {
