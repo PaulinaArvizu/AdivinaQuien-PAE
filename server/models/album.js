@@ -5,7 +5,7 @@ class Album extends DB {
         super();
         this.schema = new mongoose.Schema({
             uid: {
-                type: Number,
+                type: String,
                 unique: true 
             },
             nombre: {

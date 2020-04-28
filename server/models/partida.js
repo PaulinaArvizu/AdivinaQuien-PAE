@@ -6,7 +6,7 @@ class Partida extends DB {
         super();
         this.schema = new mongoose.Schema({
             uid: {
-                type: Number,
+                type: String,
                 unique: true
             },
             Jugador1:{ //correo
