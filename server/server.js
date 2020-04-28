@@ -34,43 +34,43 @@ app.use('/api/',userRouter)
 // app.get('/', (req, res) => {
 //     res.send("server");
 // })
-app.get('/api/users', (res, req) => {
-        console.log('query params', req.body);
-        req.json(users);
-    })
-    .post('/api/users', (req, res) => {
-        console.log(req.body);
+// app.get('/api/users', (res, req) => {
+//         console.log('query params', req.body);
+//         req.json(users);
+//     })
+//     .post('/api/users', (req, res) => {
+//         console.log(req.body);
 
-        let {
-            nombre,
-            pw,
-            estado,
-            hobbies
-        } = req.body;
-        if (nombre && pw && estado && hobbies != undefined) {
-            if (users.some(u => u.nombre == nombre)) {
-                res.status(401).send({
-                    error: 'usuario ya existe'
-                });
-            } else {
-                let newUser = {
-                    nombre,
-                    pw,
-                    estado,
-                    hobbies
-                };
-                users.push(newUser);
-                fs.writeFileSync('users.json', JSON.stringify(users));
-            }
-        } else {
-            res.status(400).send({
-                error: 'faltan datos'
-            });
-        }
-    })
-    .get('*', (req, res) => { //se fuerza la redireccion de cualquier ruta al index que está en public
-        res.sendFile(__dirname + '/public/index.html');
-    })
+//         let {
+//             nombre,
+//             pw,
+//             estado,
+//             hobbies
+//         } = req.body;
+//         if (nombre && pw && estado && hobbies != undefined) {
+//             if (users.some(u => u.nombre == nombre)) {
+//                 res.status(401).send({
+//                     error: 'usuario ya existe'
+//                 });
+//             } else {
+//                 let newUser = {
+//                     nombre,
+//                     pw,
+//                     estado,
+//                     hobbies
+//                 };
+//                 users.push(newUser);
+//                 fs.writeFileSync('users.json', JSON.stringify(users));
+//             }
+//         } else {
+//             res.status(400).send({
+//                 error: 'faltan datos'
+//             });
+//         }
+//     })
+//     .get('*', (req, res) => { //se fuerza la redireccion de cualquier ruta al index que está en public
+//         res.sendFile(__dirname + '/public/index.html');
+//     })
 
 
 io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo siguiente
