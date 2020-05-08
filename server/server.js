@@ -156,5 +156,5 @@ const onEvents = { //eventos que el usuario envia
     juegoPerdidio: "perdeer",
     juegoGanado: "ganar"
 }
-// module.exports = app;
-app.listen(port, () => console.log("running on port " + port));
+module.exports = app;
+// app.listen(port, () => console.log("running on port " + port));
