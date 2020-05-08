@@ -52,7 +52,7 @@ router.get('/fotos', async (req, res) => {
         res.status(201).send(a);
     })
     .get('/fotos/:id', async (req, res) => {
-        let a = await Foto.getPhotoById(req.params.uid);
+        let a = await Foto.getPhotoById(req.params.id);
         res.status(200).send(a);
     })
     .delete('/fotos/:id', async (req, res) => {
