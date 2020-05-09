@@ -1,9 +1,9 @@
 const request = require("supertest");
 const app = require("./server");
 
-test('Obtenerv usuarios', async () => {
+test('Obtener usuarios', async () => {
     const resp = await request(app)
-        .get('/users')
+        .get('/api/users')
         .expect(200)
     
     console.log(resp.body);
