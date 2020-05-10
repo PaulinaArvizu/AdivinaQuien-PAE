@@ -143,18 +143,19 @@ const emitEvents = { //eventos que el usuario obtiene
     recibeRespuesta: "respuesta",
     recibeGuess: "guess",
     recibeVeredicto: "veredicto",
-    juegoPerdidio: "perdeer",
+    juegoPerdidio: "perder",
     juegoGanado: "ganar"
 }
 
 const onEvents = { //eventos que el usuario envia
-    entrarAlJuego: "entarAlJuego",
+    entrarAlJuego: "entrarAlJuego",
     hacerPregunta: "pregunta",
     enviarRespuesta: "respuesta",
     enviarGuess: "guess",
     enviarVeredicto: "veredicto",
-    juegoPerdidio: "perdeer",
+    juegoPerdidio: "perder",
     juegoGanado: "ganar"
 }
 
-app.listen(port, () => console.log("running on port " + port));
+// app.listen(port, () => console.log("running on port " + port));
+module.exports = app;

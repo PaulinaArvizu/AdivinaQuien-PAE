@@ -2,10 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "run.js",
   "scripts": {
     "test": "jest",
-    "start": "node server.js"
+    "start": "node run.js"
   },
   "jest": {
     "testEnvironment": "node"
