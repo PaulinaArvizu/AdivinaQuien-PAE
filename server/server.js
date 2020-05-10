@@ -28,9 +28,9 @@ app.use(express.static(__dirname + '/public'));
 // app.use(uploadRouter);
 app.use(authRouter);
 app.use('/api/', albumRouter);
-app.use('/api/', partidaRouter)
-app.use('/api/', fotoRouter)
-app.use('/api/', userRouter)
+app.use('/api/',albumRouter);
+app.use('/api/', fotoRouter);
+app.use('/api/',userRouter);
 // app.get('/', (req, res) => {
 //     res.send("server");
 // })
@@ -156,5 +156,5 @@ const onEvents = { //eventos que el usuario envia
     juegoPerdidio: "perdeer",
     juegoGanado: "ganar"
 }
-module.exports = app;
-// app.listen(port, () => console.log("running on port " + port));
+
+app.listen(port, () => console.log("running on port " + port));
