@@ -27,7 +27,7 @@ app.use(express.static(__dirname + '/public'));
 //rutas
 // app.use(uploadRouter);
 app.use(authRouter);
-app.use('/api/', albumRouter);
+app.use('/api/', partidaRouter);
 app.use('/api/',albumRouter);
 app.use('/api/', fotoRouter);
 app.use('/api/',userRouter);
