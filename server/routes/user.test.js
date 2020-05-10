@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("./server");
+const app = require("../server");
 
 test('Obtener usuarios', async () => {
     const resp = await request(app)
@@ -40,3 +40,26 @@ test('Obtener usuario por correo', async () => {
 
 })
 
+test('Put en usuario', async () => {
+    let cambios ={ 
+           "password": "password", 
+           "nombre": "nombre", 
+           "fotoPerfil": "", 
+           "historialPartidas": [1,2], 
+           "albumes": [1], 
+           "fotos": [1,2,3,4], 
+           "amigos": [2] 
+        } 
+    const resp = await request(app)
+        .put('/api/users/test2@t.t')
+        .send(cambios)
+        .expect(200)
+
+    console.log(resp.body);
+    expect(resp.body).toHaveProperty("historialPartidas", cambios.historialPartidas)
+    expect(resp.body).toHaveProperty("password", cambios.password)
+    expect(resp.body).toHaveProperty("fotos", cambios.fotos)
+    expect(resp.body).toHaveProperty("amigos", cambios.amigos)
+    expect(resp.body).toHaveProperty("nombre", cambios.nombre)
+    expect(resp.body).toHaveProperty("albumes", cambios.albumes)
+})
