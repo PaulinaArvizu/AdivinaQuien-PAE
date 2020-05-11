@@ -10,6 +10,7 @@ const partidaRouter = require('./routes/partida')
 
 const app = express();
 const port = 3000;
+var path = require('path');
 
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -22,11 +23,14 @@ io.on('connection', (socket) => {
 app.use(cors());
 app.use(express.json());
 
+
+console.log(path.join(__dirname, '..', 'dist', 'adivinaQuien'));
+app.use(express.static( path.join(__dirname, '..', 'dist', 'adivinaQuien')));
 app.use(express.static(__dirname + '/public'));
 
 //rutas
 // app.use(uploadRouter);
-app.use(authRouter);
+app.use('/api/', authRouter);
 app.use('/api/', partidaRouter);
 app.use('/api/',albumRouter);
 app.use('/api/', fotoRouter);
@@ -156,6 +160,11 @@ const onEvents = { //eventos que el usuario envia
     juegoPerdidio: "perder",
     juegoGanado: "ganar"
 }
+
+app.get('*', (req,res)=> {
+    res.sendFile(path.join(__dirname, '..', 'dist', 'adivinaQuien', 'index.html'));
+});
+
 
 // app.listen(port, () => console.log("running on port " + port));
 module.exports = app;
