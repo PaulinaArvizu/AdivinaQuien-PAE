@@ -9,11 +9,11 @@ const jwt = require('jsonwebtoken');
 passport.use(new GoogleStrategy({
     clientID: googleConfig.clientID,
     clientSecret: googleConfig.clientSecret,
-    callbackURL: googleConfig.callbackURL //Se necesita poner herokuapp una vez implementado. Por el momento sera localhost:4200/google/redirect
+    callbackURL: googleConfig.callbackURL //Se necesita poner herokuapp una vez implementado. Por el momento sera localhost:3000/google/redirect
 }, function(accessToken, refreshToken, profile, done){
     console.log(profile);
     if(profile == null){
-        done(null, false, {msg})
+        done(null, false, {error: "No fue posible autenticarse"})
         return;
     }
 
