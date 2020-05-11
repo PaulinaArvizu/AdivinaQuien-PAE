@@ -11,9 +11,9 @@ import { AuthGuardService } from './auth-guard.service';
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'profile/:id', component: ProfileComponent, canActivate: [AuthGuardService]},
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   {path: 'google/redirect', component: LoginComponent},
-  {path: 'game/:id', component: GameComponent}
+  {path: 'game', component: GameComponent}
 ];
 
 @NgModule({
