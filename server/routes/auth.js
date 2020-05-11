@@ -6,7 +6,7 @@ const passportGoogle = require('./passportGoogle');
 
 router.post('/login', passportLocal.login)
 
-router.get('/api/google/login', passport.authenticate('google', {scope:['profile','email']})), 
-router.get('/api/google/redirect', passportGoogle.googleLogin);
+router.get('/google/login', passport.authenticate('google', {scope:['profile','email']})), 
+router.get('/google/redirect', passportGoogle.googleLogin);
 
 module.exports = router;
