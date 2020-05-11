@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  
+  //declarar datos
 
-  constructor() { }
+  
+  //Generar servicio que me traiga los datos relacionados al usuario.
+  constructor() { } //importar servicio
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
   }
+
+  //funciones
+
 
 }
