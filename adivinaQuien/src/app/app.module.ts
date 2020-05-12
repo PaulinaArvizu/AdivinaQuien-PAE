@@ -7,6 +7,9 @@ import { LoginComponent } from './login/login.component';
 import { GameComponent } from './game/game.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io'
+
+const config: SocketIoConfig = {url: 'url aqui', options:{}}
 
 @NgModule({
   declarations: [
@@ -19,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [],
   bootstrap: [AppComponent]
