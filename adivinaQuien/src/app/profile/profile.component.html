@@ -1,4 +1,4 @@
-<h1 class="display-2">Adivina Quien — Jugador1</h1>
+<h1 class="display-2">Adivina Quien — {{user.nombre}}</h1>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newGameModal"
   (click)="openNewGameModal()">
   Nuevo Juego
@@ -15,8 +15,7 @@
               </td>
               <td class="justify-content-end" style="text-align: right;">
                 <button class="btn btn-outline-light" data-toggle="modal" data-target="#newImgModal"
-                  (click)="openNewImgModal()">Añadir
-                  foto</button>
+                  (click)="openNewImgModal()">Añadir foto</button>
               </td>
             </table>
           </h5>
@@ -24,22 +23,15 @@
             <div id="carouselImagenes" class="carousel slide panel-body" data-ride="carousel">
               <div class="carousel-inner" align="center">
                 <div class="carousel-item active">
-                  <img class="d-block rounded" src="https://live.staticflickr.com/4561/38054606355_26429c884f_b.jpg">
-                  <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar">
+                  <img class="d-block rounded" src="{{fotos[0].url}}">
+                  <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar"
+                    (click)="deleteFoto(fotos[0]._id)">
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </div>
-                <div class="carousel-item">
-                  <img class="d-block rounded"
-                    src="https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg">
-                  <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </div>
-                <div class="carousel-item">
-                  <img class="d-block rounded"
-                    src="https://qph.fs.quoracdn.net/main-qimg-0bf5ade627068fc659d57f9c38803151.webp">
-                  <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar">
+                <div class="carousel-item" *ngFor="let foto of fotos.slice(1)">
+                  <img class="d-block rounded" src="{{foto.url}}">
+                  <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar" (click)="deleteFoto(foto._id)">
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </div>
@@ -64,8 +56,7 @@
               </td>
               <td class="justify-content-end" style="text-align: right;">
                 <button class="btn btn-outline-light" data-toggle="modal" data-target="#newAlbumModal"
-                  (click)="openNewAlbumModal()">Nuevo
-                  álbum</button>
+                  (click)="openNewAlbumModal()">Nuevo álbum</button>
               </td>
             </table>
           </h5>
@@ -81,29 +72,17 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td style="vertical-align: middle" width="40%">Album1</td>
-                  <td style="vertical-align: middle" width="30%" class="text-center">2</td>
+                <tr *ngFor="let album of albums">
+                  <td style="vertical-align: middle" width="40%">{{album.nombre}}</td>
+                  <td style="vertical-align: middle" width="30%" class="text-center">{{album.fotos.length}}</td>
                   <td style="vertical-align: middle" align="center">
                     <button class="btn btn-success tooltip-test" title="Editar" data-toggle="modal"
-                      data-target="#editAlbumModal" (click)="openEditAlbumModal()">
+                      data-target="#editAlbumModal" (click)="openEditAlbumModal(album._id)">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-danger tooltip-test" title="Eliminar">
+                    <button class="btn btn-danger tooltip-test" title="Eliminar" (click)="deleteAlbum(album._id)">
                       <i class="fas fa-trash-alt"></i>
                     </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: middle" width="40%">Album2</td>
-                  <td style="vertical-align: middle" width="30%" class="text-center">20</td>
-                  <td style="vertical-align: middle" align="center">
-                    <button class="btn btn-success tooltip-test" title="Editar" data-toggle="modal"
-                      data-target="#editAlbumModal" (click)="openEditAlbumModal()">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger tooltip-test" title="Eliminar"><i
-                        class="fas fa-trash-alt"></i></button>
                   </td>
                 </tr>
               </tbody>
@@ -115,9 +94,8 @@
 
         <div class="card bg-light text-center">
           <div class="card-body">
-            <h4 class="card-title">Jugador1</h4>
-            <p><img
-                src="https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
+            <h4 class="card-title">{{user.nombre}}</h4>
+            <p><img src="{{user.fotoPerfil}}">
             </p>
             <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editUserModal"
               (click)="openEditUserModal()"><small>Editar</small></button>
@@ -143,31 +121,25 @@
               <thead>
                 <tr>
                   <th scope="col" class="align-middle text-center">Usuario</th>
-                  <th scope="col" class="align-middle text-center">Fecha</th>
                   <th scope="col" class="align-middle text-center">Estatus</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="text-center" style="vertical-align: middle">Jugador2</td>
-                  <td class="text-center" style="vertical-align: middle">Marzo 20, 2020</td>
-                  <td align="center" style="vertical-align: middle">
-                    <button class="btn btn-success">
-                      <i class="fas fa-trophy"></i>
-                      Victoria
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center" style="vertical-align: middle">Jugador3</td>
-                  <td class="text-center" style="vertical-align: middle">Febrero 3, 2020</td>
-                  <td align="center" style="vertical-align: middle">
-                    <button class="btn btn-danger">
-                      <i class="fas fa-window-close"></i>
-                      Derrota
-                    </button>
-                  </td>
-                </tr>
+                <ng-container *ngFor="let juego of juegos">
+                  <tr *ngIf="juego.status">
+                    <td class="text-center" style="vertical-align: middle">{{juego.jugador2}}</td>
+                    <td align="center" style="vertical-align: middle">
+                      <button class="btn btn-success" *ngIf="juego.ganador == user.email">
+                        <i class="fas fa-trophy"></i>
+                        Victoria
+                      </button>
+                      <button class="btn btn-danger" *ngIf="juego.ganador != user.email">
+                        <i class="fas fa-window-close"></i>
+                        Derrota
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
           </div>
@@ -189,32 +161,15 @@
           <div class="card-body">
             <table class="table table-hover table-striped">
               <tbody>
-                <tr>
+                <tr *ngFor="let amigo of amigos">
                   <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                    <img
-                      src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
-                      style="height: 50px;">
+                    <img src="{{amigo.fotoPerfil}}" style="height: 50px;">
 
                   </td>
-                  <td style="vertical-align: middle; padding-left: 2px">Jugador2</td>
+                  <td style="vertical-align: middle; padding-left: 2px">{{amigo.nombre}}</td>
 
                   <td align="right" style="vertical-align: middle; width: 10%">
-                    <button class="btn btn-danger tooltip-test" title="Eliminar">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                    <img
-                      src="https://image.shutterstock.com/image-photo/picture-confused-young-man-dressed-260nw-553535785.jpg"
-                      style="height: 50px;">
-
-                  </td>
-                  <td style="vertical-align: middle; padding-left: 2px">Jugador3</td>
-
-                  <td align="right" style="vertical-align: middle; width: 10%">
-                    <button class="btn btn-danger tooltip-test" title="Eliminar">
+                    <button class="btn btn-danger tooltip-test" title="Eliminar" (click)="deleteAmigo(amigo.email)">
                       <i class="fas fa-trash-alt"></i>
                     </button>
                   </td>
@@ -229,23 +184,26 @@
                 id="dropdownSearch">
                 Buscar
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownSearch" style="width: 300px !important">
+              <div *ngIf="resBusqueda.length > 0">
                 <table class="table-striped table-condensed" width="100%" id="resultadoBusqueda">
                   <tbody>
-                    <tr>
+                    <tr *ngFor="let res of resBusqueda">
                       <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                        <img src="https://qodebrisbane.com/wp-content/uploads/2019/07/This-is-not-a-person-2-1.jpeg"
-                          style="height: 50px;">
+                        <img src="{{res.fotoPerfil}}" style="height: 50px;">
                       </td>
-                      <td style="vertical-align: middle; padding-left: 2px">Jugador4</td>
+                      <td style="vertical-align: middle; padding-left: 2px">{{res.nombre}}</td>
                       <td align="right" style="vertical-align: middle; width: 10%">
-                        <button class="btn btn-success tooltip-test" title="Agregar a mis amigos">
+                        <button class="btn btn-success tooltip-test" title="Agregar a mis amigos"
+                          (click)="addFriend(res.email)">
                           Agregar
                         </button>
                       </td>
                     </tr>
                   </tbody>
                 </table>
+              </div>
+              <div *ngIf="resBusqueda.length == 0" class="alert alert-danger" role="alert">
+                No se encontraron usuarios
               </div>
             </div>
           </div>
@@ -266,45 +224,29 @@
           <div class="card-body">
             <table class="table table-hover table-striped">
               <tbody>
-                <tr>
-                  <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                    <img
-                      src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
-                      style="height: 50px;">
+                <ng-container *ngFor="let juego of juegosPendientes">
+                  <tr *ngIf="!juego.status">
+                    <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                      <img src="{{juego.jugador2.fotoPerfil}}" style="height: 50px;">
 
-                  </td>
-                  <td style="vertical-align: middle; padding-left: 2px">Jugador2</td>
+                    </td>
+                    <td style="vertical-align: middle; padding-left: 2px">{{juego.jugador2.nombre}}</td>
 
-                  <td align="right" style="vertical-align: middle; width: 30%">
-                    <!-- Modificar esto despues -->
-                    <a href="/views/inGame.html">
-                      <button class="btn btn-success tooltip-test" title="Aceptar">
-                        <i class="fas fa-check"></i>
+                    <td align="right" style="vertical-align: middle; width: 30%">
+                      <!-- Modificar esto despues -->
+                      <div class="row" routerLinkActive="active">
+                        <a name="" id="" class="btn btn-primary" href="#" role="button" routerLink="/game/{{juego._id}}">
+                          <button class="btn btn-success tooltip-test" title="Aceptar" (click)="aceptarJuego(juego._id)">
+                            <i class="fas fa-check"></i>
+                          </button>
+                        </a>
+                      </div>
+                      <button class="btn btn-danger tooltip-test" title="Rechazar" (click)="rechazarJuego(juego._id)">
+                        <i class="fas fa-times"></i>
                       </button>
-                    </a>
-                    <button class="btn btn-danger tooltip-test" title="Rechazar">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                    <img
-                      src="https://image.shutterstock.com/image-photo/picture-confused-young-man-dressed-260nw-553535785.jpg"
-                      style="height: 50px;">
-
-                  </td>
-                  <td style="vertical-align: middle; padding-left: 2px">Jugador3</td>
-
-                  <td align="right" style="vertical-align: middle; width: 30%">
-                    <button class="btn btn-success">
-                      <i class="fas fa-check tooltip-test" title="Aceptar"></i>
-                    </button>
-                    <button class="btn btn-danger tooltip-test" title="Rechazar">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
           </div>
@@ -330,20 +272,15 @@
           <h5>¿Qué álbum quieres usar?</h5>
           <table class="table table-hover table-borderless">
             <tbody>
-              <tr>
-                <td style="vertical-align: middle" width="40%">Album1</td>
-                <td style="vertical-align: middle" width="30%" class="text-center">2 fotos</td>
-                <td style="vertical-align: middle" align="center">
-                  <input type="radio" name="album">
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: middle" width="40%">Album2</td>
-                <td style="vertical-align: middle" width="30%" class="text-center">20 fotos</td>
-                <td style="vertical-align: middle" align="center">
-                  <input type="radio" name="album">
-                </td>
-              </tr>
+              <ng-container *ngFor="let album of albums">
+                <tr *ngIf="album.fotos.length >= 5">
+                  <td style="vertical-align: middle" width="40%">{{album.nombre}}</td>
+                  <td style="vertical-align: middle" width="30%" class="text-center">album.fotos.length</td>
+                  <td style="vertical-align: middle" align="center">
+                    <input type="radio" name="album" [(ngModel)]="newGame.album">
+                  </td>
+                </tr>
+              </ng-container>
             </tbody>
           </table>
         </div>
@@ -351,30 +288,16 @@
           <h5>¿Con quién quieres jugar?</h5>
           <table class="table table-hover table-borderless">
             <tbody>
-              <tr>
+              <tr *ngFor="let amigo of amigos">
                 <td style="vertical-align: middle; width: 10%; padding-right: 3px">
                   <img
-                    src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+                    src="{{amigo.fotoPerfil}}"
                     style="height: 50px;">
-
                 </td>
-                <td style="vertical-align: middle; padding-left: 2px">Jugador2</td>
+                <td style="vertical-align: middle; padding-left: 2px">{{amigo.nombre}}</td>
 
                 <td align="right" style="vertical-align: middle; width: 10%">
-                  <input type="radio" name="player">
-                </td>
-              </tr>
-              <tr>
-                <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                  <img
-                    src="https://image.shutterstock.com/image-photo/picture-confused-young-man-dressed-260nw-553535785.jpg"
-                    style="height: 50px;">
-
-                </td>
-                <td style="vertical-align: middle; padding-left: 2px">Jugador3</td>
-
-                <td align="right" style="vertical-align: middle; width: 10%">
-                  <input type="radio" name="player">
+                  <input type="radio" name="player" [(ngModel)]="newGame.jugador2">
                 </td>
               </tr>
             </tbody>
@@ -383,7 +306,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Enviar invitación</button>
+        <button type="button" class="btn btn-primary" (click)="crearJuego(newGame)">Enviar invitación</button>
       </div>
     </div>
   </div>
