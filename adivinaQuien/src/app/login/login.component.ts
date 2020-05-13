@@ -40,5 +40,16 @@ export class LoginComponent implements OnInit {
         })
 }
 
+register(form: NgForm){
+  console.log(form.value.email, form.value.password, form.value.username);
+  this.authService.register(form.value.email, form.value.password, form.value.username)
+      .subscribe((data)=> 
+      {
+        if(this.authService.isLoggedIn()){
+          this.router.navigateByUrl('profile');
+      }
+      })
+}
+
 
 }
