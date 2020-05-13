@@ -1,3 +1,4 @@
 node_modules
 server/.env
 adivinaQuien/server/.env
+adivinaQuien/server/googleConfig.js
