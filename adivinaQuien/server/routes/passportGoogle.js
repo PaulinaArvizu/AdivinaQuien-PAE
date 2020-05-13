@@ -50,6 +50,28 @@ function random_password_generate(max,min)
     return randPassword;
 }
 
+
 function googleLogin(req, res){
 
     console.log("Entrando a googleLogin");
+passport.authenticate('google', (err, user, info) => {
+        console.log("JohnnyTest");
+        console.log(user);
+        if (user) {
+            let token = jwt.sign({
+                nombre: user.info.name,
+                email: user.email,
+                fotoPerfil: user.info.picture
+            }, 'secret', {
+                expiresIn: '1h' 
+            });
+            console.log(token);
+            res.send({
+                token
+            })
+        } else {
+            res.status(401).send(info)
+        }
+    })(req, res)
+
+}
