@@ -1,0 +1,28 @@
+body {
+    margin: 2%;
+  }
+  
+  div {
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
+  
+  .carousel img {
+    height: 10em;
+  }
+  
+  input[type='checkbox'] {
+    display: none;
+  
+    + div {
+      display: none;
+    }
+  }
+  
+  .deleteImg {
+    display: none;
+  }
+  
+  input:checked + div, .carousel-item:hover .deleteImg {
+    display: block;
+  }
