@@ -15,9 +15,9 @@ var path = require('path');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-io.on('connection', (socket) => {
-    const chat = require('./routes/chat')(socket, io);
-})
+// io.on('connection', (socket) => {
+//     const chat = require('./routes/chat')(socket, io);
+// })
 
 //middlewares
 app.use(cors());
@@ -167,4 +167,5 @@ app.get('*', (req,res)=> {
 
 
 // app.listen(port, () => console.log("running on port " + port));
-module.exports = app;
+module.exports = http;
+// http.listen(port)
