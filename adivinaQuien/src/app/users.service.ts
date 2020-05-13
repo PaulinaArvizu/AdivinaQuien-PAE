@@ -42,7 +42,9 @@ export class UsersService {
 	//CRUD usuarios
 	getOneUser(email) {
 		// return this.http.get("/api/users/" + email).toPromise(); //regresa la funcion como promesa (buena practica)
-		return this.httpGet("api/users/" + email);
+		let r = this.httpGet("api/users/" + email);
+		console.log(r);
+		return r;
 	}
 
 	getAllUsers() {
@@ -51,13 +53,16 @@ export class UsersService {
 	}
 
 	updateUser(user) {
+		let r;
 		this.makeHTTPRequest("api/users/"+user.email, "PUT", user, (xhr) => {
 			if(xhr.status == 200) {
 				console.log("Update exitoso", JSON.parse(xhr.response));
+				r = JSON.parse(xhr.response);
 			} else {
 				console.log("Error en update");
 			}
 		});
+		return r;
 	}
 
 	//CRUD fotos
@@ -72,13 +77,16 @@ export class UsersService {
 	}
 
 	deleteFoto(id) {
+		let r;
 		this.makeHTTPRequest("api/fotos/"+id, "DELETE", undefined, (xhr) => {
 			if(xhr.status == 200) {
 				console.log("Delete exitoso", JSON.parse(xhr.response));
+				r = JSON.parse(xhr.response);
 			} else {
 				console.log("Error en delete");
 			}
 		});
+		return r;
 	}
 
 	//CRUD albums
@@ -92,33 +100,42 @@ export class UsersService {
 	}
 
 	updateAlbum(album) {
+		let r;
 		this.makeHTTPRequest("api/albums/"+album.id, "PUT", album, (xhr) => {
 			if(xhr.status == 200) {
 				console.log("Update exitoso", JSON.parse(xhr.response));
+				r = JSON.parse(xhr.response);
 			} else {
 				console.log("Error en update");
 			}
 		});
+		return r;
 	}
 
 	deleteAlbum(id) {
+		let r;
 		this.makeHTTPRequest("api/albums/"+id, "DELETE", undefined, (xhr) => {
 			if(xhr.status == 200) {
 				console.log("Delete exitoso", JSON.parse(xhr.response));
+				r = JSON.parse(xhr.response);
 			} else {
 				console.log("Error en delete");
 			}
 		});
+		return r;
 	}
 
 	newAlbum(album) {
+		let r;
 		this.makeHTTPRequest("api/albums/", "POST", album, (xhr) => {
 			if(xhr.status == 200) {
 				console.log("Post exitoso", JSON.parse(xhr.response));
+				r = JSON.parse(xhr.response);
 			} else {
 				console.log("Error en post");
 			}
 		});
+		return r;
 	}
 
 	//CRUD juegos
@@ -132,32 +149,41 @@ export class UsersService {
 	}
 
 	updateGame(game) {
+		let r;
 		this.makeHTTPRequest("api/partidas/"+game.id, "PUT", game, (xhr) => {
 			if(xhr.status == 200) {
 				console.log("Update exitoso", JSON.parse(xhr.response));
+				r = JSON.parse(xhr.response);
 			} else {
 				console.log("Error en update");
 			}
 		});
+		return r;
 	}
 
 	deleteGame(id) {
+		let r;
 		this.makeHTTPRequest("api/partidas/"+id, "DELETE", undefined, (xhr) => {
 			if(xhr.status == 200) {
 				console.log("Delete exitoso", JSON.parse(xhr.response));
+				r = JSON.parse(xhr.response);
 			} else {
 				console.log("Error en delete");
 			}
 		});
+		return r;
 	}
 
 	newGame(game) {
+		let r;
 		this.makeHTTPRequest("api/partidas/", "POST", game, (xhr) => {
 			if(xhr.status == 200) {
 				console.log("Post exitoso", JSON.parse(xhr.response));
+				r = JSON.parse(xhr.response);
 			} else {
 				console.log("Error en post");
 			}
 		});
+		return r;
 	}
 }
