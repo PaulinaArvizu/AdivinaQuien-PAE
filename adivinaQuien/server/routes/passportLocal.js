@@ -1,14 +1,16 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const jwt = require('jsonwebtoken');
-const Users = require('../models/usuario')
+const Users = require('../models/usuario');
 
 
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
-}, async (username, password, done) => {
+}, async function(username, password, done) {
     let usr = await Users.getUserByEmail(username);
+    console.log(username, password);
+    console.log(await usr);
     if (usr.password == password) {
         done(null, usr);
     } else {
@@ -18,13 +20,19 @@ passport.use(new LocalStrategy({
     }
 }))
 
+
 function login(req, res) {
+    console.log('passport Login');
+    console.log(req.body);
     passport.authenticate('local', (err, usr, info) => {
         if (usr) {
+            console.log("LocalTest");
+            console.log(usr);
             let token = jwt.sign({
-                nombre: usr.email
-            }, 'Secret', {
-                expiresIn: '14d' 
+                email:  usr.email,
+                nombre: usr.nombre
+            }, 'secret', {
+                expiresIn: '1h' 
             })
             res.send({
                 token
