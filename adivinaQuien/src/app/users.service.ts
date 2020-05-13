@@ -94,9 +94,9 @@ export class UsersService {
 	updateAlbum(album) {
 		this.makeHTTPRequest("api/albums/"+album.id, "PUT", album, (xhr) => {
 			if(xhr.status == 200) {
-				console.log("Delete exitoso", JSON.parse(xhr.response));
+				console.log("Update exitoso", JSON.parse(xhr.response));
 			} else {
-				console.log("Error en delete");
+				console.log("Error en update");
 			}
 		});
 	}
@@ -107,6 +107,16 @@ export class UsersService {
 				console.log("Delete exitoso", JSON.parse(xhr.response));
 			} else {
 				console.log("Error en delete");
+			}
+		});
+	}
+
+	newAlbum(album) {
+		this.makeHTTPRequest("api/albums/", "POST", album, (xhr) => {
+			if(xhr.status == 200) {
+				console.log("Post exitoso", JSON.parse(xhr.response));
+			} else {
+				console.log("Error en post");
 			}
 		});
 	}
@@ -124,9 +134,9 @@ export class UsersService {
 	updateGame(game) {
 		this.makeHTTPRequest("api/partidas/"+game.id, "PUT", game, (xhr) => {
 			if(xhr.status == 200) {
-				console.log("Delete exitoso", JSON.parse(xhr.response));
+				console.log("Update exitoso", JSON.parse(xhr.response));
 			} else {
-				console.log("Error en delete");
+				console.log("Error en update");
 			}
 		});
 	}
@@ -137,6 +147,16 @@ export class UsersService {
 				console.log("Delete exitoso", JSON.parse(xhr.response));
 			} else {
 				console.log("Error en delete");
+			}
+		});
+	}
+
+	newGame(game) {
+		this.makeHTTPRequest("api/partidas/", "POST", game, (xhr) => {
+			if(xhr.status == 200) {
+				console.log("Post exitoso", JSON.parse(xhr.response));
+			} else {
+				console.log("Error en post");
 			}
 		});
 	}
