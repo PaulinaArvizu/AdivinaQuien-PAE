@@ -30,9 +30,15 @@ export class LoginComponent implements OnInit {
   //Registro y login de usuarios sin passport, preguntar al profe.
 
   submit(form: NgForm){
-    console.log(form.value.nombre, form.value.password);
-    this.authService.login(form.value.nombre, form.value.password)
-        .subscribe((data)=> console.log(data), (err)=> console.log(err))
-  }
+    console.log(form.value.email, form.value.password);
+    this.authService.login(form.value.email, form.value.password)
+        .subscribe((data)=> 
+        {
+          if(this.authService.isLoggedIn()){
+            this.router.navigateByUrl('profile');
+        }
+        })
+}
+
 
 }
