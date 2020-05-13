@@ -6,17 +6,32 @@ const Users = require('../models/usuario');
 
 passport.use(new LocalStrategy({
     usernameField: 'email',
-    passwordField: 'password'
-}, async function(username, password, done) {
+    passwordField: 'password',
+    passReqToCallback: true
+}, async function(req, username, password, done) {
     let usr = await Users.getUserByEmail(username);
-    console.log(username, password);
+    console.log('user found: ')
     console.log(await usr);
-    if (usr.password == password) {
-        done(null, usr);
+    if(usr) {
+        if (usr.password == password) {
+            done(null, usr);
+        } else {
+            done(null, false, {
+                error: "Datos incorrectos"
+            });
+        }
     } else {
-        done(null, false, {
-            error: "Datos incorrectos"
-        });
+        console.log('registrar');
+        console.log(req.body.nombre);
+        if(req.body.nombre){
+            newUser = await Users.createUser(username, password, req.body.nombre);
+            console.log(await newUser);
+            done (null, newUser);
+        } else {
+            done(null, false, {
+                error: "Datos incorrectos"
+            });
+        }
     }
 }))
 
