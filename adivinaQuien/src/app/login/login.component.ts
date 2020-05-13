@@ -22,9 +22,10 @@ export class LoginComponent implements OnInit {
          })
        }
      });
+     if(this.authService.isLoggedIn()){
+      this.router.navigateByUrl('profile');
+    }
   }
-
-  //validar existencia token para redirect a profile. Usar funcion de linea 18 a 22.
 
   //Registro y login de usuarios sin passport, preguntar al profe.
 
