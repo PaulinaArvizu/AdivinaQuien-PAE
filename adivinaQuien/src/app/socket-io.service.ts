@@ -64,8 +64,8 @@ export class SocketIoService {
   }
   recibirGuess() {
     return Observable.create((observer) => {
-      this.socket.on(this.onEvents.recibePregunta, (pregunta) => {
-        observer.next(pregunta);
+      this.socket.on(this.onEvents.recibePregunta, (guess) => {
+        observer.next(guess);
       })
     })
   }
