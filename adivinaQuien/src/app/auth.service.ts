@@ -56,6 +56,23 @@ export class AuthService {
                     );
   }
 
+  public register(email: string, password: string, nombre: string): Observable<any> {
+    console.log("entra a login");
+    console.log(email, password, nombre);
+    return this.http
+                    .post('/api/login', {email, password, nombre})
+                    .pipe(
+                      map((data:any)=> {
+                        if(data.token){
+                          console.log('guardando token');
+                          this.saveToken(data.token);
+                          this.isLoggedIn();
+                        }
+                        return data;
+                      })
+                    );
+  }
+
   
 
   public logout() {
