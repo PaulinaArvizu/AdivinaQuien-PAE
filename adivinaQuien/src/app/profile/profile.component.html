@@ -23,7 +23,7 @@
             <div id="carouselImagenes" class="carousel slide panel-body" data-ride="carousel">
               <div class="carousel-inner" align="center">
                 <div class="carousel-item active">
-                  <img class="d-block rounded" src="{{fotos[0].url}}">
+                  <img *ngIf="fotos" class="d-block rounded" src="{{fotos[0].url}}">
                   <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar"
                     (click)="deleteFoto(fotos[0]._id)">
                     <i class="fas fa-trash-alt"></i>
@@ -169,7 +169,7 @@
                   <td style="vertical-align: middle; padding-left: 2px">{{amigo.nombre}}</td>
 
                   <td align="right" style="vertical-align: middle; width: 10%">
-                    <button class="btn btn-danger tooltip-test" title="Eliminar" (click)="deleteAmigo(amigo.email)">
+                    <button class="btn btn-danger tooltip-test" title="Eliminar" (click)="deleteFriend(amigo.email)">
                       <i class="fas fa-trash-alt"></i>
                     </button>
                   </td>
@@ -224,7 +224,7 @@
           <div class="card-body">
             <table class="table table-hover table-striped">
               <tbody>
-                <ng-container *ngFor="let juego of juegosPendientes">
+                <ng-container *ngFor="let juego of juegos">
                   <tr *ngIf="!juego.status">
                     <td style="vertical-align: middle; width: 10%; padding-right: 3px">
                       <img src="{{juego.jugador2.fotoPerfil}}" style="height: 50px;">
@@ -235,8 +235,8 @@
                     <td align="right" style="vertical-align: middle; width: 30%">
                       <!-- Modificar esto despues -->
                       <div class="row" routerLinkActive="active">
-                        <a name="" id="" class="btn btn-primary" href="#" role="button" routerLink="/game/{{juego._id}}">
-                          <button class="btn btn-success tooltip-test" title="Aceptar" (click)="aceptarJuego(juego._id)">
+                        <a name="" id="" class="btn btn-primary" href="#" role="button" (click)="aceptarJuego(juego._id)" routerLink="/game/{{juego._id}}">
+                          <button class="btn btn-success tooltip-test" title="Aceptar">
                             <i class="fas fa-check"></i>
                           </button>
                         </a>
@@ -305,7 +305,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="newGame = null">Cancelar</button>
         <button type="button" class="btn btn-primary" (click)="crearJuego(newGame)">Enviar invitación</button>
       </div>
     </div>
