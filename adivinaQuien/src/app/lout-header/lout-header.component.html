@@ -1,1 +1,10 @@
-<p>lout-header works!</p>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <a class="navbar-brand">Adivina Quien</a>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a *ngIf="logueado" class="nav-link" (click)="logout()" href="#">Logout</a>
+            </li>
+        </ul>   
+    </div>
+</nav>
