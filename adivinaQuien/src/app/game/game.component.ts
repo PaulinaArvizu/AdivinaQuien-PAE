@@ -26,7 +26,7 @@ export class GameComponent implements OnInit {
   selectedImg: string;
   game = {
     id: 0,
-    jugador1: {
+    Jugador1: {
       correo: "",
       password: "",
       nombre: "",
@@ -35,7 +35,7 @@ export class GameComponent implements OnInit {
       albumes: [],
       fotos: []
     },
-    jugador2: {
+    Jugador2: {
       correo: "",
       password: "",
       nombre: "",
@@ -62,14 +62,21 @@ export class GameComponent implements OnInit {
   constructor(private socketIOservice: SocketIoService) { }
 
   ngOnInit(): void {
-    this.socketIOservice.recibirDatosJuego().subscribe((datos: object) => {
+    this.socketIOservice.recibirDatosJuego().subscribe((datos) => {
       this.game = datos;
 
       this.myTurn = this.jugador.correo == this.game.jugador2.correo;
 
     })
     this.socketIOservice.recibirGuess().subscribe((guess: string) => {
-      console.log(guess)
+      this.myTurn = true
+      let win = this.myImg !=guess;
+      if(win){
+        console.log('Victoria')
+      } else {
+        console.log('Derrota');
+      }
+      this.socketIOservice.enviarVeredicto({gameId:this.game.id, userEmail: this.jugador.correo, win})
     })
     this.socketIOservice.recibirPregunta().subscribe((pregunta: string) => {
       this.msgChat.push({
@@ -77,12 +84,24 @@ export class GameComponent implements OnInit {
         pregunta: pregunta
       })
     })
+    this.socketIOservice.recibirRespuesta().subscribe((msg:string)=>{
+      if(msg == 'yes'){
+        
+      } else {
+
+      }
+    })
   }
   enviarMensaje(event) {
     if (event.keyCode != 13) return;
     this.socketIOservice.enviarPregunta(this.msgSend)
     // console.log(this.msgSend)
     this.msgSend = ''
+  }
+  enviarGuess(){
+    if(!this.myTurn) return;
+    this.myTurn = false;
+    this.socketIOservice.enviarGuess(this.selectedImg);
   }
 
 }

@@ -6,17 +6,17 @@ const onEvents = { //recibe mensajes
     recibeRespuesta: "respuesta",
     recibeGuess: "guess",
     recibeVeredicto: "veredicto",
-    juegoPerdidio: "perdeer",
+    juegoPerdidio: "perder",
     juegoGanado: "ganar"
 }
 
 const emitEvents = { //envia mensajes al chat
-    entrarAlJuego: "entarAlJuego",
+    entrarAlJuego: "entrarAlJuego",
     hacerPregunta: "pregunta",
     enviarRespuesta: "respuesta",
     enviarGuess: "guess",
     enviarVeredicto: "veredicto",
-    juegoPerdidio: "perdeer",
+    juegoPerdidio: "perder",
     juegoGanado: "ganar"
 }
 

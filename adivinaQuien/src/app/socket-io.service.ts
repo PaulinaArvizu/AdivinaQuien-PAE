@@ -54,7 +54,13 @@ export class SocketIoService {
       })
     })
   }
-
+  recibirRespuesta() {
+    return Observable.create((observer) => {
+      this.socket.on(this.onEvents.recibeRespuesta, (respuesta) => {
+        observer.next(respuesta);
+      })
+    })
+  }
   recibirPregunta() {
     return Observable.create((observer) => {
       this.socket.on(this.onEvents.recibePregunta, (pregunta) => {
