@@ -27,11 +27,11 @@ export class AuthService {
 
   public isLoggedIn ():boolean {
     const tokenData = this.getTokenData();
-    console.log(tokenData);
+    // console.log(tokenData);
 
     if(tokenData) {
       let resp = tokenData.exp > Date.now() /1000;
-      console.log(this.logueado);
+      // console.log(this.logueado);
       this.logueado.next(true);
       return resp;
     }else{
