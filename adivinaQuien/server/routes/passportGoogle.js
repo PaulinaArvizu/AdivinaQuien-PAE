@@ -11,6 +11,7 @@ passport.use(new GoogleStrategy({
     clientSecret: googleConfig.clientSecret,
     callbackURL: googleConfig.callbackURL //Se necesita poner herokuapp una vez implementado. Por el momento sera localhost:3000/google/redirect
 }, function(accessToken, refreshToken, profile, done){
+    console.log('este es profile');
     console.log(profile);
     if(profile == null){
         done(null, false, {error: "No fue posible autenticarse"})
@@ -48,10 +49,13 @@ function googleLogin(req, res){
         console.log(user);
         if (user) {
             let token = jwt.sign({
-                nombre: user.email
-            }, 'Secret', {
+                nombre: user.info.name,
+                email: user.email,
+                fotoPerfil: user.info.picture
+            }, 'secret', {
                 expiresIn: '1h' 
-            })
+            });
+            console.log(token);
             res.send({
                 token
             })
