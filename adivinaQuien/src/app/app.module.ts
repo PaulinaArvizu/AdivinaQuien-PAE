@@ -9,8 +9,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LoutHeaderComponent } from './lout-header/lout-header.component'
+import { environment } from 'src/environments/environment';
 
-const config: SocketIoConfig = {url: 'url aqui', options:{}}
+
+const config: SocketIoConfig = {url: environment.url, options:{}}
 
 @NgModule({
   declarations: [
