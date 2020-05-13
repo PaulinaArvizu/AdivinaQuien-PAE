@@ -31,6 +31,7 @@ export class AuthService {
 
     if(tokenData) {
       let resp = tokenData.exp > Date.now() /1000;
+      console.log(this.logueado);
       this.logueado.next(true);
       return resp;
     }else{
@@ -63,6 +64,7 @@ export class AuthService {
 
   public getTokenData () {
     let payload;
+    let strgToken = localStorage.getItem('token');
     if(this.token){
       payload = this.token.split('.')[1]; //obtiene el payload splieando la segunda parte del token
       payload = window.atob(payload); //obtiene la informacion embebida en el payload
