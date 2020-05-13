@@ -17,6 +17,8 @@ export class ProfileComponent implements OnInit {
 	albums;
 	fotos;
 	juegos;
+	amigos;
+	resBusqueda = [];
 
 	//Generar servicio que me traiga los datos relacionados al usuario.
 	constructor(private usersService: UsersService, private authService: AuthService) { } //importar servicio
@@ -37,6 +39,8 @@ export class ProfileComponent implements OnInit {
 				g.jugador2 = temp;
 			}
 		})
+
+		this.amigos = this.allUsers.filter(u => this.user.amigos.includes(u.email));
 	}
 
 	//funciones
@@ -66,5 +70,13 @@ export class ProfileComponent implements OnInit {
 
 	deleteAlbum(id) {
 		
+	}
+
+	deleteFriend(email) {
+		
+	}
+
+	addFriend(email) {
+
 	}
 }
