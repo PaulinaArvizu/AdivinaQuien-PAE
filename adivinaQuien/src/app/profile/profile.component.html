@@ -1,5 +1,6 @@
 <h1 class="display-2">Adivina Quien — Jugador1</h1>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newGameModal">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newGameModal"
+  (click)="openNewGameModal()">
   Nuevo Juego
 </button>
 <table width="100%">
@@ -13,7 +14,8 @@
                 <h3>Mis fotos</h3>
               </td>
               <td class="justify-content-end" style="text-align: right;">
-                <button class="btn btn-outline-light" data-toggle="modal" data-target="#newImgModal">Añadir
+                <button class="btn btn-outline-light" data-toggle="modal" data-target="#newImgModal"
+                  (click)="openNewImgModal()">Añadir
                   foto</button>
               </td>
             </table>
@@ -61,7 +63,8 @@
                 <h3>Mis álbums</h3>
               </td>
               <td class="justify-content-end" style="text-align: right;">
-                <button class="btn btn-outline-light" data-toggle="modal" data-target="#newAlbumModal">Nuevo
+                <button class="btn btn-outline-light" data-toggle="modal" data-target="#newAlbumModal"
+                  (click)="openNewAlbumModal()">Nuevo
                   álbum</button>
               </td>
             </table>
@@ -83,7 +86,7 @@
                   <td style="vertical-align: middle" width="30%" class="text-center">2</td>
                   <td style="vertical-align: middle" align="center">
                     <button class="btn btn-success tooltip-test" title="Editar" data-toggle="modal"
-                      data-target="#editAlbumModal">
+                      data-target="#editAlbumModal" (click)="openEditAlbumModal()">
                       <i class="fas fa-edit"></i>
                     </button>
                     <button class="btn btn-danger tooltip-test" title="Eliminar">
@@ -96,7 +99,7 @@
                   <td style="vertical-align: middle" width="30%" class="text-center">20</td>
                   <td style="vertical-align: middle" align="center">
                     <button class="btn btn-success tooltip-test" title="Editar" data-toggle="modal"
-                      data-target="#editAlbumModal">
+                      data-target="#editAlbumModal" (click)="openEditAlbumModal()">
                       <i class="fas fa-edit"></i>
                     </button>
                     <button class="btn btn-danger tooltip-test" title="Eliminar"><i
@@ -116,8 +119,8 @@
             <p><img
                 src="https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
             </p>
-            <button type="button" class="btn btn-link" data-toggle="modal"
-              data-target="#editUserModal"><small>Editar</small></button>
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editUserModal"
+              (click)="openEditUserModal()"><small>Editar</small></button>
           </div>
         </div>
 
