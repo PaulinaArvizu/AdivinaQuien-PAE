@@ -7,7 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { GameComponent } from './game/game.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io'
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { LoutHeaderComponent } from './lout-header/lout-header.component'
 
 const config: SocketIoConfig = {url: 'url aqui', options:{}}
 
@@ -16,7 +17,8 @@ const config: SocketIoConfig = {url: 'url aqui', options:{}}
     AppComponent,
     LoginComponent,
     GameComponent,
-    ProfileComponent
+    ProfileComponent,
+    LoutHeaderComponent
   ],
   imports: [
     BrowserModule,
