@@ -419,6 +419,16 @@
         left: 70px;
         width: 200px;
     }
+
+    .display-box {
+        background-color: white;
+        border: 1px solid #b0b0b0;
+        height: 275px;
+        position: fixed;
+        right: 70px;
+        width: 300px;
+        top: 50px;
+    }
 </style>
 
 <head>
@@ -551,8 +561,6 @@
 
     </div>
 
-
-
     <div class="popup-box chat-popup popup-box-on">
         <div class="popup-head">
             <div class="popup-head-left pull-left"><img
@@ -631,3 +639,11 @@
         </div>
     </div>
 </section>
+
+<div class="display-box">
+    <h4 style="text-align: center;">Tu oponente debe adivinar esta imagen: </h4>
+    <div class="cnt-block equal-hight" style="width: 100%; background-color: #3f9684;">
+        <figure><img id="selectedImg" src="http://www.webcoderskull.com/img/team4.png" class="img-responsive" alt="">
+        </figure>
+    </div>
+</div>
