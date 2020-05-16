@@ -13,7 +13,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   {path: 'google/redirect', component: LoginComponent},
-  {path: 'game', component: GameComponent}
+  {path: 'game/:id', component: GameComponent}
 ];
 
 @NgModule({
