@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit {
 	resBusquedaAmigos = [];
 	buscar = '';
 	newGame = {
-		Jugador1:'',
+		Jugador1: '',
 		Jugador2: '',
 		ganador: '',
 		status: false,
@@ -53,7 +53,7 @@ export class ProfileComponent implements OnInit {
 		// console.log(this.user);
 		this.allUsers = this.usersService.getAllUsers();
 		if (this.user.albumes) this.albums = this.user.albumes.map(a => this.usersService.getOneAlbum(a));
-		
+
 		if (this.user.fotos) this.fotos = this.user.fotos.map(f => this.usersService.getOneFoto(f));
 		if (this.user.amigos) this.amigos = this.allUsers.filter(u => this.user.amigos.includes(u.email));
 
@@ -150,7 +150,7 @@ export class ProfileComponent implements OnInit {
 				}
 			}
 		})
-		for(let i = indexList.length-1; i >= 0; i--) { //se eliminan de mayor indice a menor para no perder la posicion
+		for (let i = indexList.length - 1; i >= 0; i--) { //se eliminan de mayor indice a menor para no perder la posicion
 			this.user.historialPartidas.splice(indexList[i], 1);
 		}
 
@@ -163,13 +163,18 @@ export class ProfileComponent implements OnInit {
 		}
 	}
 
-	deleteFriend(email) {
+	deleteFriend(amigo) {
 		//eliminar de la lista del usuario
-		let index = this.user.amigos.findIndex(a => a == email)
+		let index = this.user.amigos.findIndex(a => a == amigo.email);
 		if (index >= 0) {
 			this.user.amigos.splice(index, 1);
-			this.usersService.updateUser(this.user);
-			this.amigos = this.allUsers.filter(u => this.user.amigos.includes(u.email));
+
+			index = amigo.amigos.findIndex(a => a == this.user.email);
+			if (index >= 0) {
+				amigo.amigos.splice(index, 1);
+				this.usersService.updateUser(this.user);
+				this.usersService.updateUser(amigo);
+			}
 		}
 	}
 
@@ -285,9 +290,9 @@ export class ProfileComponent implements OnInit {
 		// console.log(this.buscar);
 		this.resBusquedaAmigos = this.allUsers.filter(f => {
 			return (f.nombre.toUpperCase().includes(this.buscar.toUpperCase()) ||
-						f.email.toUpperCase().includes(this.buscar.toUpperCase()))
-					&& !this.user.amigos.includes(f.email)
-					&& this.user.email != f.email;
+				f.email.toUpperCase().includes(this.buscar.toUpperCase()))
+				&& !this.user.amigos.includes(f.email)
+				&& this.user.email != f.email;
 		});
 		this.buscar = '';
 	}
@@ -295,5 +300,5 @@ export class ProfileComponent implements OnInit {
 	onFileChanged(event) {
 		this.selectedFile = event.target.files[0];
 		console.log(this.selectedFile);
-	  }
+	}
 }
