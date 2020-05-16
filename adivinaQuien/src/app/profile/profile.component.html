@@ -20,10 +20,11 @@
             </table>
           </h5>
           <div class="card-body">
-            <div id="carouselImagenes" class="carousel slide panel-body" data-ride="carousel">
+            <div *ngIf="fotos != undefined" id="carouselImagenes" class="carousel slide panel-body"
+              data-ride="carousel">
               <div class="carousel-inner" align="center">
                 <div class="carousel-item active">
-                  <img *ngIf="fotos" class="d-block rounded" src="{{fotos[0].url}}">
+                  <img class="d-block rounded" src="{{fotos[0].url}}">
                   <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar"
                     (click)="deleteFoto(fotos[0]._id)">
                     <i class="fas fa-trash-alt"></i>
@@ -235,7 +236,8 @@
                     <td align="right" style="vertical-align: middle; width: 30%">
                       <!-- Modificar esto despues -->
                       <div class="row" routerLinkActive="active">
-                        <a name="" id="" class="btn btn-primary" href="#" role="button" (click)="aceptarJuego(juego._id)" routerLink="/game/{{juego._id}}">
+                        <a name="" id="" class="btn btn-primary" href="#" role="button"
+                          (click)="aceptarJuego(juego._id)" routerLink="/game/{{juego._id}}">
                           <button class="btn btn-success tooltip-test" title="Aceptar">
                             <i class="fas fa-check"></i>
                           </button>
@@ -290,9 +292,7 @@
             <tbody>
               <tr *ngFor="let amigo of amigos">
                 <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                  <img
-                    src="{{amigo.fotoPerfil}}"
-                    style="height: 50px;">
+                  <img src="{{amigo.fotoPerfil}}" style="height: 50px;">
                 </td>
                 <td style="vertical-align: middle; padding-left: 2px">{{amigo.nombre}}</td>
 
@@ -427,65 +427,66 @@
 </div>
 
 
+
+
+
 <!-- Modal editar album -->
 <div class="modal fade" id="editAlbumModal" tabindex="-1" role="dialog" aria-labelledby="editAlbumModalLabel"
-  aria-hidden="true">
+  aria-hidden="true" *ngIf="tempAlbum != undefined">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editAlbumModalLabel"><i class="fas fa-edit"></i> Editar Album1</h5>
+        <h5 class="modal-title" id="editAlbumModalLabel">
+          <i class="fas fa-edit"></i> Editar álbum
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre"
+              aria-describedby="basic-addon1" [value]="tempAlbum.nombre" (input)="editIsValid()"
+              [(ngModel)]="tempAlbum.nombre">
+          </div>
+        </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+		
         <table class="table table-hover table-borderless">
           <tbody>
-            <tr>
+            <tr *ngFor="let foto of tempAlbumFotos">
               <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                <img src="https://live.staticflickr.com/4561/38054606355_26429c884f_b.jpg" style="height: 50px;">
-
+                <img src="{{foto.url}}" style="height: 50px;">
               </td>
-              <td style="vertical-align: middle; padding-left: 2px">Imagen1</td>
+              <td style="vertical-align: middle; padding-left: 2px">{{foto.name}}</td>
 
               <td align="right" style="vertical-align: middle; width: 10%">
-                <button class="btn btn-danger tooltip-test" title="Eliminar">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                <img src="https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg"
-                  style="height: 50px;">
-
-              </td>
-              <td style="vertical-align: middle; padding-left: 2px">Imagen2</td>
-
-              <td align="right" style="vertical-align: middle; width: 10%">
-                <button class="btn btn-danger tooltip-test" title="Eliminar">
+                <button class="btn btn-danger tooltip-test" title="Eliminar" (click)="deleteFotoFromAlbum(foto._id)">
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
-        <label for="agregarFotoInput" class="btn btn-info">Añadir foto</label>
-        <input type="checkbox" id="agregarFotoInput">
+        <!-- <label for="agregarFotoInput" class="btn btn-info">Añadir foto</label>
+        <input type="checkbox" id="agregarFotoInput"> -->
+        <div class="alert alert-info text-center" role="alert">
+          <strong>Añadir foto</strong>
+        </div>
         <div class="card">
           <div class="card-body">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" placeholder="Buscar imagen..." aria-label="Buscar"
+				  aria-describedby="basic-addon1" (input)="buscarImagen()"
+				  [(ngModel)]="buscar">
+			  </div>
             <table class="table table-hover table-borderless">
               <tbody>
-                <tr>
+                <tr *ngFor="let foto of resBusqueda">
                   <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                    <img src="https://qph.fs.quoracdn.net/main-qimg-0bf5ade627068fc659d57f9c38803151.webp"
-                      style="height: 50px;">
-
+                    <img src="{{foto.url}}" style="height: 50px;">
                   </td>
-                  <td style="vertical-align: middle; padding-left: 2px">Imagen3</td>
-
+                  <td style="vertical-align: middle; padding-left: 2px">{{foto.name}}</td>
                   <td align="right" style="vertical-align: middle; width: 10%">
-                    <button class="btn btn-success tooltip-test" title="Agregar">
+                    <button class="btn btn-success tooltip-test" title="Agregar" (click)="addFotoToAlbum(foto._id)">
                       <i class="fas fa-plus"></i>
                     </button>
                   </td>
@@ -495,9 +496,18 @@
             </table>
           </div>
         </div>
+        <div *ngIf="!editValid" class="alert alert-danger text-center" role="alert">
+          El álbum debe tener un nombre y al menos 5 fotos.
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+        <div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveEditAlbum()"
+            [disabled]="!editValid">Guardar cambios</button>
+        </div>
+
       </div>
     </div>
   </div>

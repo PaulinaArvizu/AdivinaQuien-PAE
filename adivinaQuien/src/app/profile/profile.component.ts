@@ -19,8 +19,15 @@ export class ProfileComponent implements OnInit {
 	juegos = [];
 	amigos = [];
 	resBusqueda = [];
+	buscar;
 	newGame;
 	newAlbum;
+
+	//para modal de editar album y crear album
+	tempAlbum;
+	tempAlbumFotos = [];
+	tempAlbumFotosFaltantes = [];
+	editValid = false;
 
 	//Generar servicio que me traiga los datos relacionados al usuario.
 	constructor(private usersService: UsersService, private authService: AuthService) { } //importar servicio
@@ -28,11 +35,15 @@ export class ProfileComponent implements OnInit {
 	ngOnInit(): void {
 		// console.log(this.authService.getTokenData());
 		let email = this.authService.getTokenData().email;
-		console.log(email);
+		// console.log(email);
 		this.user = this.usersService.getOneUser(email);
-		console.log(this.user);
+		// console.log(this.user);
 		this.allUsers = this.usersService.getAllUsers();
 		if (this.user.albumes) this.albums = this.user.albumes.map(a => this.usersService.getOneAlbum(a));
+		// console.log("-----------------------------");
+		// console.log(this.albums);
+		// console.log(this.albums.length);
+		// console.log("-----------------------------");
 		if (this.user.fotos) this.fotos = this.user.fotos.map(f => this.usersService.getOneFoto(f));
 		if (this.user.amigos) this.amigos = this.allUsers.filter(u => this.user.amigos.includes(u.email));
 
@@ -63,6 +74,14 @@ export class ProfileComponent implements OnInit {
 
 	openEditAlbumModal(id) {
 		$('#editAlbumModal').modal('show');
+		this.tempAlbum = Object.assign({}, this.albums.find(a => a._id == id));
+		this.tempAlbumFotos = this.fotos.filter(f => this.tempAlbum.fotos.includes(f._id));
+		// this.tempAlbumFotos = this.tempAlbum.fotos.map(af => this.fotos.find(f => f._id == af));
+		this.tempAlbumFotosFaltantes = this.fotos.filter(f => !this.tempAlbum.fotos.includes(f._id));
+		// console.log(this.tempAlbum, this.tempAlbumFotos, this.tempAlbumFotosFaltantes);
+		this.resBusqueda = this.tempAlbumFotosFaltantes;
+		this.editIsValid();
+		
 	}
 
 	openEditUserModal() {
@@ -94,7 +113,7 @@ export class ProfileComponent implements OnInit {
 		//eliminar de la lista del usuario
 		let index = this.user.albumes.findIndex(a => a == id)
 		if (index >= 0) {
-			this.user.fotos.splice(index, 1);
+			this.user.albumes.splice(index, 1);
 			this.usersService.updateUser(this.user);
 		} else return;
 
@@ -180,7 +199,7 @@ export class ProfileComponent implements OnInit {
 
 	nuevoAlbum(newAlbum) {
 		if (newAlbum.fotos.length <= 0 || !newAlbum.nombre) return;
-		let album = this.usersService.newGame(newAlbum);
+		let album = this.usersService.newAlbum(newAlbum);
 		if (newAlbum) {
 			this.user.historialPartidas.push(newAlbum._id);
 			let user2 = this.allUsers.find(u => u.email == newAlbum.jugador2);
@@ -189,5 +208,44 @@ export class ProfileComponent implements OnInit {
 				this.usersService.updateUser(user2);
 			}
 		}
+	}
+
+	deleteFotoFromAlbum(fotoId) {
+		//eliminar de la lista del album (temporal)
+		
+		let indexA = this.tempAlbum.fotos.findIndex(f => f == fotoId);
+		let indexF = this.tempAlbumFotos.findIndex(f => f._id == fotoId);
+		console.log(indexA, indexF);
+		if (indexA < 0 || indexF < 0) return;
+		this.tempAlbum.fotos.splice(indexA, 1);
+		this.tempAlbumFotosFaltantes.push(this.tempAlbumFotos.splice(indexF, 1)[0]);
+		this.resBusqueda = this.tempAlbumFotosFaltantes;
+		this.editIsValid();
+		// console.log(this.tempAlbum);
+	}
+
+	addFotoToAlbum(fotoId) {
+		let index = this.tempAlbumFotosFaltantes.findIndex(f => f._id == fotoId);
+		if(index < 0) return;
+		//quita la foto de las faltantes y la agrega a la de tempAlbumFotos
+		this.tempAlbumFotos.push(this.tempAlbumFotosFaltantes.splice(index, 1)[0]);
+		//agregar id de la foto a tempAlbum
+		this.tempAlbum.fotos.push(fotoId);
+		this.resBusqueda = this.tempAlbumFotosFaltantes;
+		this.editIsValid();
+	}
+
+	buscarImagen() {
+		this.resBusqueda = this.tempAlbumFotosFaltantes.filter(f => f.name.toUpperCase().includes(this.buscar.toUpperCase()));
+	}
+
+	editIsValid() {
+		if(this.tempAlbum.nombre.length < 1 || this.tempAlbum.fotos.length < 2) this.editValid = false;
+		else this.editValid = true;
+	}
+
+	saveEditAlbum() {
+		// console.log("saveEdit");
+		this.usersService.updateAlbum(this.tempAlbum);
 	}
 }
