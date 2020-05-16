@@ -20,8 +20,14 @@ export class ProfileComponent implements OnInit {
 	amigos = [];
 	resBusqueda = [];
 	resBusquedaAmigos = [];
-	buscar;
-	newGame;
+	buscar = '';
+	newGame = {
+		Jugador1:'',
+		Jugador2: '',
+		ganador: '',
+		status: false,
+		album: ''
+	};
 
 	//para modal de editar album y crear album
 	tempAlbum = { nombre: '', fotos: [] };
@@ -31,6 +37,10 @@ export class ProfileComponent implements OnInit {
 
 	//para el modal de editar usuario
 	userEdit;
+
+
+	//para agregar una foto
+	selectedFile: File;
 
 	//Generar servicio que me traiga los datos relacionados al usuario.
 	constructor(private usersService: UsersService, private authService: AuthService) { } //importar servicio
@@ -43,10 +53,7 @@ export class ProfileComponent implements OnInit {
 		// console.log(this.user);
 		this.allUsers = this.usersService.getAllUsers();
 		if (this.user.albumes) this.albums = this.user.albumes.map(a => this.usersService.getOneAlbum(a));
-		// console.log("-----------------------------");
-		// console.log(this.albums);
-		// console.log(this.albums.length);
-		// console.log("-----------------------------");
+		
 		if (this.user.fotos) this.fotos = this.user.fotos.map(f => this.usersService.getOneFoto(f));
 		if (this.user.amigos) this.amigos = this.allUsers.filter(u => this.user.amigos.includes(u.email));
 
@@ -166,12 +173,14 @@ export class ProfileComponent implements OnInit {
 		}
 	}
 
-	addFriend(email) {
-		let index = this.user.amigos.findIndex(a => a == email) //buscar que no esté ya agregado
+	addFriend(amigo) {
+		// console.log(amigo);
+		let index = this.user.amigos.findIndex(a => a == amigo.email) //buscar que no esté ya agregado
 		if (index < 0) {
-			this.user.amigos.push(email);
+			this.user.amigos.push(amigo.email);
+			amigo.amigos.push(this.user.email);
 			this.usersService.updateUser(this.user);
-			this.amigos = this.allUsers.filter(u => this.user.amigos.includes(u.email));
+			this.usersService.updateUser(amigo);
 		}
 	}
 
@@ -259,6 +268,7 @@ export class ProfileComponent implements OnInit {
 
 	buscarImagen() {
 		this.resBusqueda = this.tempAlbumFotosFaltantes.filter(f => f.name.toUpperCase().includes(this.buscar.toUpperCase()));
+		this.buscar = '';
 	}
 
 	editIsValid() {
@@ -272,11 +282,18 @@ export class ProfileComponent implements OnInit {
 	}
 
 	buscarAmigo() {
-		this.resBusquedaAmigos = this.allUsers.filter(f => f.name.toUpperCase().includes(this.buscar.toUpperCase()) && !this.user.amigos.includes(f));
+		// console.log(this.buscar);
+		this.resBusquedaAmigos = this.allUsers.filter(f => {
+			return (f.nombre.toUpperCase().includes(this.buscar.toUpperCase()) ||
+						f.email.toUpperCase().includes(this.buscar.toUpperCase()))
+					&& !this.user.amigos.includes(f.email)
+					&& this.user.email != f.email;
+		});
+		this.buscar = '';
 	}
 
-	atraparArchivo(event) {
-		console.log(event);
-
-	}
+	onFileChanged(event) {
+		this.selectedFile = event.target.files[0];
+		console.log(this.selectedFile);
+	  }
 }

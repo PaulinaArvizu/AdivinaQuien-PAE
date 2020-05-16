@@ -128,7 +128,7 @@
               <tbody>
                 <ng-container *ngFor="let juego of juegos">
                   <tr *ngIf="juego.status">
-                    <td class="text-center" style="vertical-align: middle">{{juego.jugador2}}</td>
+                    <td class="text-center" style="vertical-align: middle">{{juego.Jugador2}}</td>
                     <td align="center" style="vertical-align: middle">
                       <button class="btn btn-success" *ngIf="juego.ganador == user.email">
                         <i class="fas fa-trophy"></i>
@@ -165,7 +165,6 @@
                 <tr *ngFor="let amigo of amigos">
                   <td style="vertical-align: middle; width: 10%; padding-right: 3px">
                     <img src="{{amigo.fotoPerfil}}" style="height: 50px;">
-
                   </td>
                   <td style="vertical-align: middle; padding-left: 2px">{{amigo.nombre}}</td>
 
@@ -177,34 +176,36 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div class="card-footer" id="buscar">
-            <div class="form-inline my-2 my-lg-0 dropdown">
-              <input class="form-control mr-sm-2" type="text" placeholder="Buscar...">
-              <button class="btn btn btn-outline-info my-2 my-sm-0" type="submit" data-toggle="dropdown"
-                id="dropdownSearch">
-                Buscar
-              </button>
-              <div *ngIf="resBusquedaAmigos.length > 0">
-                <table class="table-striped table-condensed" width="100%" id="resultadoBusqueda">
-                  <tbody>
-                    <tr *ngFor="let res of resBusquedaAmigos">
-                      <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                        <img src="{{res.fotoPerfil}}" style="height: 50px;">
-                      </td>
-                      <td style="vertical-align: middle; padding-left: 2px">{{res.nombre}}</td>
-                      <td align="right" style="vertical-align: middle; width: 10%">
-                        <button class="btn btn-success tooltip-test" title="Agregar a mis amigos"
-                          (click)="addFriend(res.email)">
-                          Agregar
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div *ngIf="resBusquedaAmigos.length == 0" class="alert alert-danger" role="alert">
-                No se encontraron usuarios
+
+
+            <div class="card">
+              <div class="card-body">
+                <div class="input-group mb-3">
+                  <input class="form-control mr-sm-2" type="text" placeholder="Buscar por nombre o correo..."
+                    [(ngModel)]="buscar">
+                  <button class="btn btn btn-outline-info my-2 my-sm-0" type="submit" id="dropdownSearch"
+                    (click)="buscarAmigo()">
+                    Buscar
+                  </button>
+                </div>
+                <div *ngIf="resBusquedaAmigos.length > 0">
+                  <table class="table-striped table-condensed" width="100%" id="resultadoBusqueda">
+                    <tbody>
+                      <tr *ngFor="let res of resBusquedaAmigos">
+                        <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                          <img src="{{res.fotoPerfil}}" style="height: 50px;">
+                        </td>
+                        <td style="vertical-align: middle; padding-left: 2px">{{res.nombre}}</td>
+                        <td align="right" style="vertical-align: middle; width: 10%">
+                          <button class="btn btn-success tooltip-test" title="Agregar a mis amigos"
+                            (click)="addFriend(res)">
+                            Agregar
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -228,10 +229,10 @@
                 <ng-container *ngFor="let juego of juegos">
                   <tr *ngIf="!juego.status">
                     <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                      <img src="{{juego.jugador2.fotoPerfil}}" style="height: 50px;">
+                      <img src="{{juego.Jugador2.fotoPerfil}}" style="height: 50px;">
 
                     </td>
-                    <td style="vertical-align: middle; padding-left: 2px">{{juego.jugador2.nombre}}</td>
+                    <td style="vertical-align: middle; padding-left: 2px">{{juego.Jugador2.nombre}}</td>
 
                     <td align="right" style="vertical-align: middle; width: 30%">
                       <!-- Modificar esto despues -->
@@ -297,7 +298,7 @@
                 <td style="vertical-align: middle; padding-left: 2px">{{amigo.nombre}}</td>
 
                 <td align="right" style="vertical-align: middle; width: 10%">
-                  <input type="radio" name="player" [(ngModel)]="newGame.jugador2">
+                  <input type="radio" name="player" [(ngModel)]="newGame.Jugador2">
                 </td>
               </tr>
             </tbody>
@@ -305,7 +306,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="newGame = null">Cancelar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-primary" (click)="crearJuego(newGame)">Enviar invitación</button>
       </div>
     </div>
