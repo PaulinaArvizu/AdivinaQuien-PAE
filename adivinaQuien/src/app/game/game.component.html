@@ -439,16 +439,8 @@
       <h2 id="vsRival">VS Héctor</h2>
     </div>
     <ul class="row">
-      <!-- Formato del display de imagenes -->
-      <li class="col-12 col-md-6 col-lg-3" *ngFor="let e of game.album">
-        <div class="cnt-block equal-hight selected" (click)='seleccionarImagen(e.url)'>
-          <figure><img src="e.url" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <!-- Fin Formato -->
       <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight" (click)='seleccionarImagen("http://www.webcoderskull.com/img/team4.png")'>
+        <div class="cnt-block equal-hight">
           <figure><img src="http://www.webcoderskull.com/img/team4.png" class="img-responsive" alt="">
           </figure>
         </div>
@@ -567,26 +559,21 @@
     <div class="popup-messages">
       <div class="direct-chat-messages" id="chat">
 
-        <!-- Formato Chat -->
 
 
-        <div class="direct-chat-msg" *ngFor="let item of msgChat">
+        <!-- Message. Default to the left -->
+        <div class="direct-chat-msg">
           <div class="direct-chat-info clearfix">
-            <span class="direct-chat-name pull-left"
-              *ngIf="item.recibido; else nombreEnviado">{{contrincante.nombre}}</span>
-            <ng-template #nombreEnviado>{{jugador.nombre}}</ng-template>
+            <span class="direct-chat-name pull-left">Héctor</span>
           </div>
           <!-- /.direct-chat-info -->
           <img alt="message user image"
             src="https://scontent-qro1-1.xx.fbcdn.net/v/t1.0-9/37301785_10204907818931567_2345109584508616704_n.jpg?_nc_cat=111&_nc_sid=85a577&_nc_ohc=8VlSIqVBFD8AX_4ncZR&_nc_ht=scontent-qro1-1.xx&oh=872ba2f1460416549ad15e058be51b63&oe=5E9D921B"
             class="direct-chat-img"><!-- /.direct-chat-img -->
           <div class="direct-chat-text">
-            {{item.pregunta}} <br>
-            <span (click)="disable($event)">
-              <button type="button" name="yes" class="btn btn-outline-primary"
-                (click)="enviarRespuesta('yes')">Si</button>
-              <button type="button" name="no" class="btn btn-outline-danger" (click)="enviarRespuesta('no')">No</button>
-            </span>
+            Tu personaje tiene lentes ? <br>
+            <button type="button" name="yes" class="btn btn-outline-primary">Si</button>
+            <button type="button" name="no" class="btn btn-danger ">No</button>
           </div>
 
           <div class="direct-chat-info clearfix">
@@ -594,28 +581,51 @@
 
             </span>
           </div>
+          <!-- /.direct-chat-text -->
         </div>
-        <!-- Fin Formato chat -->
+        <!-- /.direct-chat-msg -->
 
 
+        <!-- Message. Default to the Right -->
+        <div class="direct-chat-msg">
+          <div class="direct-chat-info clearfix">
+            <span class="direct-chat-name pull-left">Tu nombre</span>
+          </div>
+          <!-- /.direct-chat-info -->
+          <img alt="message user image"
+            src="https://pngimage.net/wp-content/uploads/2018/05/default-user-profile-image-png-6.png"
+            class="direct-chat-img"><!-- /.direct-chat-img -->
+          <div class="direct-chat-text">
+            Tu personaje es hombre ? <br>
+            <button type="button" name="yes" class="btn btn-outline-primary">Si</button>
+            <button type="button" name="no" class="btn btn-outline-danger">No</button>
+          </div>
+
+          <div class="direct-chat-info clearfix">
+            <span class="direct-chat-img-reply-small pull-left">
+
+            </span>
+          </div>
+          <!-- /.direct-chat-text -->
+        </div>
 
       </div>
     </div>
     <div class="popup-messages-footer">
-      <textarea id="message" placeholder="Type a message..." rows="10" cols="40" name="message" [(ngModel)]="msgSend"
-        (keydown)="enviarMensaje($event)"></textarea>
+      <textarea id="message" placeholder="Type a message..." rows="10" cols="40" name="message"
+        [(ngModel)]="msgSend" (keydown)="enviarMensaje($event)"></textarea>
     </div>
   </div>
 
   <div class="selection-box">
     <h4 style="text-align: center;">Esta es tu selección: </h4>
     <div class="cnt-block equal-hight" style="width: 100%; background-color: #3f9684;">
-      <figure><img id="selectedImg" src="{{selectedImg}}" class="img-responsive" alt="">
+      <figure><img id="selectedImg" src="http://www.webcoderskull.com/img/team4.png" class="img-responsive" alt="">
       </figure>
     </div>
     <div style="text-align: center;">
       Esta es tu selección:<br>
-      <button type="button" id="guess" class="btn btn-outline-primary" (click)="enviarGuess()">Adivinar</button>
+      <button type="button" id="guess" class="btn btn-outline-primary">Advinar</button>
     </div>
   </div>
 </section>
