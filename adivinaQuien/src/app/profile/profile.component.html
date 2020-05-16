@@ -96,7 +96,7 @@
         <div class="card bg-light text-center">
           <div class="card-body">
             <h4 class="card-title">{{user.nombre}}</h4>
-            <p><img src="{{user.fotoPerfil}}">
+            <p><img src="{{user.fotoPerfil}}" style="max-width: 400px; max-height: 400px;">
             </p>
             <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editUserModal"
               (click)="openEditUserModal()"><small>Editar</small></button>
@@ -185,10 +185,10 @@
                 id="dropdownSearch">
                 Buscar
               </button>
-              <div *ngIf="resBusqueda.length > 0">
+              <div *ngIf="resBusquedaAmigos.length > 0">
                 <table class="table-striped table-condensed" width="100%" id="resultadoBusqueda">
                   <tbody>
-                    <tr *ngFor="let res of resBusqueda">
+                    <tr *ngFor="let res of resBusquedaAmigos">
                       <td style="vertical-align: middle; width: 10%; padding-right: 3px">
                         <img src="{{res.fotoPerfil}}" style="height: 50px;">
                       </td>
@@ -203,7 +203,7 @@
                   </tbody>
                 </table>
               </div>
-              <div *ngIf="resBusqueda.length == 0" class="alert alert-danger" role="alert">
+              <div *ngIf="resBusquedaAmigos.length == 0" class="alert alert-danger" role="alert">
                 No se encontraron usuarios
               </div>
             </div>
@@ -361,70 +361,73 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="col-auto">
-          <div class="input-group">
-            <label for="inlineFormInputGroup">
-              <div class="input-group-prepend">
-                <div class="input-group-text">Nombre</div>
-              </div>
-            </label>
-            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Ej. Album1">
-          </div>
+        <div class="input-group">
+          <label for="inlineFormInputGroup">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Nombre</div>
+            </div>
+          </label>
+          <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Ej. Album1"
+            (input)="editIsValid()" [(ngModel)]="tempAlbum.nombre">
         </div>
         <table class="table table-hover table-borderless">
           <tbody>
-            <tr>
+            <tr *ngFor="let foto of tempAlbumFotos">
               <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                <label for="img1"><img src="https://live.staticflickr.com/4561/38054606355_26429c884f_b.jpg"
-                    style="height: 50px;">
-                </label>
+                <img src="{{foto.url}}" style="height: 50px;">
               </td>
-              <td style="vertical-align: middle; padding-left: 2px">
-                <label for="img2">Imagen1</label>
-              </td>
-              <td align="right" style="vertical-align: middle; width: 10%">
-                <input type="checkbox" id="img1" style="display: block;">
-              </td>
-            </tr>
-            <tr>
-              <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                <label for="img2"><img
-                    src="https://4.img-dpreview.com/files/p/E~TS590x0~articles/3925134721/0266554465.jpeg"
-                    style="height: 50px;">
-                </label>
-              </td>
-              <td style="vertical-align: middle; padding-left: 2px">
-                <label for="img2">Imagen2</label>
-              </td>
-              <td align="right" style="vertical-align: middle; width: 10%">
-                <input type="checkbox" id="img2" style="display: block;">
-              </td>
-            </tr>
-            <tr>
-              <td style="vertical-align: middle; width: 10%; padding-right: 3px">
-                <label for="img3"><img src="https://qph.fs.quoracdn.net/main-qimg-0bf5ade627068fc659d57f9c38803151.webp"
-                    style="height: 50px;">
-                </label>
-              </td>
-              <td style="vertical-align: middle; padding-left: 2px">
-                <label for="img3">Imagen3</label>
-              </td>
-              <td align="right" style="vertical-align: middle; width: 10%">
-                <input type="checkbox" id="img3" style="display: block;">
-              </td>
-            </tr>
+              <td style="vertical-align: middle; padding-left: 2px">{{foto.name}}</td>
 
+              <td align="right" style="vertical-align: middle; width: 10%">
+                <button class="btn btn-danger tooltip-test" title="Eliminar" (click)="deleteFotoFromAlbum(foto._id)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+        <!-- <label for="agregarFotoInput" class="btn btn-info">Añadir foto</label>
+        <input type="checkbox" id="agregarFotoInput"> -->
+        <div class="alert alert-info text-center" role="alert">
+          <strong>Añadir foto</strong>
         </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Buscar imagen..." aria-label="Buscar"
+                aria-describedby="basic-addon1" (input)="buscarImagen()" [(ngModel)]="buscar">
+            </div>
+            <table class="table table-hover table-borderless">
+              <tbody>
+                <tr *ngFor="let foto of resBusqueda">
+                  <td style="vertical-align: middle; width: 10%; padding-right: 3px">
+                    <img src="{{foto.url}}" style="height: 50px;">
+                  </td>
+                  <td style="vertical-align: middle; padding-left: 2px">{{foto.name}}</td>
+                  <td align="right" style="vertical-align: middle; width: 10%">
+                    <button class="btn btn-success tooltip-test" title="Agregar" (click)="addFotoToAlbum(foto._id)">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="!editValid" class="alert alert-danger text-center" role="alert">
+          El álbum debe tener un nombre y al menos 5 fotos.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="crearAlbum()"
+          [disabled]="!editValid">Crear álbum</button>
       </div>
     </div>
   </div>
 </div>
+
 
 
 
@@ -449,7 +452,7 @@
         </button>
       </div>
       <div class="modal-body">
-		
+
         <table class="table table-hover table-borderless">
           <tbody>
             <tr *ngFor="let foto of tempAlbumFotos">
@@ -473,11 +476,10 @@
         </div>
         <div class="card">
           <div class="card-body">
-			<div class="input-group mb-3">
-				<input type="text" class="form-control" placeholder="Buscar imagen..." aria-label="Buscar"
-				  aria-describedby="basic-addon1" (input)="buscarImagen()"
-				  [(ngModel)]="buscar">
-			  </div>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Buscar imagen..." aria-label="Buscar"
+                aria-describedby="basic-addon1" (input)="buscarImagen()" [(ngModel)]="buscar">
+            </div>
             <table class="table table-hover table-borderless">
               <tbody>
                 <tr *ngFor="let foto of resBusqueda">
