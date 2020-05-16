@@ -9,11 +9,11 @@ class Partida extends DB {
             //     type: String,
             //     unique: true
             // },
-            Jugador1:{ //correo
+            jugador1:{ //correo
                 type: String,
                 required: true
             },
-            Jugador2: {
+            jugador2: {
                 type: String,
                 required: true
             },
@@ -40,9 +40,9 @@ class Partida extends DB {
     async getPartidaById(uid, projection = "", options = {}) {
         return await super.queryOne({'_id':uid},projection,options);
     }
-    async createPartida(Jugador1, Jugador2, album) {
-        return await super.add({  'Jugador1':Jugador1,
-                            'Jugador2':Jugador2,
+    async createPartida(jugador1, jugador2, album) {
+        return await super.add({  'jugador1':jugador1,
+                            'jugador2':jugador2,
                             'ganador': "",
                             'status':false,
                             'album': album
