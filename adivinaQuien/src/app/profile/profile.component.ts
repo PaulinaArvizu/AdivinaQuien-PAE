@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
 	newGame;
 
 	//para modal de editar album y crear album
-	tempAlbum = {nombre:'', fotos:[]};
+	tempAlbum = { nombre: '', fotos: [] };
 	tempAlbumFotos = [];
 	tempAlbumFotosFaltantes = [];
 	editValid = false;
@@ -75,7 +75,7 @@ export class ProfileComponent implements OnInit {
 	openNewAlbumModal() {
 		// console.log('------------------------------------------');
 		$('#newAlbumModal').modal('show');
-		this.tempAlbum = {nombre:'', fotos:[]};
+		this.tempAlbum = { nombre: '', fotos: [] };
 		// console.log('------------------------------------------');
 		// console.log(this.tempAlbum);
 		this.tempAlbumFotos = [];
@@ -124,13 +124,34 @@ export class ProfileComponent implements OnInit {
 		let index = this.user.albumes.findIndex(a => a == id)
 		if (index >= 0) {
 			this.user.albumes.splice(index, 1);
-			this.usersService.updateUser(this.user);
 		} else return;
 
+		//eliminar los juegos con este album
+		let indexList = [];
+		this.juegos.forEach((juego, i) => {
+			if (juego.album == id) {
+				//eliminar del historial del usuario (se agrega a la lista de indices de juegos para no perder la cuenta en el forEach)
+				indexList.push(i);
+
+				//buscar al amigo de la partida
+				let foundFriend = this.allUsers.find(u => u._id == juego.jugador2);
+				if (foundFriend) {
+					//eliminar del historial del amigo
+					index = foundFriend.historialPartidas.findIndex(j => j == juego._id);
+					foundFriend.historialPartidas.splice(index, 1);
+					this.usersService.updateUser(foundFriend);
+				}
+			}
+		})
+		for(let i = indexList.length-1; i >= 0; i--) { //se eliminan de mayor indice a menor para no perder la posicion
+			this.user.historialPartidas.splice(indexList[i], 1);
+		}
+
 		//eliminar el album
-		index = this.albums.findIndex(a => a == id)
+		index = this.albums.findIndex(a => a._id == id);
 		if (index >= 0) {
 			this.albums.splice(index, 1);
+			this.usersService.updateUser(this.user);
 			this.usersService.deleteAlbum(id);
 		}
 	}
@@ -252,5 +273,10 @@ export class ProfileComponent implements OnInit {
 
 	buscarAmigo() {
 		this.resBusquedaAmigos = this.allUsers.filter(f => f.name.toUpperCase().includes(this.buscar.toUpperCase()) && !this.user.amigos.includes(f));
+	}
+
+	atraparArchivo(event) {
+		console.log(event);
+
 	}
 }
