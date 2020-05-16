@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { async } from '@angular/core/testing';
 
 @Injectable({
 	providedIn: 'root'
@@ -31,8 +32,8 @@ export class UsersService {
 			xhr.setRequestHeader
 		}
 		// 4. Enviar solicitud
-		console.log(data);
-		console.log(headers);
+		// console.log(data);
+		// console.log(headers);
 		xhr.send(JSON.stringify(data));
 		// 5. Una vez recibida la respuesta del servidor
 		xhr.onload = () => callback(xhr);
@@ -43,7 +44,7 @@ export class UsersService {
 	getOneUser(email) {
 		// return this.http.get("/api/users/" + email).toPromise(); //regresa la funcion como promesa (buena practica)
 		let r = this.httpGet("api/users/" + email);
-		console.log(r);
+		// console.log(r);
 		return r;
 	}
 
@@ -58,6 +59,7 @@ export class UsersService {
 			if(xhr.status == 200) {
 				console.log("Update exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
+				location.reload();
 			} else {
 				console.log("Error en update");
 			}
@@ -125,17 +127,39 @@ export class UsersService {
 		return r;
 	}
 
-	newAlbum(album) {
+	// newAlbum(album) {
+	// 	let r;
+	// 	this.makeHTTPRequest("api/albums/", "POST", album, (xhr) => {
+	// 		// console.log(xhr.status);
+	// 		if(xhr.status == 201) {
+	// 			console.log("Post exitoso", JSON.parse(xhr.response));
+	// 			r = JSON.parse(xhr.response);
+	// 			return r;
+	// 		} else {
+	// 			console.log("Error en post");
+	// 		}
+	// 	});
+	// 	console.log("r = ",r);
+	// 	// return r;
+	// }
+
+	newAlbum(album, user) {
 		let r;
 		this.makeHTTPRequest("api/albums/", "POST", album, (xhr) => {
-			if(xhr.status == 200) {
+			// console.log(xhr.status);
+			if(xhr.status == 201) {
 				console.log("Post exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
+				user.albumes.push(r[0]._id);
+				// console.log("r = ", r);
+				// console.log("r._id = ", r[0]._id);
+				// console.log("updated user = ", user);
+				// console.log("updated user.albumes = ", user.albumes);
+				this.updateUser(user);
 			} else {
 				console.log("Error en post");
 			}
 		});
-		return r;
 	}
 
 	//CRUD juegos
@@ -177,7 +201,7 @@ export class UsersService {
 	newGame(game) {
 		let r;
 		this.makeHTTPRequest("api/partidas/", "POST", game, (xhr) => {
-			if(xhr.status == 200) {
+			if(xhr.status == 201) {
 				console.log("Post exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
 			} else {
