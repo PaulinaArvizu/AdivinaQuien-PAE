@@ -65,10 +65,11 @@ export class GameComponent implements OnInit {
     this.socketIOservice.recibirDatosJuego().subscribe((datos) => {
       this.game = datos;
 
-      this.myTurn = this.jugador.correo == this.game.jugador2.correo;
+      this.myTurn = this.jugador.correo == this.game.Jugador2.correo;
 
     })
-    this.socketIOservice.recibirGuess().subscribe((guess: string) => {
+    this.socketIOservice.recibirGuess().subscribe((guess) => {
+      console.log('recibiendo guess')
       this.myTurn = true
       let win = this.myImg !=guess;
       if(win){
@@ -79,29 +80,53 @@ export class GameComponent implements OnInit {
       this.socketIOservice.enviarVeredicto({gameId:this.game.id, userEmail: this.jugador.correo, win})
     })
     this.socketIOservice.recibirPregunta().subscribe((pregunta: string) => {
+      console.log('Entra a recibir pregunta')
       this.msgChat.push({
-        nombre: this.contrincante.nombre,
+        recibida: true,
         pregunta: pregunta
       })
+      console.log('pregunta: ',pregunta)
     })
-    this.socketIOservice.recibirRespuesta().subscribe((msg:string)=>{
-      if(msg == 'yes'){
-        
+    this.socketIOservice.recibirRespuesta().subscribe((resp)=>{
+      console.log(resp);
+      if(resp == 'yes'){
+
       } else {
 
       }
+    });
+    this.socketIOservice.perderJuego().subscribe(() => {
+      console.log('perder')
+      // this.game.
     })
+    this.socketIOservice.entrarAlJuego(0)
   }
   enviarMensaje(event) {
     if (event.keyCode != 13) return;
-    this.socketIOservice.enviarPregunta(this.msgSend)
+    this.socketIOservice.enviarPregunta({gameId:this.game.id,mensaje:this.msgSend})
     // console.log(this.msgSend)
+    this.msgChat.push({
+      recibida: false,
+      pregunta: this.msgSend
+    })
     this.msgSend = ''
   }
   enviarGuess(){
-    if(!this.myTurn) return;
+    // if(!this.myTurn) return;
+    console.log('Mandando guess')
     this.myTurn = false;
-    this.socketIOservice.enviarGuess(this.selectedImg);
+    let a = {gameId: this.game.id, img:this.selectedImg}
+    this.socketIOservice.enviarGuess(a);
   }
 
+  enviarRespuesta(resp: string){
+    this.socketIOservice.enviarRespuesta({gameId:this.game.id,respuesta:resp})
+  }
+
+  seleccionarImagen(imgUrl: string){
+    this.selectedImg = imgUrl;
+  }
+  disable(event){
+    console.log(event);
+  }
 }

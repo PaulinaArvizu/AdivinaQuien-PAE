@@ -31,7 +31,7 @@ export class SocketIoService {
     juegoGanado: "ganar"
   }
   entrarAlJuego(gameId) {
-    this.socket.emit(this.emitEvents.entrarAlJuego, 'game' + gameId)
+    this.socket.emit(this.emitEvents.entrarAlJuego, gameId)
   }
   enviarPregunta(pregunta) {
     this.socket.emit(this.emitEvents.hacerPregunta, pregunta)
@@ -45,7 +45,12 @@ export class SocketIoService {
   enviarVeredicto(veredicto) {
     this.socket.emit(this.emitEvents.enviarVeredicto, veredicto)
   }
-
+  enviarVictoria(gameId, userEmail) {
+    this.socket.emit(this.emitEvents.juegoGanado, { gameId, userEmail });
+  }
+  enviarPerdida(gameId, userEmail) {
+    this.socket.emit(this.emitEvents.juegoPerdido, { gameId, userEmail });
+  }
 
   recibirDatosJuego() {
     return Observable.create((observer) => {
@@ -71,6 +76,7 @@ export class SocketIoService {
   recibirGuess() {
     return Observable.create((observer) => {
       this.socket.on(this.onEvents.recibePregunta, (guess) => {
+        console.log(guess);
         observer.next(guess);
       })
     })
