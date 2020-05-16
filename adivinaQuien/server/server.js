@@ -93,7 +93,6 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
     })
     socket.on(onEvents.hacerPregunta, msg => { //msg = {gameId, mensaje}
         // sending to all clients in 'game' room except sender
-        console.log('Mensaje: ',msg)
         socket.to('game' + msg.gameId).emit(emitEvents.recibePregunta, msg.mensaje);
     })
     socket.on(onEvents.enviarRespuesta, msg => { //msg = {gameId, respuesta}

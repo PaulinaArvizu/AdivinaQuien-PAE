@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { SocketIoService } from '../socket-io.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -60,15 +61,20 @@ export class GameComponent implements OnInit {
     fotos: []
   };
   constructor(private socketIOservice: SocketIoService) { }
-
+  private subDatos: Subscription;
+  private subGuess: Subscription;
+  private subPregunta: Subscription;
+  private subGanar: Subscription;
+  private subRespuesta: Subscription;
+  private subPerder: Subscription;
   ngOnInit(): void {
-    this.socketIOservice.recibirDatosJuego().subscribe((datos) => {
+    this.subDatos = this.socketIOservice.recibirDatosJuego().subscribe((datos) => {
       this.game = datos;
 
       this.myTurn = this.jugador.correo == this.game.Jugador2.correo;
 
-    })
-    this.socketIOservice.recibirGuess().subscribe((guess) => {
+    });
+    this.subGuess = this.socketIOservice.recibirGuess().subscribe((guess) => {
       console.log('recibiendo guess')
       this.myTurn = true
       let win = this.myImg !=guess;
@@ -78,16 +84,16 @@ export class GameComponent implements OnInit {
         console.log('Derrota');
       }
       this.socketIOservice.enviarVeredicto({gameId:this.game.id, userEmail: this.jugador.correo, win})
-    })
-    this.socketIOservice.recibirPregunta().subscribe((pregunta: string) => {
-      console.log('Entra a recibir pregunta')
+    });
+    this.subPregunta = this.socketIOservice.recibirPregunta().subscribe((pregunta: string) => {
+      
       this.msgChat.push({
         recibida: true,
         pregunta: pregunta
       })
-      console.log('pregunta: ',pregunta)
-    })
-    this.socketIOservice.recibirRespuesta().subscribe((resp)=>{
+      
+    });
+    this.subRespuesta = this.socketIOservice.recibirRespuesta().subscribe((resp)=>{
       console.log(resp);
       if(resp == 'yes'){
 
@@ -95,12 +101,25 @@ export class GameComponent implements OnInit {
 
       }
     });
-    this.socketIOservice.perderJuego().subscribe(() => {
+    this.subPerder = this.socketIOservice.perderJuego().subscribe(() => {
       console.log('perder')
       // this.game.
-    })
-    this.socketIOservice.entrarAlJuego(0)
+    });
+    this.subGanar = this.socketIOservice.ganarJuego().subscribe(()=>{
+      console.log('ganar');
+    });
+    this.socketIOservice.entrarAlJuego(0);
   }
+
+  ngOnDestroy() {
+    this.subDatos.unsubscribe();
+    this.subGanar.unsubscribe();
+    this.subGuess.unsubscribe();
+    this.subPerder.unsubscribe();
+    this.subPregunta.unsubscribe();
+    this.subRespuesta.unsubscribe();
+  }
+
   enviarMensaje(event) {
     if (event.keyCode != 13) return;
     this.socketIOservice.enviarPregunta({gameId:this.game.id,mensaje:this.msgSend})
