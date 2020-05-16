@@ -19,7 +19,7 @@ class Partida extends DB {
             },
             ganador: {
                 type: String,
-                required: true
+                required: false
             },
             status: {
                 type: Boolean,
@@ -43,7 +43,7 @@ class Partida extends DB {
     async createPartida(Jugador1, Jugador2, album) {
         return await super.add({  'Jugador1':Jugador1,
                             'Jugador2':Jugador2,
-                            'ganador': " ",
+                            'ganador': "",
                             'status':false,
                             'album': album
                         })
