@@ -167,9 +167,9 @@ const onEvents = { //eventos que el usuario envia
     juegoGanado: "ganar"
 }
 
-// app.get('*', (req,res)=> {
-//     res.sendFile(path.join(__dirname, '..', 'dist', 'adivinaQuien', 'index.html'));
-// });
+app.get('*', (req,res)=> {
+    res.sendFile(path.join(__dirname, '..', 'dist', 'adivinaQuien', 'index.html'));
+});
 
 
 // app.listen(port, () => console.log("running on port " + port));
