@@ -76,41 +76,46 @@ app.use('/api/',userRouter);
 //         res.sendFile(__dirname + '/public/index.html');
 //     })
 
-
+const usersModel = require('./models/usuario')
+const gameModel = require('./models/partida')
 io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo siguiente
     console.log('Un usuario ha entrado al juego');
 
     socket.on(onEvents.entrarAlJuego, gameId => {
-        let foundGame = games.find(g => g.id == gameId);
+        // let foundGame = games.find(g => g.id == gameId);
 
         //mete al jugador al room
         console.log('mete al jugador al room game' + gameId);
         socket.join('game' + gameId);
 
         //envia al jugador los datos del juego
-        socket.emit(emitEvents.recibeDatosJuego, foundGame);
+        // socket.emit(emitEvents.recibeDatosJuego, foundGame);
     })
-    socket.on(onEvents.hacerPregunta, msg => { //msg = {gameId, mensajeDiv}
+    socket.on(onEvents.hacerPregunta, msg => { //msg = {gameId, mensaje}
         // sending to all clients in 'game' room except sender
-        socket.to('game' + msg.gameId).emit(emitEvents.recibePregunta, msg.mensajeDiv);
+        console.log('Mensaje: ',msg)
+        socket.to('game' + msg.gameId).emit(emitEvents.recibePregunta, msg.mensaje);
     })
     socket.on(onEvents.enviarRespuesta, msg => { //msg = {gameId, respuesta}
         // sending to all clients in 'game' room except sender
+        
         socket.to('game' + msg.gameId).emit(emitEvents.recibeRespuesta, msg.respuesta);
     })
     socket.on(onEvents.enviarGuess, msg => { //msg = {gameId, img}
+        console.log(msg)
         socket.to('game' + msg.gameId).emit(emitEvents.recibeGuess, msg.img);
     })
     socket.on(onEvents.enviarVeredicto, msg => { //msg = {gameId, userEmail, win}
         //get al usuario con "userEmail"
         console.log('se hace un get al usuario con su correo');
-
+        let u = usersModel.getUserByEmail(msg.userEmail)
         if (msg.win) { //esta persona ganó
             //get al juego con "gameId"
             console.log('get al juego con "gameId"');
-
+            let g = gameModel.getPartidaById(msg.gameId)
             //update al juego de quien ganó y cambiar el status a "terminado"
             console.log('update al juego de quien ganó y cambiar el status a "terminado"');
+            gameModel.putPartida(g.gameId, {ganador: u.email, status:true})
 
             //se le notifica al otro usuario que perdió
             socket.to('game' + msg.gameId).emit(emitEvents.juegoPerdidio);
@@ -122,12 +127,14 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
     socket.on(onEvents.juegoGanado, msg => { //msg = {gameId, userEmail}
         //get al usuario con "userEmail"
         console.log('se hace un get al usuario con su correo');
+        let u = usersModel.getUserByEmail
 
         //get al juego con "gameId"
         console.log('get al juego con "gameId"');
-
+        let g = gameModel.getPartidaById(msg.gameId)
         //update al juego de quien ganó y cambiar el status a "terminado"
         console.log('update al juego de quien ganó y cambiar el status a "terminado"');
+        gameModel.putPartida(g.gameId, {ganador: u.email, status:true})
         
     })
     socket.on(onEvents.juegoPerdidio, msg => { //msg = {gameId, userEmail}
@@ -161,9 +168,9 @@ const onEvents = { //eventos que el usuario envia
     juegoGanado: "ganar"
 }
 
-app.get('*', (req,res)=> {
-    res.sendFile(path.join(__dirname, '..', 'dist', 'adivinaQuien', 'index.html'));
-});
+// app.get('*', (req,res)=> {
+//     res.sendFile(path.join(__dirname, '..', 'dist', 'adivinaQuien', 'index.html'));
+// });
 
 
 // app.listen(port, () => console.log("running on port " + port));
