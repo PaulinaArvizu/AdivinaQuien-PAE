@@ -325,7 +325,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="" method="" enctype="multipart/form-data">
+
+        <form action="" method="" enctype="multipart/form-data" #newImgForm="ngForm" (ngSubmit)="onUpload(newImgForm)">
           <div class="col-auto">
             <div class="input-group">
               <label for="inlineFormInputGroup">
@@ -333,15 +334,18 @@
                   <div class="input-group-text">Nombre</div>
                 </div>
               </label>
-              <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Ej. Imagen1">
+              <input ngModel type="text" class="form-control" id="inlineFormInputGroup" placeholder="Ej. Imagen1"
+                name="name" id="name">
             </div>
           </div>
           <div class="custom-file col-auto">
-            <input type="file" class="custom-file-input" name="image">
+            <input type="file" ngModel (change)="onFileChanged($event)" class="custom-file-input" name="image"
+              #fileInput>
             <label class="custom-file-label">Seleccionar archivo...</label>
           </div>
-          <button class="btn btn-outline-info">Añadir imagen</button>
+          <button class="btn btn-outline-info" type="submit">Añadir imagen</button>
         </form>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -528,26 +532,30 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="" method="" enctype="multipart/form-data">
-          <div class="col-auto">
-            <div class="input-group">
-              <label for="inlineFormInputGroup">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">Nombre</div>
-                </div>
-              </label>
-              <input type="text" class="form-control" id="inlineFormInputGroup">
-            </div>
+        <div class="col-auto">
+          <div class="input-group">
+            <label for="inlineFormInputGroup">
+              <div class="input-group-prepend">
+                <div class="input-group-text">Nombre</div>
+              </div>
+            </label>
+            <input type="text" class="form-control" id="inlineFormInputGroup">
           </div>
-          <button class="btn btn-outline-info">Cambiar nombre de usuario</button>
-        </form>
-        <form action="" method="" enctype="multipart/form-data">
+        </div>
+        <button class="btn btn-outline-info">Cambiar nombre de usuario</button>
+
+
+
+        <form action="" method="" enctype="multipart/form-data" #profileImgForm="ngForm"
+          (ngSubmit)="onUploadProfile(profileImgForm)">
           <div class="custom-file col-auto">
-            <input type="file" class="custom-file-input" name="image">
+            <input type="file" ngModel (change)="onFileChanged($event)" class="custom-file-input" name="image"
+              #fileInput>
             <label class="custom-file-label">Seleccionar archivo...</label>
           </div>
-          <button class="btn btn-outline-info">Cambiar imagen</button>
+          <button class="btn btn-outline-info" type="submit">Cambiar imagen</button>
         </form>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -555,26 +563,26 @@
     </div>
   </div>
 </div>
-  
-  <!-- Modal aviso de error para borrar el album-->
-  <div class="modal fade" id="errorDeleteAlbumModal" tabindex="-1" role="dialog" aria-labelledby="errorDeleteAlbumModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h5 class="modal-title" id="errorDeleteAlbumModalLabel">
-			  <i class="fas fa-exclamation-triangle"></i> No se puede borrar este álbum
-			</h5>
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-		<div class="modal-body">
-		  Hay juegos pendientes con este álbum!
-		</div>
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		  <button type="button" class="btn btn-primary">Save changes</button>
-		</div>
-	  </div>
-	</div>
+
+<!-- Modal aviso de error para borrar el album-->
+<div class="modal fade" id="errorDeleteAlbumModal" tabindex="-1" role="dialog"
+  aria-labelledby="errorDeleteAlbumModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorDeleteAlbumModalLabel">
+          <i class="fas fa-exclamation-triangle"></i> No se puede borrar este álbum
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Hay juegos pendientes con este álbum!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
   </div>
+</div>
