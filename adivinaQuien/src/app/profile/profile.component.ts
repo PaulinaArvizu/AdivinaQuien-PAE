@@ -228,7 +228,7 @@ export class ProfileComponent implements OnInit {
 	}
 
 	editIsValid() {
-		if (this.tempAlbum.nombre.length < 1 || this.tempAlbum.fotos.length < 2) this.editValid = false;
+		if (this.tempAlbum.nombre.length < 1 || this.tempAlbum.fotos.length < 5) this.editValid = false;
 		else this.editValid = true;
 	}
 

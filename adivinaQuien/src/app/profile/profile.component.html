@@ -279,7 +279,7 @@
           <table class="table table-hover table-borderless">
             <tbody>
               <ng-container *ngFor="let album of albums; let i = index">
-                <tr *ngIf="album.fotos.length >= 2" (click)="newGameSelectedAlbum(album._id)">
+                <tr *ngIf="album.fotos.length >= 5" (click)="newGameSelectedAlbum(album._id)">
                   <td style="vertical-align: middle" width="40%" [class.text-success]="newGame.album == album._id">
                     {{album.nombre}}</td>
                   <td style="vertical-align: middle" width="30%" class="text-center"
