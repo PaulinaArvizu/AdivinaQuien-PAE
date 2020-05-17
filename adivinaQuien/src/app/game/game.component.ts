@@ -18,7 +18,7 @@ export class GameComponent implements OnInit {
     terminada: true,
     pendiente: false
   }
-  msgChat: object[] = []
+  msgChat = [];
   msgSend = '';
   jugador = {
     email: "",
@@ -79,13 +79,16 @@ export class GameComponent implements OnInit {
       this.myTurn = this.jugador.email === this.game.jugador2;
       let album2 = this.userService.getOneAlbum(this.game.album)
       this.album =  album2.fotos.map(e => this.userService.getOneFoto(e))
-      this.myImg = this.album[parseInt(Math.random() * this.album.length)];
+      let index = Math.floor((Math.random() * this.album.length));
+      console.log('index', index);
+      this.myImg = this.album[index];
+      console.log('myImg', this.myImg);
       if (this.jugador.email === this.game.jugador1) {
         this.contrincante = this.userService.getOneUser(this.game.jugador2)
       } else {
         this.contrincante = this.userService.getOneUser(this.game.jugador1)
       }
-      console.log(this.contrincante);
+      console.log('contrincante', this.contrincante);
     });
     this.subGuess = this.socketIOservice.recibirGuess().subscribe((guess) => {
       this.myTurn = true
