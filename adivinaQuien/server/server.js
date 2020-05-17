@@ -127,6 +127,10 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
 
     } else { //esta persona perdió
       //se le notifica al otro usuario que ganó
+      await gameModel.putPartida(g.gameId, {
+        ganador: u.email,
+        status: true
+      })
       socket.emit(emitEvents.juegoPerdidio);
       socket.to('game'+msg.gameId).emit(emitEvents.juegoGanado);
     }
