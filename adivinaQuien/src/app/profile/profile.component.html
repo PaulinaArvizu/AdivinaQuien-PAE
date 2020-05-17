@@ -24,14 +24,16 @@
               data-ride="carousel">
               <div class="carousel-inner" align="center">
                 <div class="carousel-item active">
-                  <img class="d-block rounded" src="{{fotos[0].url}}">
+				  <img class="d-block rounded" src="{{fotos[0].url}}">
+				  <p>{{fotos[0].name}}</p>
                   <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar"
                     (click)="deleteFoto(fotos[0]._id)">
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </div>
                 <div class="carousel-item" *ngFor="let foto of fotos.slice(1)">
-                  <img class="d-block rounded" src="{{foto.url}}">
+				  <img class="d-block rounded" src="{{foto.url}}">
+				  <p>{{foto.name}}</p>
                   <button class="btn btn-danger deleteImg tooltip-test" title="Eliminar" (click)="deleteFoto(foto._id)">
                     <i class="fas fa-trash-alt"></i>
                   </button>
@@ -128,7 +130,7 @@
               <tbody>
                 <ng-container *ngFor="let juego of juegos">
                   <tr *ngIf="juego.status">
-                    <td class="text-center" style="vertical-align: middle">{{juego.jugador2}}</td>
+                    <td class="text-center" style="vertical-align: middle">{{juego.jugador2.nombre}}</td>
                     <td align="center" style="vertical-align: middle">
                       <button class="btn btn-success" *ngIf="juego.ganador == user.email">
                         <i class="fas fa-trophy"></i>
