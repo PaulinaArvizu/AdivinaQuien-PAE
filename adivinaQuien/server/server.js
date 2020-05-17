@@ -185,7 +185,7 @@ const onEvents = { //eventos que el usuario envia
 }
 
 app.get('*', (req,res)=> {
-    res.sendFile(path.join(__dirname, '..', 'dist', 'adivinaQuien', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 
