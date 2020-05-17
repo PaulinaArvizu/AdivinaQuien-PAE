@@ -270,7 +270,7 @@ export class ProfileComponent implements OnInit {
 	}
 
 	onUpload(form: NgForm) {
-		if(!this.selectedFile) {
+		if(!this.selectedFile || form.value.name == '') {
 			console.log('cancelar');
 			return;
 		}
