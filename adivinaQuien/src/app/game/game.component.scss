@@ -14,24 +14,36 @@
   text-transform: uppercase;
 }
 
-ul {
+.ul {
   margin: 0;
   padding: 0;
   list-style: none;
+  vertical-align: middle;
 }
 
 .heading.heading-icon {
   display: block;
 }
 
-.our-webcoderskull {
-  background: url("http://www.webcoderskull.com/img/right-sider-banner.png") no-repeat center (top / cover);
-}
+// .our-webcoderskull {
+//   background: url("http://www.webcoderskull.com/img/right-sider-banner.png") no-repeat center (top / cover);
+//   height: 100%;
+// }
 
 .cnt-block {
   float: left;
-  width: 90%;
-  height: 200px;
+  // max-width: 300px;
+  // max-height: 300px;
+  // background: white;
+  // padding: 30px 20px;
+  text-align: center;
+}
+
+cnt-block-selection, cnt-block-oponente {
+  float: left;
+  width: 100%;
+  max-width: 200px;
+  height: 100px;
   background: white;
   padding: 30px 20px;
   text-align: center;
@@ -43,26 +55,26 @@ ul {
   background: grey;
 }
 
-.cnt-block {
-  figure {
-    width: 120px;
-    height: 120px;
-    border-radius: 100%;
-    display: inline-block;
-    margin-bottom: 15px;
-  }
-
-  img {
-    width: 120x;
-    height: 120px;
-    border-radius: 100%;
-  }
+.cnt-block img {
+  max-width: 100%;
+  max-height: 100%;
+  display: inline-block;
+  margin-bottom: 15px;
+  background-color: white;
+  border: 2px solid #d5d5d5;
+  vertical-align: middle;
+}
+.cnt-block-selection img, .cnt-block-oponente img {
+  max-width: 300px;
+  max-height: 250px;
+  display: inline-block;
+  margin-bottom: 15px;
+  align: center;
 }
 
 .selected img {
   width: 100px;
   height: 100px;
-  border-radius: 100%;
 }
 
 /* ---------------------------------------------------------------------------------------------------------chat*/
@@ -78,10 +90,10 @@ body {
 .popup-box {
   background-color: #ffffff;
   border: 1px solid #b0b0b0;
-  bottom: 0;
   display: none;
   height: 415px;
   position: fixed;
+  bottom: 0;
   right: 70px;
   width: 300px;
   font-family: 'Open Sans', sans-serif;
@@ -92,7 +104,6 @@ body {
 
   a {
     border: 2px solid #ff6701;
-    border-radius: 35px;
     color: red;
     color: #ff6701;
     font-size: 23px;
@@ -102,7 +113,6 @@ body {
 
     &:hover {
       border: 2px solid #000;
-      border-radius: 35px;
       color: red;
       color: #000;
       font-size: 23px;
@@ -130,7 +140,6 @@ body {
 .bg_none {
   i {
     border: 1px solid #ff6701;
-    border-radius: 25px;
     color: #ff6701;
     font-size: 17px;
     height: 33px;
@@ -140,7 +149,6 @@ body {
 
   &:hover i {
     border: 1px solid #000;
-    border-radius: 25px;
     color: #000;
     font-size: 17px;
     height: 33px;
@@ -162,12 +170,11 @@ body {
 
 .popup-head-left img {
   border: 1px solid #7b7b7b;
-  border-radius: 50%;
   width: 44px;
 }
 
 .popup-messages-footer {
-  >textarea {
+  > textarea {
     border-bottom: 1px solid #b2b2b2 !important;
     height: 34px !important;
     margin: 7px;
@@ -190,7 +197,6 @@ body {
 
 .simple_round {
   background: #d1d1d1 none repeat scroll 0 0;
-  border-radius: 50%;
   color: #4b4b4b !important;
   height: 21px;
   padding: 0 0 0 1px;
@@ -234,7 +240,6 @@ body {
 .chat-header-button {
   background: transparent none repeat scroll 0 0;
   border: 1px solid #636364;
-  border-radius: 50%;
   font-size: 14px;
   height: 30px;
   width: 30px;
@@ -274,7 +279,6 @@ body {
   .direct-chat-text {
     background: #dfece7 none repeat scroll 0 0;
     border: 1px solid #dfece7;
-    border-radius: 2px;
     color: #1f2121;
   }
 
@@ -304,7 +308,6 @@ body {
   .direct-chat-img {
     border: 1px solid #fff;
     background: #3f9684 none repeat scroll 0 0;
-    border-radius: 50%;
     float: left;
     height: 40px;
     margin: -21px 0 0;
@@ -365,14 +368,11 @@ body {
 }
 
 .direct-chat-text {
-
-  &::after,
-  &::before {
+  &::after, &::before {
     border-color: transparent #dfece7 transparent transparent;
   }
 
-  &::after,
-  &::before {
+  &::after, &::before {
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -399,14 +399,12 @@ body {
 .popup-messages .direct-chat-text {
   background: #dfece7 none repeat scroll 0 0;
   border: 1px solid #dfece7;
-  border-radius: 2px;
   color: #1f2121;
 }
 
 .direct-chat-text {
   background: #d2d6de none repeat scroll 0 0;
   border: 1px solid #d2d6de;
-  border-radius: 5px;
   color: #444;
   margin: 5px 0 0 50px;
   padding: 5px 10px;
@@ -418,19 +416,42 @@ body {
 .selection-box {
   background-color: white;
   border: 1px solid #b0b0b0;
-  bottom: 0;
+  // top: 50%;
   height: 350px;
-  position: fixed;
-  left: 70px;
-  width: 200px;
+  // position: fixed;
+  // left: 70px;
+  width: 300px;
+  margin-top: 100px;
 }
 
 .display-box {
   background-color: white;
   border: 1px solid #b0b0b0;
-  height: 275px;
-  position: fixed;
-  right: 70px;
+  height: 300px;
   width: 300px;
-  top: 50px;
+  max-height: 275px;
+  max-width: 300px;
+  // position: fixed;
+  // left: 70px;
+  top: 100px;
+  margin-bottom: 100px;
 }
+
+.fixed-box {
+  position: fixed;
+  top: 100px;
+  left: 70px;
+}
+
+.li {
+  width: 300px;
+  // background-color: white;
+  padding: 30px 20px;
+  // border: 2px solid #d5d5d5;
+}
+
+.li div {
+  // height: 100%;
+  width: 100%;
+}
+
