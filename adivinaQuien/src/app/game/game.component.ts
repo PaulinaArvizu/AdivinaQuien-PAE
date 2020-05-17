@@ -92,7 +92,7 @@ export class GameComponent implements OnInit {
       console.log(guess);
       let adivino = this.myImg._id == guess._id;
       if (adivino) {
-        alert('perdiste')
+        
         this.socketIOservice.enviarVeredicto({ gameId: this.game._id, userEmail: this.contrincante.email, adivino })
       }
 
@@ -112,10 +112,10 @@ export class GameComponent implements OnInit {
       
     });
     this.subPerder = this.socketIOservice.perderJuego().subscribe(() => {
-      console.log('perder')
+      alert('perdiste')
     });
     this.subGanar = this.socketIOservice.ganarJuego().subscribe(() => {
-      console.log('ganar');
+      alert('ganaste');
     });
     // this.jugador = this.userService.getOneUser(this.auth.getTokenData().email)
     
@@ -133,7 +133,9 @@ export class GameComponent implements OnInit {
   }
 
   enviarMensaje(event) {
+    
     if (event.keyCode != 13 || !this.myTurn) return;
+    console.log(this.msgChat);
     console.log('enviar preg');
     this.socketIOservice.enviarPregunta({ gameId: this.game._id, mensaje: this.msgSend.trim() })
     // console.log(this.msgSend)
@@ -144,6 +146,7 @@ export class GameComponent implements OnInit {
     this.msgSend = ''
   }
   enviarGuess() {
+    console.log(this.msgChat);
     if (!this.myTurn) return;
     this.myTurn = false;
     let a = { gameId: this.game._id, img: this.selectedImg }

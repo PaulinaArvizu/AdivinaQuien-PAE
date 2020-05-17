@@ -469,14 +469,13 @@
 
         <div class="direct-chat-msg" *ngFor="let item of msgChat">
           <div class="direct-chat-info clearfix">
-            <span class="direct-chat-name pull-left"
-              *ngIf="item.recibido; else nombreEnviado">{{contrincante.nombre}}</span>
-            <ng-template #nombreEnviado>{{jugador.nombre}}</ng-template>
+            <span class="direct-chat-name pull-left" *ngIf="item.recibida==true">{{contrincante.nombre}}</span>
+            <span class="direct-chat-name pull-left" *ngIf="item.recibida!=true">{{jugador.nombre}}</span>
           </div>
           <!-- /.direct-chat-info -->
           
-          <img *ngIf="item.recibido" alt="fotorival" src="{{contrincante.fotoPerfil}}" class="direct-chat-img"><!-- /.direct-chat-img -->
-          <img *ngIf="!item.recibido" alt="fotojugador" src="{{jugador.fotoPerfil}}" class="direct-chat-img"><!-- /.direct-chat-img -->
+          <img *ngIf="item.recibida==true" alt="fotorival" src="{{contrincante.fotoPerfil}}" class="direct-chat-img"><!-- /.direct-chat-img -->
+          <img *ngIf="item.recibida==false" alt="fotojugador" src="{{jugador.fotoPerfil}}" class="direct-chat-img"><!-- /.direct-chat-img -->
           <div class="direct-chat-text">
             {{item.pregunta}} <br>
           </div>
