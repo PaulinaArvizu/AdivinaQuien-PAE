@@ -54,6 +54,7 @@ export class GameComponent implements OnInit {
   };
   guessVeredict: boolean = false;
   myTurn: boolean;
+  
   contrincante = {
     email: "",
     password: "",
@@ -75,16 +76,16 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.subDatos = this.socketIOservice.recibirDatosJuego().subscribe((datos) => {
       this.game = datos;
-      this.myTurn = this.jugador.email != this.game.jugador1;
+      this.myTurn = this.jugador.email === this.game.jugador2;
       let album2 = this.userService.getOneAlbum(this.game.album)
       this.album =  album2.fotos.map(e => this.userService.getOneFoto(e))
       this.myImg = this.album[parseInt(Math.random() * this.album.length)];
       if (this.jugador.email === this.game.jugador1) {
         this.contrincante = this.userService.getOneUser(this.game.jugador2)
       } else {
-        console.log(this.game.jugador1);
         this.contrincante = this.userService.getOneUser(this.game.jugador1)
       }
+      console.log(this.contrincante);
     });
     this.subGuess = this.socketIOservice.recibirGuess().subscribe((guess) => {
       this.myTurn = true
@@ -107,6 +108,7 @@ export class GameComponent implements OnInit {
         recibida: true,
         pregunta: resp
       })
+      this.myTurn = false
       
     });
     this.subPerder = this.socketIOservice.perderJuego().subscribe(() => {
@@ -116,10 +118,9 @@ export class GameComponent implements OnInit {
       console.log('ganar');
     });
     // this.jugador = this.userService.getOneUser(this.auth.getTokenData().email)
-    console.log(this.route.snapshot.paramMap.get('id'));
+    
     this.socketIOservice.entrarAlJuego(this.route.snapshot.paramMap.get('id'));
     this.jugador = this.userService.getOneUser(this.auth.getTokenData().email)
-    
   }
 
   ngOnDestroy() {
@@ -133,7 +134,7 @@ export class GameComponent implements OnInit {
 
   enviarMensaje(event) {
     if (event.keyCode != 13 || !this.myTurn) return;
-    this.myTurn = false;
+    console.log('enviar preg');
     this.socketIOservice.enviarPregunta({ gameId: this.game._id, mensaje: this.msgSend.trim() })
     // console.log(this.msgSend)
     this.msgChat.push({
@@ -150,7 +151,8 @@ export class GameComponent implements OnInit {
   }
 
   enviarRespuesta(resp: string) {
-    if(!this.myTurn) return;
+    if(this.myTurn) return;
+    console.log('enviar resp');
     this.msgChat.push({
       recibida: false,
       pregunta: resp
