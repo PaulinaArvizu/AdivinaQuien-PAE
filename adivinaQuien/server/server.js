@@ -4,7 +4,7 @@ const users = require('./users.json');
 const fs = require('fs');
 const authRouter = require('./routes/auth')
 const albumRouter = require('./routes/album')
-const fotoRouter= require('./routes/fotos')
+const fotoRouter = require('./routes/fotos')
 const userRouter = require('./routes/usuario')
 const partidaRouter = require('./routes/partida')
 
@@ -25,16 +25,16 @@ app.use(express.json());
 
 
 console.log(path.join(__dirname, '..', 'dist', 'adivinaQuien'));
-app.use(express.static( path.join(__dirname, '..', 'dist', 'adivinaQuien')));
+app.use(express.static(path.join(__dirname, '..', 'dist', 'adivinaQuien')));
 app.use(express.static(__dirname + '/public'));
 
 //rutas
 // app.use(uploadRouter);
 app.use('/api/', authRouter);
 app.use('/api/', partidaRouter);
-app.use('/api/',albumRouter);
+app.use('/api/', albumRouter);
 app.use('/api/', fotoRouter);
-app.use('/api/',userRouter);
+app.use('/api/', userRouter);
 // app.get('/', (req, res) => {
 //     res.send("server");
 // })
@@ -79,92 +79,103 @@ app.use('/api/',userRouter);
 const usersModel = require('./models/usuario')
 const gameModel = require('./models/partida')
 io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo siguiente
-    console.log('Un usuario ha entrado al juego');
+  console.log('Un usuario ha entrado al juego');
 
-    socket.on(onEvents.entrarAlJuego, gameId => {
-        // let foundGame = games.find(g => g.id == gameId);
+  socket.on(onEvents.entrarAlJuego, gameId => {
+    gameModel.getPartidaById(gameId).then((foundGame) => {
+      console.log(foundGame);
+      //mete al jugador al room
+      console.log('mete al jugador al room game' + gameId);
+      socket.join('game' + gameId);
 
-        //mete al jugador al room
-        console.log('mete al jugador al room game' + gameId);
-        socket.join('game' + gameId);
+      //envia al jugador los datos del juego
+      socket.emit(emitEvents.recibeDatosJuego, foundGame);
+      
+    })
 
-        //envia al jugador los datos del juego
-        // socket.emit(emitEvents.recibeDatosJuego, foundGame);
-    })
-    socket.on(onEvents.hacerPregunta, msg => { //msg = {gameId, mensaje}
-        // sending to all clients in 'game' room except sender
-        socket.to('game' + msg.gameId).emit(emitEvents.recibePregunta, msg.mensaje);
-    })
-    socket.on(onEvents.enviarRespuesta, msg => { //msg = {gameId, respuesta}
-        // sending to all clients in 'game' room except sender
-        
-        socket.to('game' + msg.gameId).emit(emitEvents.recibeRespuesta, msg.respuesta);
-    })
-    socket.on(onEvents.enviarGuess, msg => { //msg = {gameId, img}
-        console.log(msg)
-        socket.to('game' + msg.gameId).emit(emitEvents.recibeGuess, msg.img);
-    })
-    socket.on(onEvents.enviarVeredicto, msg => { //msg = {gameId, userEmail, win}
-        //get al usuario con "userEmail"
-        console.log('se hace un get al usuario con su correo');
-        let u = usersModel.getUserByEmail(msg.userEmail)
-        if (msg.win) { //esta persona ganó
-            //get al juego con "gameId"
-            console.log('get al juego con "gameId"');
-            let g = gameModel.getPartidaById(msg.gameId)
-            //update al juego de quien ganó y cambiar el status a "terminado"
-            console.log('update al juego de quien ganó y cambiar el status a "terminado"');
-            gameModel.putPartida(g.gameId, {ganador: u.email, status:true})
+  })
+  socket.on(onEvents.hacerPregunta, msg => { //msg = {gameId, mensaje}
+    // sending to all clients in 'game' room except sender
+    socket.to('game' + msg.gameId).emit(emitEvents.recibePregunta, msg.mensaje);
+  })
+  socket.on(onEvents.enviarRespuesta, msg => { //msg = {gameId, respuesta}
+    // sending to all clients in 'game' room except sender
 
-            //se le notifica al otro usuario que perdió
-            socket.to('game' + msg.gameId).emit(emitEvents.juegoPerdidio);
-        } else { //esta persona perdió
-            //se le notifica al otro usuario que ganó
-            socket.to('game' + msg.gameId).emit(emitEvents.juegoGanado);
-        }
-    })
-    socket.on(onEvents.juegoGanado, msg => { //msg = {gameId, userEmail}
-        //get al usuario con "userEmail"
-        console.log('se hace un get al usuario con su correo');
-        let u = usersModel.getUserByEmail
+    socket.to('game' + msg.gameId).emit(emitEvents.recibeRespuesta, msg.respuesta);
+  })
+  socket.on(onEvents.enviarGuess, msg => { //msg = {gameId, img}
+    console.log(msg)
+    socket.to('game' + msg.gameId).emit(emitEvents.recibeGuess, msg.img);
+  })
+  socket.on(onEvents.enviarVeredicto, async msg => { //msg = {gameId, userEmail, win}
+    //get al usuario con "userEmail"
+    console.log('se hace un get al usuario con su correo');
+    let u = usersModel.getUserByEmail(msg.userEmail)
+    if (msg.win) { //esta persona ganó
+      //get al juego con "gameId"
+      console.log('get al juego con "gameId"');
+      let g = gameModel.getPartidaById(msg.gameId)
+      //update al juego de quien ganó y cambiar el status a "terminado"
+      console.log('update al juego de quien ganó y cambiar el status a "terminado"');
+      await gameModel.putPartida(g.gameId, {
+        ganador: u.email,
+        status: true
+      })
+      socket.to('game' + msg.gameId).emit(emitEvents.juegoPerdidio);
 
-        //get al juego con "gameId"
-        console.log('get al juego con "gameId"');
-        let g = gameModel.getPartidaById(msg.gameId)
-        //update al juego de quien ganó y cambiar el status a "terminado"
-        console.log('update al juego de quien ganó y cambiar el status a "terminado"');
-        gameModel.putPartida(g.gameId, {ganador: u.email, status:true})
-        
-    })
-    socket.on(onEvents.juegoPerdidio, msg => { //msg = {gameId, userEmail}
-        //get al usuario con "userEmail"
-        console.log('se hace un get al usuario con su correo');
+      //se le notifica al otro usuario que perdió
 
-        //update al usuario de su historial de juegos con el veredicto (win)
-        console.log("update al usuario de su historial de juegos con el veredicto (win)");
+    } else { //esta persona perdió
+      //se le notifica al otro usuario que ganó
+      socket.to('game' + msg.gameId).emit(emitEvents.juegoGanado);
+    }
+  })
+  socket.on(onEvents.juegoGanado, async msg => { //msg = {gameId, userEmail}
+    //get al usuario con "userEmail"
+    console.log('se hace un get al usuario con su correo');
+    let u = await usersModel.getUserByEmail
 
+    //get al juego con "gameId"
+    console.log('get al juego con "gameId"');
+    let g = await gameModel.getPartidaById(msg.gameId)
+    //update al juego de quien ganó y cambiar el status a "terminado"
+    console.log('update al juego de quien ganó y cambiar el status a "terminado"');
+    await gameModel.putPartida(g.gameId, {
+      ganador: u.email,
+      status: true
     })
+
+  })
+  socket.on(onEvents.juegoPerdidio, async msg => { //msg = {gameId, userEmail}
+    //get al usuario con "userEmail"
+    console.log('se hace un get al usuario con su correo');
+    let u = await usersModel.getUserByEmail(msg.userEmail)
+    //update al usuario de su historial de juegos con el veredicto (win)
+    console.log("update al usuario de su historial de juegos con el veredicto (win)");
+    u.historialPartidas.push(gameId)
+    await usersModel.putUser(u)
+  })
 
 });
 
 const emitEvents = { //eventos que el usuario obtiene
-    recibeDatosJuego: "recibeDatosJuego",
-    recibePregunta: "pregunta",
-    recibeRespuesta: "respuesta",
-    recibeGuess: "guess",
-    recibeVeredicto: "veredicto",
-    juegoPerdidio: "perder",
-    juegoGanado: "ganar"
+  recibeDatosJuego: "recibeDatosJuego",
+  recibePregunta: "pregunta",
+  recibeRespuesta: "respuesta",
+  recibeGuess: "guess",
+  recibeVeredicto: "veredicto",
+  juegoPerdidio: "perder",
+  juegoGanado: "ganar"
 }
 
 const onEvents = { //eventos que el usuario envia
-    entrarAlJuego: "entrarAlJuego",
-    hacerPregunta: "pregunta",
-    enviarRespuesta: "respuesta",
-    enviarGuess: "guess",
-    enviarVeredicto: "veredicto",
-    juegoPerdidio: "perder",
-    juegoGanado: "ganar"
+  entrarAlJuego: "entrarAlJuego",
+  hacerPregunta: "pregunta",
+  enviarRespuesta: "respuesta",
+  enviarGuess: "guess",
+  enviarVeredicto: "veredicto",
+  juegoPerdidio: "perder",
+  juegoGanado: "ganar"
 }
 
 app.get('*', (req,res)=> {

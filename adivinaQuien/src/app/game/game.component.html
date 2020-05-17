@@ -437,131 +437,28 @@
   <div class="container" style="width: 50%;">
     <div class="row heading heading-icon">
       <h2 id="vsRival">VS Héctor</h2>
+      {{album}}
     </div>
     <ul class="row">
       <!-- Formato del display de imagenes -->
-      <li class="col-12 col-md-6 col-lg-3" *ngFor="let e of game.album">
-        <div class="cnt-block equal-hight selected" (click)='seleccionarImagen(e.url)'>
-          <figure><img src="e.url" class="img-responsive" alt="">
+      
+      <li class="col-12 col-md-6 col-lg-3" *ngFor="let e of album">
+        
+        <div class="cnt-block equal-hight" (click)='seleccionarImagen(e)'>
+          <figure><img src="{{e.url}}" class="img-responsive" alt="">
           </figure>
         </div>
       </li>
       <!-- Fin Formato -->
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight" (click)='seleccionarImagen("http://www.webcoderskull.com/img/team4.png")'>
-          <figure><img src="http://www.webcoderskull.com/img/team4.png" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight selected">
-          <figure><img src="https://www.sackettwaconia.com/wp-content/uploads/default-profile.png"
-              class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight">
-          <figure><img src="http://www.webcoderskull.com/img/team4.png" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight">
-          <figure><img src="http://www.webcoderskull.com/img/team2.png" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight selected">
-          <figure><img src="https://www.sackettwaconia.com/wp-content/uploads/default-profile.png"
-              class="img-responsive" alt="">
-          </figure>
-
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight">
-          <figure><img src="http://www.webcoderskull.com/img/team1.png" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight selected">
-          <figure><img src="https://www.sackettwaconia.com/wp-content/uploads/default-profile.png"
-              class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight">
-          <figure><img src="http://www.webcoderskull.com/img/team2.png" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight">
-          <figure><img src="http://www.webcoderskull.com/img/team4.png" class="img-responsive" alt="">
-          </figure>
-
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight">
-          <figure><img src="http://www.webcoderskull.com/img/team1.png" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight selected">
-          <figure><img src="https://www.sackettwaconia.com/wp-content/uploads/default-profile.png"
-              class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight">
-          <figure><img src="http://www.webcoderskull.com/img/team2.png" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight selected">
-          <figure><img src="https://www.sackettwaconia.com/wp-content/uploads/default-profile.png"
-              class="img-responsive" alt="">
-          </figure>
-
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight selected">
-          <figure><img src="https://www.sackettwaconia.com/wp-content/uploads/default-profile.png"
-              class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight">
-          <figure><img src="http://www.webcoderskull.com/img/team4.png" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
-      <li class="col-12 col-md-6 col-lg-3">
-        <div class="cnt-block equal-hight">
-          <figure><img src="http://www.webcoderskull.com/img/team2.png" class="img-responsive" alt="">
-          </figure>
-        </div>
-      </li>
     </ul>
 
   </div>
 
-
+  
 
   <div class="popup-box chat-popup popup-box-on">
     <div class="popup-head">
-      <div class="popup-head-left pull-left"><img
-          src="{{contrincante.fotoPerfil}}"
+      <div class="popup-head-left pull-left"><img src="{{contrincante.fotoPerfil}}"
           alt="foto{{contrincante.correo}}">{{contrincante.nombre}}</div>
     </div>
     <div class="popup-messages">
@@ -610,12 +507,19 @@
   <div class="selection-box">
     <h4 style="text-align: center;">Esta es tu selección: </h4>
     <div class="cnt-block equal-hight" style="width: 100%; background-color: #3f9684;">
-      <figure><img id="selectedImg" src="{{selectedImg}}" class="img-responsive" alt="">
+      <figure><img id="selectedImg" src="{{selectedImg.url}}" class="img-responsive" alt="">
       </figure>
     </div>
     <div style="text-align: center;">
       Esta es tu selección:<br>
       <button type="button" id="guess" class="btn btn-outline-primary" (click)="enviarGuess()">Adivinar</button>
+    </div>
+  </div>
+  <div class="display-box">
+    <h4 style="text-align: center;">Tu oponente debe adivinar esta imagen: </h4>
+    <div class="cnt-block equal-hight" style="width: 100%; background-color: #3f9684;">
+      <figure><img id="selectedImg" src="{{myImg.url}}" class="img-responsive" alt="">
+      </figure>
     </div>
   </div>
 </section>
