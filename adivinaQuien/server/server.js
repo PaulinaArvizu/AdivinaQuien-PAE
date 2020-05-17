@@ -9,7 +9,7 @@ const userRouter = require('./routes/usuario')
 const partidaRouter = require('./routes/partida')
 
 const app = express();
-const port = 3000;
+// const port = 3000;
 var path = require('path');
 
 const http = require('http').Server(app);
@@ -121,18 +121,19 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
         ganador: u.email,
         status: true
       })
-      socket.to('game'+msg.gameId).emit(emitEvents.juegoPerdidio);
-      socket.emit(emitEvents.juegoGanado);
+      
       //se le notifica al otro usuario que perdió
-
+      socket.emit(emitEvents.juegoPerdidio);
+      socket.to('game'+msg.gameId).emit(emitEvents.juegoGanado);
     } else { //esta persona perdió
       //se le notifica al otro usuario que ganó
       await gameModel.putPartida(msg.gameId, {
         ganador: u.email,
         status: true
       })
-      socket.emit(emitEvents.juegoPerdidio);
-      socket.to('game'+msg.gameId).emit(emitEvents.juegoGanado);
+      socket.to('game'+msg.gameId).emit(emitEvents.juegoPerdidio);
+      socket.emit(emitEvents.juegoGanado);
+      
     }
   })
   socket.on(onEvents.juegoGanado, async msg => { //msg = {gameId, userEmail}
