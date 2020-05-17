@@ -83,7 +83,7 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
 
   socket.on(onEvents.entrarAlJuego, gameId => {
     gameModel.getPartidaById(gameId).then((foundGame) => {
-      console.log(foundGame);
+    //   console.log(foundGame);
       //mete al jugador al room
       console.log('mete al jugador al room game' + gameId);
       socket.join('game' + gameId);
@@ -121,13 +121,14 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
         ganador: u.email,
         status: true
       })
-      socket.to('game' + msg.gameId).emit(emitEvents.juegoPerdidio);
-
+      socket.to('game'+msg.gameId).emit(emitEvents.juegoPerdidio);
+      socket.emit(emitEvents.juegoGanado);
       //se le notifica al otro usuario que perdió
 
     } else { //esta persona perdió
       //se le notifica al otro usuario que ganó
-      socket.to('game' + msg.gameId).emit(emitEvents.juegoGanado);
+      socket.emit(emitEvents.juegoPerdidio);
+      socket.to('game'+msg.gameId).emit(emitEvents.juegoGanado);
     }
   })
   socket.on(onEvents.juegoGanado, async msg => { //msg = {gameId, userEmail}
@@ -153,7 +154,7 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
     //update al usuario de su historial de juegos con el veredicto (win)
     console.log("update al usuario de su historial de juegos con el veredicto (win)");
     u.historialPartidas.push(gameId)
-    await usersModel.putUser(u)
+    await usersModel.putUser(u.email, {historialPartidas:u.historialPartidas})
   })
 
 });

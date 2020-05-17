@@ -46,14 +46,15 @@ export class GameComponent implements OnInit {
   }[] = [];
   game = {
     _id: "",
-    Jugador1: "",
-    Jugador2: "",
+    jugador1: "",
+    jugador2: "",
     ganador: null,
     status: this.gameStatus.pendiente,
     album: ""
   };
   guessVeredict: boolean = false;
   myTurn: boolean;
+  
   contrincante = {
     email: "",
     password: "",
@@ -74,30 +75,24 @@ export class GameComponent implements OnInit {
   private subPerder: Subscription;
   ngOnInit(): void {
     this.subDatos = this.socketIOservice.recibirDatosJuego().subscribe((datos) => {
-      console.log('recibe verga');
-      console.log(datos);
       this.game = datos;
-      this.myTurn = this.jugador.email === this.game.Jugador2;
-      console.log(this.myTurn);
-      console.log(this.game.album);
+      this.myTurn = this.jugador.email === this.game.jugador2;
       let album2 = this.userService.getOneAlbum(this.game.album)
-      console.log(album2);
       this.album =  album2.fotos.map(e => this.userService.getOneFoto(e))
-      console.log(this.album);
-
       this.myImg = this.album[parseInt(Math.random() * this.album.length)];
-      if (this.jugador.email === this.game.Jugador1) {
-        this.contrincante = this.userService.getOneUser(this.game.Jugador2)
+      if (this.jugador.email === this.game.jugador1) {
+        this.contrincante = this.userService.getOneUser(this.game.jugador2)
       } else {
-        this.contrincante = this.userService.getOneUser(this.game.Jugador1)
+        this.contrincante = this.userService.getOneUser(this.game.jugador1)
       }
-
+      console.log(this.contrincante);
     });
     this.subGuess = this.socketIOservice.recibirGuess().subscribe((guess) => {
       this.myTurn = true
+      console.log(guess);
       let adivino = this.myImg._id == guess._id;
       if (adivino) {
-        alert('perdiste')
+        
         this.socketIOservice.enviarVeredicto({ gameId: this.game._id, userEmail: this.contrincante.email, adivino })
       }
 
@@ -109,26 +104,23 @@ export class GameComponent implements OnInit {
       })
     });
     this.subRespuesta = this.socketIOservice.recibirRespuesta().subscribe((resp) => {
+      this.msgChat.push({
+        recibida: true,
+        pregunta: resp
+      })
+      this.myTurn = false
       
-      if (resp == 'yes') {
-        $(`[name="yes"]`).last().removeClass("btn-outline-primary");
-        $(`[name="yes"]`).last().addClass("btn-primary");
-      } else {
-        $(`[name="no"]`).last().removeClass("btn-outline-danger");
-        $(`[name="no"]`).last().addClass("btn-danger");
-      }
     });
     this.subPerder = this.socketIOservice.perderJuego().subscribe(() => {
-      console.log('perder')
+      alert('perdiste')
     });
     this.subGanar = this.socketIOservice.ganarJuego().subscribe(() => {
-      console.log('ganar');
+      alert('ganaste');
     });
     // this.jugador = this.userService.getOneUser(this.auth.getTokenData().email)
-    console.log(this.route.snapshot.paramMap.get('id'));
+    
     this.socketIOservice.entrarAlJuego(this.route.snapshot.paramMap.get('id'));
     this.jugador = this.userService.getOneUser(this.auth.getTokenData().email)
-    
   }
 
   ngOnDestroy() {
@@ -141,8 +133,10 @@ export class GameComponent implements OnInit {
   }
 
   enviarMensaje(event) {
+    
     if (event.keyCode != 13 || !this.myTurn) return;
-    this.myTurn = false;
+    console.log(this.msgChat);
+    console.log('enviar preg');
     this.socketIOservice.enviarPregunta({ gameId: this.game._id, mensaje: this.msgSend.trim() })
     // console.log(this.msgSend)
     this.msgChat.push({
@@ -152,6 +146,7 @@ export class GameComponent implements OnInit {
     this.msgSend = ''
   }
   enviarGuess() {
+    console.log(this.msgChat);
     if (!this.myTurn) return;
     this.myTurn = false;
     let a = { gameId: this.game._id, img: this.selectedImg }
@@ -159,13 +154,18 @@ export class GameComponent implements OnInit {
   }
 
   enviarRespuesta(resp: string) {
+    if(this.myTurn) return;
+    console.log('enviar resp');
+    this.msgChat.push({
+      recibida: false,
+      pregunta: resp
+    })
     this.socketIOservice.enviarRespuesta({ gameId: this.game._id, respuesta: resp })
+    this.myTurn = true
   }
 
   seleccionarImagen(img: { _id: "", url: "", name: "" }) {
     this.selectedImg = img;
   }
-  disable(event) {
-    $('')
-  }
+  
 }
