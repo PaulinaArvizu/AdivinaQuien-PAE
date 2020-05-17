@@ -24,8 +24,8 @@ app.use(cors());
 app.use(express.json());
 
 
-console.log(path.join(__dirname, '..', 'dist', 'adivinaQuien'));
-app.use(express.static(path.join(__dirname, '..', 'dist', 'adivinaQuien')));
+// console.log(path.join(__dirname, '..', 'dist', 'adivinaQuien'));
+// app.use(express.static(path.join(__dirname, '..', 'dist', 'adivinaQuien')));
 app.use(express.static(__dirname + '/public'));
 
 //rutas
