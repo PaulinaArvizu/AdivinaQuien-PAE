@@ -1,5 +1,5 @@
-const mongoose = require('../db/mongodb-connection')
-const DB = require('../db/DB');
+const mongoose = require('../DB/mongodb-connection')
+const DB = require('../DB/db');
 
 class Partida extends DB {
     constructor() {
