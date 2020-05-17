@@ -1,4 +1,4 @@
-<h1 class="display-2">Adivina Quien — {{user.nombre}}</h1>
+<h1 class="display-2 text-white">Adivina Quien — {{user.nombre}}</h1>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newGameModal"
   (click)="openNewGameModal()">
   Nuevo Juego
@@ -20,7 +20,7 @@
             </table>
           </h5>
           <div class="card-body">
-            <div *ngIf="fotos != undefined" id="carouselImagenes" class="carousel slide panel-body"
+            <div *ngIf="fotos.length > 0" id="carouselImagenes" class="carousel slide panel-body"
               data-ride="carousel">
               <div class="carousel-inner" align="center">
                 <div class="carousel-item active">
