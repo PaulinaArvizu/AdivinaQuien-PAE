@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../users.service';
 import { AuthService } from '../auth.service';
+import { NgForm } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 declare var $: any;
 
@@ -45,7 +47,7 @@ export class ProfileComponent implements OnInit {
 	selectedFile: File;
 
 	//Generar servicio que me traiga los datos relacionados al usuario.
-	constructor(private usersService: UsersService, private authService: AuthService) { } //importar servicio
+	constructor(private usersService: UsersService, private authService: AuthService, private http: HttpClient) { } //importar servicio
 
 	ngOnInit(): void {
 		// console.log(this.authService.getTokenData());
@@ -118,33 +120,16 @@ export class ProfileComponent implements OnInit {
 	}
 
 	deleteFoto(id) {
-
-		//eliminar de la lista del usuario
-		let index = this.user.fotos.findIndex(f => f == id)
-		if (index >= 0) {
-			this.user.fotos.splice(index, 1);
-			this.usersService.updateUser(this.user);
-		} else return;
-
-		//actualizar variables de ablums y fotos
-		this.albums = this.user.albumes.map(a => this.usersService.getOneAlbum(a));
-		this.fotos = this.user.fotos.map(f => this.usersService.getOneFoto(f));
-
-		//eliminar la foto
-		index = this.fotos.findIndex(f => f == id)
-		if (index >= 0) {
-			this.fotos.splice(index, 1);
-			this.usersService.deleteFoto(id);
-		}
+		this.usersService.deleteFoto(id, this.user);
 	}
 
 	deleteAlbum(id) {
 		let canDelete = true;
 		this.juegos.forEach(j => {
-			if(j.album == id && !j.status) canDelete = false;
+			if (j.album == id && !j.status) canDelete = false;
 		})
 
-		if(!canDelete) {
+		if (!canDelete) {
 			$('#errorDeleteAlbumModal').modal('show');
 			return;
 		}
@@ -263,11 +248,6 @@ export class ProfileComponent implements OnInit {
 		this.buscar = '';
 	}
 
-	onFileChanged(event) {
-		this.selectedFile = event.target.files[0];
-		console.log(this.selectedFile);
-	}
-
 	newGameSelectedAlbum(albumId) {
 		if (this.newGame.album == albumId) this.newGame.album = '';
 		else this.newGame.album = albumId;
@@ -284,4 +264,27 @@ export class ProfileComponent implements OnInit {
 		this.newGameValid = this.newGame.album != '' && this.newGame.jugador2 != '';
 	}
 
+	onFileChanged(event) {
+		this.selectedFile = event.target.files[0];
+		console.log(this.selectedFile);
+	}
+
+	onUpload(form: NgForm) {
+		if(!this.selectedFile) {
+			console.log('cancelar');
+			return;
+		}
+		this.usersService.createFoto(form, this.selectedFile, this.user);
+		this.selectedFile = undefined;
+	}
+
+	onUploadProfile(form: NgForm) {
+		if(!this.selectedFile) {
+			console.log('cancelar');
+			return;
+		}
+		let currFoto = this.usersService.getAllFotos().find(f => f.name == this.user._id);
+		this.usersService.profileFoto(form, this.selectedFile, this.user, currFoto);
+		this.selectedFile = undefined;
+	}
 }
