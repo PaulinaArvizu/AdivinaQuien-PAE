@@ -441,9 +441,9 @@
     </div>
     <ul class="row">
       <!-- Formato del display de imagenes -->
-      
+
       <li class="col-12 col-md-6 col-lg-3" *ngFor="let e of album">
-        
+
         <div class="cnt-block equal-hight" (click)='seleccionarImagen(e)'>
           <figure><img src="{{e.url}}" class="img-responsive" alt="">
           </figure>
@@ -454,7 +454,7 @@
 
   </div>
 
-  
+
 
   <div class="popup-box chat-popup popup-box-on">
     <div class="popup-head">
@@ -474,23 +474,19 @@
             <ng-template #nombreEnviado>{{jugador.nombre}}</ng-template>
           </div>
           <!-- /.direct-chat-info -->
-          <img alt="message user image"
-            src="https://scontent-qro1-1.xx.fbcdn.net/v/t1.0-9/37301785_10204907818931567_2345109584508616704_n.jpg?_nc_cat=111&_nc_sid=85a577&_nc_ohc=8VlSIqVBFD8AX_4ncZR&_nc_ht=scontent-qro1-1.xx&oh=872ba2f1460416549ad15e058be51b63&oe=5E9D921B"
-            class="direct-chat-img"><!-- /.direct-chat-img -->
+          
+          <img *ngIf="item.recibido" alt="fotorival" src="{{contrincante.fotoPerfil}}" class="direct-chat-img"><!-- /.direct-chat-img -->
+          <img *ngIf="!item.recibido" alt="fotorival" src="{{jugador.fotoPerfil}}" class="direct-chat-img"><!-- /.direct-chat-img -->
           <div class="direct-chat-text">
             {{item.pregunta}} <br>
-            <span (click)="disable($event)">
-              <button type="button" name="yes" class="btn btn-outline-primary"
-                (click)="enviarRespuesta('yes')">Si</button>
-              <button type="button" name="no" class="btn btn-outline-danger" (click)="enviarRespuesta('no')">No</button>
-            </span>
           </div>
 
-          <div class="direct-chat-info clearfix">
+          <!-- <div class="direct-chat-info clearfix">
+
             <span class="direct-chat-img-reply-small pull-left">
 
             </span>
-          </div>
+          </div> -->
         </div>
         <!-- Fin Formato chat -->
 
@@ -499,6 +495,8 @@
       </div>
     </div>
     <div class="popup-messages-footer">
+      <button type="button" name="yes" class="btn btn-outline-primary" (click)="enviarRespuesta('yes')">Si</button>
+      <button type="button" name="no" class="btn btn-outline-danger" (click)="enviarRespuesta('no')">No</button>
       <textarea id="message" placeholder="Type a message..." rows="10" cols="40" name="message" [(ngModel)]="msgSend"
         (keydown)="enviarMensaje($event)"></textarea>
     </div>

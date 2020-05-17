@@ -153,7 +153,7 @@ io.on('connection', function (socket) { //cuando se abre una pestaña, hace lo s
     //update al usuario de su historial de juegos con el veredicto (win)
     console.log("update al usuario de su historial de juegos con el veredicto (win)");
     u.historialPartidas.push(gameId)
-    await usersModel.putUser(u)
+    await usersModel.putUser(u.email, {historialPartidas:u.historialPartidas})
   })
 
 });
