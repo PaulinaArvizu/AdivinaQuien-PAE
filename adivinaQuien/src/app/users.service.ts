@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { async } from '@angular/core/testing';
+import { NgForm } from '@angular/forms';
 
 @Injectable({
 	providedIn: 'root'
@@ -78,12 +79,83 @@ export class UsersService {
 		return this.httpGet("api/fotos/");
 	}
 
-	deleteFoto(id) {
+	createFoto(form: NgForm, selectedFile, user) {
+		let formData = new FormData();
+		formData.append("image", selectedFile);
+		formData.append("name", form.value.name);
+		this.http.post('/api/fotos', formData).subscribe(
+			(res) => {
+				console.log(res);
+				if (res[0]) {
+					user.fotos.push(res[0]._id);
+					this.updateUser(user);
+				}
+			});
+	}
+
+	profileFoto(form: NgForm, selectedFile, user, currProfileFoto) {
+		if (user.fotoPerfil == '') { //el usuario todavia no tiene foto de perfil
+			//crear la foto
+			let formData = new FormData();
+			formData.append("image", selectedFile);
+			formData.append("name", user._id);
+			this.http.post('/api/fotos', formData).subscribe(
+				(res) => {
+					console.log(res);
+					if (res[0]) {
+						//poner foto de perfil
+						user.fotoPerfil = res[0].url;
+						this.updateUser(user);
+					}
+				});
+		} else {
+			let r;
+			console.log(currProfileFoto);
+			this.makeHTTPRequest("api/fotos/" + currProfileFoto._id, "DELETE", undefined, (xhr) => {
+				if (xhr.status == 200) {
+					console.log("Delete exitoso", JSON.parse(xhr.response));
+					r = JSON.parse(xhr.response);
+					//crear la foto
+					let formData = new FormData();
+					formData.append("image", selectedFile);
+					formData.append("name", user._id);
+					this.http.post('/api/fotos', formData).subscribe(
+						(res) => {
+							console.log(res);
+							if (res[0]) {
+								//poner foto de perfil
+								user.fotoPerfil = res[0].url;
+								this.updateUser(user);
+							}
+						});
+				} else {
+					console.log("Error en delete");
+				}
+			});
+		}
+	}
+
+	deleteFoto(id, user) {
 		let r;
 		this.makeHTTPRequest("api/fotos/" + id, "DELETE", undefined, (xhr) => {
 			if (xhr.status == 200) {
 				console.log("Delete exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
+				//eliminar de los albums donde esté presente
+				let albums = this.getAllAlbums();
+				albums.forEach(a => {
+					let indexF = a.fotos.findIndex(f => f == id);
+					if(indexF >= 0) {
+						a.fotos.splice(indexF, 1);
+						this.updateAlbum(a);
+					}
+				});
+
+				let index = user.fotos.findIndex(f => f == id)
+				if (index >= 0) {
+					user.fotos.splice(index, 1);
+					this.updateUser(user);
+				}
 			} else {
 				console.log("Error en delete");
 			}
