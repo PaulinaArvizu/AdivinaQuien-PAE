@@ -22,8 +22,8 @@ export class ProfileComponent implements OnInit {
 	resBusquedaAmigos = [];
 	buscar = '';
 	newGame = {
-		Jugador1: '',
-		Jugador2: '',
+		jugador1: '',
+		jugador2: '',
 		ganador: '',
 		status: false,
 		album: ''
@@ -38,6 +38,8 @@ export class ProfileComponent implements OnInit {
 	//para el modal de editar usuario
 	userEdit;
 
+	//para el modal de juego nuevo
+	newGameValid = false;
 
 	//para agregar una foto
 	selectedFile: File;
@@ -57,22 +59,31 @@ export class ProfileComponent implements OnInit {
 		if (this.user.fotos) this.fotos = this.user.fotos.map(f => this.usersService.getOneFoto(f));
 		if (this.user.amigos) this.amigos = this.allUsers.filter(u => this.user.amigos.includes(u.email));
 
-		if (this.user.historialPartidas) {
+		if (this.user.historialPartidas.length > 0) {
 			this.juegos = this.user.historialPartidas.map(g => this.usersService.getOneGame(g));
 			this.juegos.forEach(g => {
 				if (g.jugador1 != this.user.email) {
-					let temp = g.jugador1;
+					g.jugador2 = g.jugador1;
 					g.jugador1 = this.user.email;
-					g.jugador2 = temp;
 				}
+				g.jugador1 = this.usersService.getOneUser(g.jugador1);
+				g.jugador2 = this.usersService.getOneUser(g.jugador2);
 			})
+			console.log(this.juegos);
 		}
 	}
 
 	//funciones
 	openNewGameModal() {
 		$('#newGameModal').modal('show');
-		this.userEdit = Object.assign({}, this.user);
+		this.newGame = {
+			jugador1: this.user.email,
+			jugador2: '',
+			ganador: '',
+			status: false,
+			album: ''
+		};
+		this.newGameValid = false;
 	}
 
 	openNewImgModal() {
@@ -103,6 +114,7 @@ export class ProfileComponent implements OnInit {
 
 	openEditUserModal() {
 		$('#editUserModal').modal('show');
+		this.userEdit = Object.assign({}, this.user);
 	}
 
 	deleteFoto(id) {
@@ -127,32 +139,21 @@ export class ProfileComponent implements OnInit {
 	}
 
 	deleteAlbum(id) {
+		let canDelete = true;
+		this.juegos.forEach(j => {
+			if(j.album == id && !j.status) canDelete = false;
+		})
+
+		if(!canDelete) {
+			$('#errorDeleteAlbumModal').modal('show');
+			return;
+		}
+
 		//eliminar de la lista del usuario
 		let index = this.user.albumes.findIndex(a => a == id)
 		if (index >= 0) {
 			this.user.albumes.splice(index, 1);
 		} else return;
-
-		//eliminar los juegos con este album
-		let indexList = [];
-		this.juegos.forEach((juego, i) => {
-			if (juego.album == id) {
-				//eliminar del historial del usuario (se agrega a la lista de indices de juegos para no perder la cuenta en el forEach)
-				indexList.push(i);
-
-				//buscar al amigo de la partida
-				let foundFriend = this.allUsers.find(u => u._id == juego.jugador2);
-				if (foundFriend) {
-					//eliminar del historial del amigo
-					index = foundFriend.historialPartidas.findIndex(j => j == juego._id);
-					foundFriend.historialPartidas.splice(index, 1);
-					this.usersService.updateUser(foundFriend);
-				}
-			}
-		})
-		for (let i = indexList.length - 1; i >= 0; i--) { //se eliminan de mayor indice a menor para no perder la posicion
-			this.user.historialPartidas.splice(indexList[i], 1);
-		}
 
 		//eliminar el album
 		index = this.albums.findIndex(a => a._id == id);
@@ -194,52 +195,17 @@ export class ProfileComponent implements OnInit {
 	}
 
 	rechazarJuego(id) {
-		//eliminar de la lista del usuario
-		let index = this.user.historialPartidas.findIndex(j => j == id);
-		if (index >= 0) {
-			this.user.historialPartidas.splice(index, 1);
-			this.usersService.updateUser(this.user);
-		} else return
-
 		//buscar el juego
-		let game = this.juegos.find(j => j._id == id);
+		let game = this.usersService.getOneGame(id);
 		if (game) {
-			this.usersService.deleteGame(id);
-			//eliminar de la lista del usuario que envió la invitacion
-			let user2 = this.allUsers.find(u => u.email == game.jugador2);
-			if (user2) {
-				user2.historialPartidas.findIndex(j => j == id);
-				if (index >= 0) {
-					user2.historialPartidas.splice(index, 1);
-					this.usersService.updateUser(user2);
-					this.allUsers = this.usersService.getAllUsers();
-
-					//actualizar las listas de juegos
-					this.juegos = this.user.historialPartidas.map(g => this.usersService.getOneGame(g));
-					this.juegos.forEach(g => {
-						if (g.jugador1 != this.user.email) {
-							let temp = g.jugador1;
-							g.jugador1 = this.user.email;
-							g.jugador2 = temp;
-						}
-					})
-				}
-			}
+			this.usersService.deleteGame(id, game.jugador1, game.jugador2);
 		}
 	}
 
 	crearJuego(newGame) {
 		// crear juego
-		if (!newGame.jugador1 || !newGame.jugador2 || !newGame.album) return;
-		let game = this.usersService.newGame(newGame);
-		if (game) {
-			this.user.historialPartidas.push(newGame._id);
-			let user2 = this.allUsers.find(u => u.email == newGame.jugador2);
-			if (user2) {
-				user2.historialPartidas.push(newGame._id);
-				this.usersService.updateUser(user2);
-			}
-		}
+		let user2 = this.allUsers.find(u => u.email == newGame.jugador2);
+		this.usersService.newGame(newGame, this.user, user2);
 	}
 
 	crearAlbum() {
@@ -301,4 +267,21 @@ export class ProfileComponent implements OnInit {
 		this.selectedFile = event.target.files[0];
 		console.log(this.selectedFile);
 	}
+
+	newGameSelectedAlbum(albumId) {
+		if (this.newGame.album == albumId) this.newGame.album = '';
+		else this.newGame.album = albumId;
+		this.newGameIsValid();
+	}
+
+	newGameSelectedFriend(email) {
+		if (this.newGame.jugador2 == email) this.newGame.jugador2 = '';
+		else this.newGame.jugador2 = email;
+		this.newGameIsValid();
+	}
+
+	newGameIsValid() {
+		this.newGameValid = this.newGame.album != '' && this.newGame.jugador2 != '';
+	}
+
 }
