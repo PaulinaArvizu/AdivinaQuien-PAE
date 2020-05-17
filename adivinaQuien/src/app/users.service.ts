@@ -55,8 +55,8 @@ export class UsersService {
 
 	updateUser(user) {
 		let r;
-		this.makeHTTPRequest("api/users/"+user.email, "PUT", user, (xhr) => {
-			if(xhr.status == 200) {
+		this.makeHTTPRequest("api/users/" + user.email, "PUT", user, (xhr) => {
+			if (xhr.status == 200) {
 				console.log("Update exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
 				location.reload();
@@ -80,8 +80,8 @@ export class UsersService {
 
 	deleteFoto(id) {
 		let r;
-		this.makeHTTPRequest("api/fotos/"+id, "DELETE", undefined, (xhr) => {
-			if(xhr.status == 200) {
+		this.makeHTTPRequest("api/fotos/" + id, "DELETE", undefined, (xhr) => {
+			if (xhr.status == 200) {
 				console.log("Delete exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
 			} else {
@@ -103,8 +103,8 @@ export class UsersService {
 
 	updateAlbum(album) {
 		let r;
-		this.makeHTTPRequest("api/albums/"+album.id, "PUT", album, (xhr) => {
-			if(xhr.status == 200) {
+		this.makeHTTPRequest("api/albums/" + album.id, "PUT", album, (xhr) => {
+			if (xhr.status == 200) {
 				console.log("Update exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
 			} else {
@@ -116,8 +116,8 @@ export class UsersService {
 
 	deleteAlbum(id) {
 		let r;
-		this.makeHTTPRequest("api/albums/"+id, "DELETE", undefined, (xhr) => {
-			if(xhr.status == 200) {
+		this.makeHTTPRequest("api/albums/" + id, "DELETE", undefined, (xhr) => {
+			if (xhr.status == 200) {
 				console.log("Delete exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
 			} else {
@@ -147,7 +147,7 @@ export class UsersService {
 		let r;
 		this.makeHTTPRequest("api/albums/", "POST", album, (xhr) => {
 			// console.log(xhr.status);
-			if(xhr.status == 201) {
+			if (xhr.status == 201) {
 				console.log("Post exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
 				user.albumes.push(r[0]._id);
@@ -174,8 +174,8 @@ export class UsersService {
 
 	updateGame(game) {
 		let r;
-		this.makeHTTPRequest("api/partidas/"+game.id, "PUT", game, (xhr) => {
-			if(xhr.status == 200) {
+		this.makeHTTPRequest("api/partidas/" + game.id, "PUT", game, (xhr) => {
+			if (xhr.status == 200) {
 				console.log("Update exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
 			} else {
@@ -185,12 +185,20 @@ export class UsersService {
 		return r;
 	}
 
-	deleteGame(id) {
+	deleteGame(id, user1, user2) {
 		let r;
-		this.makeHTTPRequest("api/partidas/"+id, "DELETE", undefined, (xhr) => {
-			if(xhr.status == 200) {
+		this.makeHTTPRequest("api/partidas/" + id, "DELETE", undefined, (xhr) => {
+			if (xhr.status == 200) {
 				console.log("Delete exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
+				let index1 = user1.historialPartidas.findIndex(j => j == id);
+				let index2 = user2.historialPartidas.findIndex(j => j == id);
+				if (index1 >= 0 && index2 >= 0) {
+					user1.historialPartidas.splice(index1, 1);
+					user2.historialPartidas.splice(index2, 1);
+					this.updateUser(user1);
+					this.updateUser(user2);
+				}
 			} else {
 				console.log("Error en delete");
 			}
@@ -198,14 +206,19 @@ export class UsersService {
 		return r;
 	}
 
-	newGame(game) {
+	newGame(game, user1, user2) {
 		let r;
 		this.makeHTTPRequest("api/partidas/", "POST", game, (xhr) => {
-			if(xhr.status == 201) {
+			if (xhr.status == 201) {
 				console.log("Post exitoso", JSON.parse(xhr.response));
 				r = JSON.parse(xhr.response);
+				// console.log(r[0]);
+				user1.historialPartidas.push(r[0]._id);
+				user2.historialPartidas.push(r[0]._id);
+				this.updateUser(user1);
+				this.updateUser(user2);
 			} else {
-				console.log("Error en post");
+				console.log("Error en post", xhr.response);
 			}
 		});
 		return r;
